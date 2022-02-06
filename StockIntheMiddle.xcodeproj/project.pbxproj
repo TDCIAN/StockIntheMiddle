@@ -10,6 +10,9 @@
 		1E75BCC127B08015009CC6D4 /* TopStoriesNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC027B08015009CC6D4 /* TopStoriesNewsViewController.swift */; };
 		1E75BCC327B08027009CC6D4 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */; };
 		1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */; };
+		1E75BCC727B081B7009CC6D4 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC627B081B7009CC6D4 /* APICaller.swift */; };
+		1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC827B081C3009CC6D4 /* PersistenceManager.swift */; };
+		1E75BCCB27B081CE009CC6D4 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCCA27B081CE009CC6D4 /* HapticsManager.swift */; };
 		1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A215727AEBB56008D1C05 /* AppDelegate.swift */; };
 		1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A215927AEBB56008D1C05 /* SceneDelegate.swift */; };
 		1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A215B27AEBB56008D1C05 /* WatchListViewController.swift */; };
@@ -21,6 +24,9 @@
 		1E75BCC027B08015009CC6D4 /* TopStoriesNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopStoriesNewsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailsViewController.swift; sourceTree = "<group>"; };
+		1E75BCC627B081B7009CC6D4 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		1E75BCC827B081C3009CC6D4 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		1E75BCCA27B081CE009CC6D4 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		1E7A215427AEBB56008D1C05 /* StockIntheMiddle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockIntheMiddle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E7A215727AEBB56008D1C05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E7A215927AEBB56008D1C05 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +105,9 @@
 		1E7A216E27AEBC0A008D1C05 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				1E75BCC627B081B7009CC6D4 /* APICaller.swift */,
+				1E75BCC827B081C3009CC6D4 /* PersistenceManager.swift */,
+				1E75BCCA27B081CE009CC6D4 /* HapticsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -183,9 +192,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E75BCCB27B081CE009CC6D4 /* HapticsManager.swift in Sources */,
 				1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */,
 				1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */,
 				1E75BCC127B08015009CC6D4 /* TopStoriesNewsViewController.swift in Sources */,
+				1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */,
+				1E75BCC727B081B7009CC6D4 /* APICaller.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,
 				1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */,
 				1E75BCC327B08027009CC6D4 /* SearchResultsViewController.swift in Sources */,
