@@ -20,6 +20,7 @@
 		1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A215B27AEBB56008D1C05 /* WatchListViewController.swift */; };
 		1E7A216127AEBB58008D1C05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A216027AEBB58008D1C05 /* Assets.xcassets */; };
 		1E7A216427AEBB58008D1C05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A216227AEBB58008D1C05 /* LaunchScreen.storyboard */; };
+		1E8AD7FA27B1BA0E0041BBE5 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8AD7F927B1BA0E0041BBE5 /* SearchResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		1E7A216027AEBB58008D1C05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E7A216327AEBB58008D1C05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E7A216527AEBB58008D1C05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E8AD7F927B1BA0E0041BBE5 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		1E7A216B27AEBBF4008D1C05 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1E8AD7F927B1BA0E0041BBE5 /* SearchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */,
 				1E75BCCD27B08A8B009CC6D4 /* Extensions.swift in Sources */,
 				1E75BCC727B081B7009CC6D4 /* APICaller.swift in Sources */,
+				1E8AD7FA27B1BA0E0041BBE5 /* SearchResponse.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,
 				1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */,
 				1E75BCC327B08027009CC6D4 /* SearchResultsViewController.swift in Sources */,

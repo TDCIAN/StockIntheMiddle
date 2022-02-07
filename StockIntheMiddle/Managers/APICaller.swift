@@ -23,6 +23,14 @@ final class APICaller {
     // get stock info
     
     // search stocks
+    public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> Void) {
+        guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
+        request(
+            url: url(for: .search, queryParams: ["q":safeQuery]),
+            expecting: SearchResponse.self,
+            completion: completion
+        )
+    }
     
     // MARK: - Private
     
@@ -48,6 +56,7 @@ final class APICaller {
         
         // Convert query items to suffix string
         urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
+        print("APICaller - url: \(urlString)")
         return URL(string: urlString)
     }
     

@@ -9,6 +9,8 @@ import UIKit
 
 class WatchListViewController: UIViewController {
     
+    private var searchTimer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -50,19 +52,40 @@ extension WatchListViewController: UISearchResultsUpdating {
                   return
               }
         
+        // Reset timer
+        searchTimer?.invalidate()
+        
+        // Kick off new timer
         // Optimize to reduce number of searches for when user stops typing
-        
-        // Call API to search
-        
-        // Update results controller
-        resultsVC.update(with: ["GOOG"])
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
+            // Call API to search
+            APICaller.shared.search(query: query) { result in
+                switch result {
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        resultsVC.update(with: response.result)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        resultsVC.update(with: [])
+                    }
+                    print("WatchListVC - updateSearchResults - error: \(error)")
+                }
+            }
+        })
+
         
         print(query)
     }
 }
 
 extension WatchListViewController: SearchResultsViewControllerDelegate {
-    func searchResultsViewControllerDidSelect(searchResult: String) {
-        // Present stock details for given selection
+    func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
+        navigationItem.searchController?.searchBar.resignFirstResponder()
+        
+        let vc = StockDetailsViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        vc.title = searchResult.description
+        present(navVC, animated: true)
     }    
 }
