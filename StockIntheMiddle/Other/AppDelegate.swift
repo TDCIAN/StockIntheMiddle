@@ -35,12 +35,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func debug() {
-        APICaller.shared.search(query: "Apple") { result in
+//        APICaller.shared.search(query: "Apple") { result in
+//            switch result {
+//            case .success(let response):
+//                print("AppDelegate - response: \(response.result)")
+//            case .failure(let error):
+//                print("AppDelegate - error: \(error)")
+//            }
+//        }
+        
+//        APICaller.shared.news(for: .topStories) { result in
+//            switch result {
+//            case .success(let news):
+//                print("AppDeleagte - news: \(news)")
+//            case .failure(let error):
+//                print("AppDeleagte - error: \(error)")
+//            }
+//        }
+        
+        APICaller.shared.news(for: .company(symbol: "MSFT")) { result in
             switch result {
-            case .success(let response):
-                print("AppDelegate - response: \(response.result)")
+            case .success(let news):
+                print("AppDeleagte - news: \(news)")
             case .failure(let error):
-                print("AppDelegate - error: \(error)")
+                print("AppDeleagte - error: \(error)")
             }
         }
     }

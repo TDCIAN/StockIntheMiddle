@@ -7,5 +7,6 @@ target 'StockIntheMiddle' do
 
   # Pods for StockIntheMiddle
   pod 'FloatingPanel'
+  pod 'SDWebImage', '~> 5.0'
 
 end

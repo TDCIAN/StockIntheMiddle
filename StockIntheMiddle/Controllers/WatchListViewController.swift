@@ -18,17 +18,18 @@ class WatchListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setUpSearchController()
-        setUpTitleView()
         setUpFloatingPanel()
+        setUpTitleView()
     }
     
     // MARK: - Private
     private func setUpFloatingPanel() {
-        let vc = TopStoriesNewsViewController()
+        let vc = NewsViewController(type: .topStories)
         let panel = FloatingPanelController(delegate: self)
         panel.surfaceView.backgroundColor = .secondarySystemBackground
         panel.set(contentViewController: vc)
         panel.addPanel(toParent: self)
+        panel.track(scrollView: vc.tableView)
         panel.delegate = self
     }
     
