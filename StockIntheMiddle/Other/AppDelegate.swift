@@ -53,14 +53,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            }
 //        }
         
-        APICaller.shared.news(for: .company(symbol: "MSFT")) { result in
-            switch result {
-            case .success(let news):
-                print("AppDeleagte - news: \(news)")
-            case .failure(let error):
-                print("AppDeleagte - error: \(error)")
-            }
-        }
+//        APICaller.shared.news(for: .company(symbol: "MSFT")) { result in
+//            switch result {
+//            case .success(let news):
+//                print("AppDeleagte - news: \(news)")
+//            case .failure(let error):
+//                print("AppDeleagte - error: \(error)")
+//            }
+//        }
+        
+//        APICaller.shared.marketData(for: "AAPL", numberOfDays: 1) { result in
+//            switch result {
+//            case .success(let data):
+//                let candleSticks = data.candleSticks
+//                print("AppDelegate - marketData: \(candleSticks)")
+//            case .failure(let error):
+//                print("AppDeleagte - error: \(error)")
+//            }
+//        }
     }
 }
 

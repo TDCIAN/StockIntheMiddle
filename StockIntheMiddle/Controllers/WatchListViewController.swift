@@ -14,15 +14,96 @@ class WatchListViewController: UIViewController {
     
     private var panel: FloatingPanelController?
     
+    // Model
+    private var watchlistMap: [String: [CandleStick]] = [:]
+    
+    // ViewModels
+    private var viewModels: [WatchListTableViewCell.ViewModel] = []
+    
+    private var tableView: UITableView = {
+       let table = UITableView()
+        return table
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setUpSearchController()
+        setUpTableView()
+        setUpWatchlistData()
         setUpFloatingPanel()
         setUpTitleView()
     }
     
     // MARK: - Private
+    private func setUpWatchlistData() {
+        let symbols = PersistenceManager.shared.watchlist
+        
+        let group = DispatchGroup()
+        
+        for symbol in symbols {
+            group.enter()
+            APICaller.shared.marketData(for: symbol) { [weak self] result in
+                defer {
+                    group.leave()
+                }
+                switch result {
+                case .success(let data):
+                    let candleSticks = data.candleSticks
+                    self?.watchlistMap[symbol] = candleSticks
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            self?.createViewModels()
+            self?.tableView.reloadData()
+        }
+    }
+    
+    private func createViewModels() {
+        var viewModels = [WatchListTableViewCell.ViewModel]()
+        for (symbol, candleSticks) in watchlistMap {
+            let changePercentage = getChangePercentage(symbol: symbol, for: candleSticks)
+            viewModels.append(
+                .init(
+                    symbol: symbol,
+                    companyName: UserDefaults.standard.string(forKey: symbol) ?? "Company",
+                    price: getLatestClosingPrice(from: candleSticks),
+                    changeColor: changePercentage < 0 ? .systemRed : .systemGreen,
+                    changePercentage: "\(changePercentage)"
+                )
+            )
+        }
+        self.viewModels = viewModels
+    }
+    
+    private func getChangePercentage(symbol: String, for data: [CandleStick]) -> Double {
+        let priorDate = Date().addingTimeInterval(-((3600 * 24) * 2))
+        guard let latestClose = data.first?.close, let priorClose = data.first(where:  {
+            Calendar.current.isDate($0.date, inSameDayAs: priorDate)
+        })?.close else {
+            return 0
+        }
+        
+        print("\(symbol): Current (\(data[0].date)): \(latestClose) | Prior\(priorDate): \(priorClose)")
+        return 0.0
+    }
+    
+    private func getLatestClosingPrice(from data: [CandleStick]) -> String {
+        guard let closingPrice = data.first?.close else {
+            return ""
+        }
+        return "\(closingPrice)"
+    }
+    
+    private func setUpTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
     private func setUpFloatingPanel() {
         let vc = NewsViewController(type: .topStories)
 //        let vc = NewsViewController(type: .company(symbol: "MSFT"))
@@ -108,5 +189,20 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
 extension WatchListViewController: FloatingPanelControllerDelegate {
     func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
         navigationItem.titleView?.isHidden = fpc.state == .full
+    }
+}
+
+extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return watchlistMap.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // Open Details for selection
     }
 }
