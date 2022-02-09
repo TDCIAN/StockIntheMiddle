@@ -14,6 +14,8 @@ class WatchListViewController: UIViewController {
     
     private var panel: FloatingPanelController?
     
+    static var maxChangeWidth: CGFloat = 0
+    
     // Model
     private var watchlistMap: [String: [CandleStick]] = [:]
     
@@ -22,6 +24,7 @@ class WatchListViewController: UIViewController {
     
     private var tableView: UITableView = {
        let table = UITableView()
+        table.register(WatchListTableViewCell.self, forCellReuseIdentifier: WatchListTableViewCell.identifier)
         return table
     }()
     
@@ -30,13 +33,18 @@ class WatchListViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpSearchController()
         setUpTableView()
-        setUpWatchlistData()
+        fetchWatchlistData()
         setUpFloatingPanel()
         setUpTitleView()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
     // MARK: - Private
-    private func setUpWatchlistData() {
+    private func fetchWatchlistData() {
         let symbols = PersistenceManager.shared.watchlist
         
         let group = DispatchGroup()
@@ -65,37 +73,50 @@ class WatchListViewController: UIViewController {
     private func createViewModels() {
         var viewModels = [WatchListTableViewCell.ViewModel]()
         for (symbol, candleSticks) in watchlistMap {
-            let changePercentage = getChangePercentage(symbol: symbol, for: candleSticks)
+            let changePercentage = getChangePercentage(
+                symbol: symbol,
+                data: candleSticks
+            )
             viewModels.append(
                 .init(
                     symbol: symbol,
                     companyName: UserDefaults.standard.string(forKey: symbol) ?? "Company",
                     price: getLatestClosingPrice(from: candleSticks),
                     changeColor: changePercentage < 0 ? .systemRed : .systemGreen,
-                    changePercentage: "\(changePercentage)"
+                    changePercentage: String.percentage(from: changePercentage),
+                    chartViewModel:
+                            .init(
+                                data: candleSticks.reversed().map { $0.close },
+                                showLegend: false,
+                                showAxis: false
+                            )
                 )
             )
         }
+//        print("WatchlistVC - viewModels: \(viewModels)")
         self.viewModels = viewModels
     }
     
-    private func getChangePercentage(symbol: String, for data: [CandleStick]) -> Double {
-        let priorDate = Date().addingTimeInterval(-((3600 * 24) * 2))
-        guard let latestClose = data.first?.close, let priorClose = data.first(where:  {
-            Calendar.current.isDate($0.date, inSameDayAs: priorDate)
-        })?.close else {
-            return 0
-        }
+    private func getChangePercentage(symbol: String, data: [CandleStick]) -> Double {
+        let latestDate = data[0].date
+        guard let latestClose = data.first?.close,
+              let priorClose = data.first(where:  {
+                  !Calendar.current.isDate($0.date, inSameDayAs: latestDate)
+              })?.close else {
+                  return 0
+              }
         
-        print("\(symbol): Current (\(data[0].date)): \(latestClose) | Prior\(priorDate): \(priorClose)")
-        return 0.0
+        let diff: CGFloat = 1 - (priorClose / latestClose)
+        print("Symbol: \(symbol): Diff: \(diff)%")
+//        print("\(symbol): Current (\(latestDate)): \(latestClose) | Prior: \(priorClose)")
+        return diff
     }
     
     private func getLatestClosingPrice(from data: [CandleStick]) -> String {
         guard let closingPrice = data.first?.close else {
             return ""
         }
-        return "\(closingPrice)"
+        return String.formatted(number: closingPrice)
     }
     
     private func setUpTableView() {
@@ -194,15 +215,33 @@ extension WatchListViewController: FloatingPanelControllerDelegate {
 
 extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return watchlistMap.count
+        return viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: WatchListTableViewCell.identifier,
+            for: indexPath) as? WatchListTableViewCell else {
+            fatalError()
+        }
+        cell.delegate = self
+        cell.configure(with: viewModels[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return WatchListTableViewCell.preferredHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // Open Details for selection
+    }
+}
+
+extension WatchListViewController: WatchListTableViewCellDelegate {
+    func didUpdateMaxWidth() {
+        // Optimize: Only refresh rows prior to the current row that changes the max width
+        tableView.reloadData()
     }
 }
