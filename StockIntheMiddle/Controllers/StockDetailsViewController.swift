@@ -24,6 +24,8 @@ class StockDetailsViewController: UIViewController {
     
     private var stories: [NewsStory] = []
     
+    private var metrics: Metrics?
+    
     // MARK: - Init
     init(symbol: String, companyName: String, candleStickData: [CandleStick] = []) {
         self.symbol = symbol
@@ -75,10 +77,32 @@ class StockDetailsViewController: UIViewController {
     }
     
     private func fetchFinancialData() {
+        let group = DispatchGroup()
+        
         // Fetch candle sticks if needed
+        if candleStickData.isEmpty {
+            group.enter()
+        }
         
         // Fetch financial metrics
-        renderChart()
+        group.enter()
+        APICaller.shared.financialMetrics(for: symbol) { [weak self] result in
+            defer {
+                group.leave()
+            }
+            
+            switch result {
+            case .success(let response):
+                let metrics = response.metric
+                self?.metrics = metrics
+                print("metrics - \(metrics)")
+            case .failure(let error):
+                print("StockDetailVC - fetchFinancialData - error: \(error)")
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            self?.renderChart()
+        }
     }
 
     private func fetchNews() {
@@ -95,7 +119,31 @@ class StockDetailsViewController: UIViewController {
         }
     }
     private func renderChart() {
+        // Chart VM | FinancialMetricViewModel(s)
+        let headerView = StockDetailHeaderView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: view.width,
+                height: (view.width * 0.7) + 100
+            )
+        )
         
+        var viewModels = [MetricCollectionViewCell.ViewModel]()
+        if let metrics = self.metrics {
+            viewModels.append(.init(name: "52W High", value: "\(metrics.AnnualWeekHigh)"))
+            viewModels.append(.init(name: "52L High", value: "\(metrics.AnnualWeekLow)"))
+            viewModels.append(.init(name: "52W Return", value: "\(metrics.AnnualWeekPriceReturnDaily)"))
+            viewModels.append(.init(name: "Beta", value: "\(metrics.beta)"))
+            viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
+        }
+        
+        // Configure
+        headerView.configure(
+            chartViewModel: .init(data: [], showLegend: false, showAxis: false),
+            metricViewModels: viewModels
+        )
+        tableView.tableHeaderView = headerView
     }
     
 
