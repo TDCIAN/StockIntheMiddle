@@ -103,7 +103,8 @@ class WatchListViewController: UIViewController {
                             .init(
                                 data: candleSticks.reversed().map { $0.close },
                                 showLegend: false,
-                                showAxis: false
+                                showAxis: false,
+                                fillColor: changePercentage < 0 ? .systemRed : .systemGreen
                             )
                 )
             )
