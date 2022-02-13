@@ -8,9 +8,13 @@
 import Foundation
 import UIKit
 
+/// Object to manage haptics
 final class HapticsManager {
+    
+    /// Singleton
     static let shared = HapticsManager()
     
+    /// Private constructor
     private init() {}
     
     // MARK: - Public
