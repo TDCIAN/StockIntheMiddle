@@ -30,8 +30,19 @@
 		1ED5E24227B3641500413F51 /* MarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24127B3641500413F51 /* MarketDataResponse.swift */; };
 		1ED5E24427B36AE500413F51 /* WatchListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24327B36AE500413F51 /* WatchListTableViewCell.swift */; };
 		1ED5E24627B36C6A00413F51 /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24527B36C6A00413F51 /* StockChartView.swift */; };
+		1EF86B2227B9C88000A40562 /* StockIntheMiddleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF86B2127B9C88000A40562 /* StockIntheMiddleTests.swift */; };
 		C329CA883EA94C2D3F3B3BE1 /* Pods_StockIntheMiddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E5D3C5BBFC10EB666A2BE29 /* Pods_StockIntheMiddle.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1EF86B2327B9C88000A40562 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E7A214C27AEBB56008D1C05 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E7A215327AEBB56008D1C05;
+			remoteInfo = StockIntheMiddle;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1E75BCC027B08015009CC6D4 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +70,8 @@
 		1ED5E24127B3641500413F51 /* MarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataResponse.swift; sourceTree = "<group>"; };
 		1ED5E24327B36AE500413F51 /* WatchListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListTableViewCell.swift; sourceTree = "<group>"; };
 		1ED5E24527B36C6A00413F51 /* StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
+		1EF86B1F27B9C88000A40562 /* StockIntheMiddleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockIntheMiddleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EF86B2127B9C88000A40562 /* StockIntheMiddleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockIntheMiddleTests.swift; sourceTree = "<group>"; };
 		271F404987710F760AB39E47 /* Pods-StockIntheMiddle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockIntheMiddle.release.xcconfig"; path = "Target Support Files/Pods-StockIntheMiddle/Pods-StockIntheMiddle.release.xcconfig"; sourceTree = "<group>"; };
 		512AE250B396CFCF156B90D6 /* Pods-StockIntheMiddle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockIntheMiddle.debug.xcconfig"; path = "Target Support Files/Pods-StockIntheMiddle/Pods-StockIntheMiddle.debug.xcconfig"; sourceTree = "<group>"; };
 		6E5D3C5BBFC10EB666A2BE29 /* Pods_StockIntheMiddle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +86,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EF86B1C27B9C88000A40562 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -80,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				1E7A215627AEBB56008D1C05 /* StockIntheMiddle */,
+				1EF86B2027B9C88000A40562 /* StockIntheMiddleTests */,
 				1E7A215527AEBB56008D1C05 /* Products */,
 				7828240F7D267B5D37B6E642 /* Pods */,
 				7CFC5422DA61EEDD87DBEDBF /* Frameworks */,
@@ -90,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				1E7A215427AEBB56008D1C05 /* StockIntheMiddle.app */,
+				1EF86B1F27B9C88000A40562 /* StockIntheMiddleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,6 +187,14 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
+		1EF86B2027B9C88000A40562 /* StockIntheMiddleTests */ = {
+			isa = PBXGroup;
+			children = (
+				1EF86B2127B9C88000A40562 /* StockIntheMiddleTests.swift */,
+			);
+			path = StockIntheMiddleTests;
+			sourceTree = "<group>";
+		};
 		7828240F7D267B5D37B6E642 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +234,24 @@
 			productReference = 1E7A215427AEBB56008D1C05 /* StockIntheMiddle.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1EF86B1E27B9C88000A40562 /* StockIntheMiddleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EF86B2527B9C88000A40562 /* Build configuration list for PBXNativeTarget "StockIntheMiddleTests" */;
+			buildPhases = (
+				1EF86B1B27B9C88000A40562 /* Sources */,
+				1EF86B1C27B9C88000A40562 /* Frameworks */,
+				1EF86B1D27B9C88000A40562 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1EF86B2427B9C88000A40562 /* PBXTargetDependency */,
+			);
+			name = StockIntheMiddleTests;
+			productName = StockIntheMiddleTests;
+			productReference = 1EF86B1F27B9C88000A40562 /* StockIntheMiddleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,6 +264,10 @@
 				TargetAttributes = {
 					1E7A215327AEBB56008D1C05 = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					1EF86B1E27B9C88000A40562 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 1E7A215327AEBB56008D1C05;
 					};
 				};
 			};
@@ -233,6 +285,7 @@
 			projectRoot = "";
 			targets = (
 				1E7A215327AEBB56008D1C05 /* StockIntheMiddle */,
+				1EF86B1E27B9C88000A40562 /* StockIntheMiddleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +297,13 @@
 			files = (
 				1E7A216427AEBB58008D1C05 /* LaunchScreen.storyboard in Resources */,
 				1E7A216127AEBB58008D1C05 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EF86B1D27B9C88000A40562 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +380,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EF86B1B27B9C88000A40562 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EF86B2227B9C88000A40562 /* StockIntheMiddleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1EF86B2427B9C88000A40562 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E7A215327AEBB56008D1C05 /* StockIntheMiddle */;
+			targetProxy = 1EF86B2327B9C88000A40562 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1E7A216227AEBB58008D1C05 /* LaunchScreen.storyboard */ = {
@@ -510,6 +586,42 @@
 			};
 			name = Release;
 		};
+		1EF86B2627B9C88000A40562 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4FTFKXF8N5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeongminkim.StockIntheMiddleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockIntheMiddle.app/StockIntheMiddle";
+			};
+			name = Debug;
+		};
+		1EF86B2727B9C88000A40562 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4FTFKXF8N5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeongminkim.StockIntheMiddleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockIntheMiddle.app/StockIntheMiddle";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -527,6 +639,15 @@
 			buildConfigurations = (
 				1E7A216927AEBB58008D1C05 /* Debug */,
 				1E7A216A27AEBB58008D1C05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EF86B2527B9C88000A40562 /* Build configuration list for PBXNativeTarget "StockIntheMiddleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EF86B2627B9C88000A40562 /* Debug */,
+				1EF86B2727B9C88000A40562 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
