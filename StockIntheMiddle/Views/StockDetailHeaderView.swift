@@ -7,8 +7,10 @@
 
 import UIKit
 
-class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+/// Header for stock details
+final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    /// Metrics viewModels
     private var metricViewModels: [MetricCollectionViewCell.ViewModel] = []
     
     // ChartView
@@ -44,6 +46,10 @@ class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewD
         collectionView.frame = CGRect(x: 0, y: height - 100, width: width, height: 100)
     }
     
+    /// Configure view
+    /// - Parameters:
+    ///   - chartViewModel: Chart View Model
+    ///   - metricViewModels: Collection of metric viewModels
     func configure(chartViewModel: StockChartView.ViewModel, metricViewModels: [MetricCollectionViewCell.ViewModel]) {
         // Update chart
         chartView.configure(with: chartViewModel)

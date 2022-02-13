@@ -7,17 +7,24 @@
 
 import UIKit
 
+/// Delegate to notify of cell events
 protocol WatchListTableViewCellDelegate: AnyObject {
     func didUpdateMaxWidth()
 }
 
-class WatchListTableViewCell: UITableViewCell {
+/// Table cell for watch list item
+final class WatchListTableViewCell: UITableViewCell {
+    
+    /// Cell id
     static let identifier = "WatchListTableViewCell"
     
+    /// Delegate
     weak var delegate: WatchListTableViewCellDelegate?
     
+    /// Ideal height of cell
     static let preferredHeight: CGFloat = 60
     
+    /// Watchlist table cell viewModel
     struct ViewModel {
         let symbol: String
         let companyName: String
@@ -145,6 +152,8 @@ class WatchListTableViewCell: UITableViewCell {
         miniChartView.reset()
     }
     
+    /// Configure view
+    /// - Parameter viewModel: View ViewModel
     public func configure(with viewModel: ViewModel) {
         symbolLabel.text = viewModel.symbol
         nameLabel.text = viewModel.companyName

@@ -186,7 +186,7 @@ final class StockDetailsViewController: UIViewController {
     ///   - symbol: Symbol of company
     ///   - data: Collection of data
     /// - Returns: Percent
-    private func getChangePercentage(symbol: String, data: [CandleStick]) -> Double {
+    private func getChangePercentage(symbol: String, data: [CandleStick]) -> Double {        
         let latestDate = data[0].date
         guard let latestClose = data.first?.close,
               let priorClose = data.first(where:  {
@@ -249,7 +249,6 @@ extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate
 }
 
 // MARK: - NewsHeaderViewDelegate
-
 extension StockDetailsViewController: NewsHeaderViewDelegate {
     func newsHeaderViewDidTapAddButton(_ headerView: NewsHeaderView) {
         headerView.button.isHidden = true

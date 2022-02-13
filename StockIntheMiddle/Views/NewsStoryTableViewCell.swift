@@ -8,11 +8,16 @@
 import UIKit
 import SDWebImage
 
-class NewsStoryTableViewCell: UITableViewCell {
+/// News story tableView Cell
+final class NewsStoryTableViewCell: UITableViewCell {
+    
+    /// Cell id
     static let identifier = "NewsStoryTableViewCell"
     
+    /// Ideal height of cell
     static let preferredHeight: CGFloat = 140
     
+    /// Cell viewModel
     struct ViewModel {
         let source: String
         let headline: String
@@ -116,6 +121,8 @@ class NewsStoryTableViewCell: UITableViewCell {
         storyImageView.image = nil
     }
     
+    /// Configure view
+    /// - Parameter viewModel: View ViewModel
     public func configure(with viewModel: ViewModel) {
         headlineLabel.text = viewModel.headline
         sourceLabel.text = viewModel.source
