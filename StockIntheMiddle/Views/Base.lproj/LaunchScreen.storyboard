@@ -17,15 +17,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="uDl-GL-rvf">
-                                <rect key="frame" x="94.5" y="335.5" width="225" height="225"/>
-                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock in the Middle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Lv-sM-rqc">
+                                <rect key="frame" x="86.5" y="430" width="241" height="36"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="uDl-GL-rvf" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1ns-70-fTC"/>
-                            <constraint firstItem="uDl-GL-rvf" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="SxP-lq-lUX"/>
+                            <constraint firstItem="7Lv-sM-rqc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Sfc-Bd-WuP"/>
+                            <constraint firstItem="7Lv-sM-rqc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="xOl-K0-F7U"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -35,7 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo" width="225" height="225"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
