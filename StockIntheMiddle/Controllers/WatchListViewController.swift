@@ -69,7 +69,7 @@ final class WatchListViewController: UIViewController {
     
     /// Fetch watch list models
     private func fetchWatchlistData() {
-//        let symbols = PersistenceManager.shared.watchlist
+        let symbols = PersistenceManager.shared.watchlist
         
         createPlaceholderViewModels()
         
@@ -246,7 +246,13 @@ extension WatchListViewController: UISearchResultsUpdating {
                 switch result {
                 case .success(let response):
                     DispatchQueue.main.async {
-                        resultsVC.update(with: response.result)
+                        var result: [SearchResult] = []
+                        response.result.forEach { searchResult in
+                            if !searchResult.displaySymbol.contains(".") {
+                                result.append(searchResult)
+                            }
+                        }
+                        resultsVC.update(with: result)
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
