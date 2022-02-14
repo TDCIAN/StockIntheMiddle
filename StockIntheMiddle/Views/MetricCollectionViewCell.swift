@@ -44,7 +44,7 @@ final class MetricCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         valueLabel.sizeToFit()
         nameLabel.sizeToFit()
-        nameLabel.frame = CGRect(x: 3, y: 0, width: nameLabel.width, height: contentView.height)
+        nameLabel.frame = CGRect(x: 15, y: 0, width: nameLabel.width, height: contentView.height)
         valueLabel.frame = CGRect(x: nameLabel.right + 3, y: 0, width: valueLabel.width, height: contentView.height)
     }
     
@@ -57,7 +57,7 @@ final class MetricCollectionViewCell: UICollectionViewCell {
     /// Configure view
     /// - Parameter viewModel: View ViewModel
     func configure(with viewModel: ViewModel) {
-        nameLabel.text = viewModel.name + ":"
+        nameLabel.text = viewModel.name + " : "
         valueLabel.text = viewModel.value
     }
 }

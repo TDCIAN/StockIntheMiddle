@@ -72,16 +72,9 @@ final class PersistenceManager {
     /// Set up default watch list items
     private func setUpDefaults() {
         let map: [String: String] = [
-            "AAPL": "Apple Inc",
-            "MSFT": "Micro Corporation",
-            "SNAP": "Snap Inc.",
-            "GOOG": "Alphabet",
-            "AMZN": "Amazon.com, Inc.",
-            "CHPT": "CHARGEPOINT HOLDINGS INC",
-            "FB": "Facebook Inc.",
-            "NVDA": "Nvidia Inc.",
-            "NKE": "Nike",
-            "PINS": "Pinterest Inc."
+            "SPY": "SPDR S&P 500 ETF TRUST",
+            "QQQ": "INVESCO QQQ TRUST SERIES 1",
+            "DIA": "SPDR DJIA TRUST"
         ]
         
         let symbols = map.keys.map { $0 }

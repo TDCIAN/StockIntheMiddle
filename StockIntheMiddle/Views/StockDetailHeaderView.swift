@@ -43,7 +43,8 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
     override func layoutSubviews() {
         super.layoutSubviews()
         chartView.frame = CGRect(x: 0, y: 0, width: width, height: height - 100)
-        collectionView.frame = CGRect(x: 0, y: height - 100, width: width, height: 100)
+        collectionView.frame = CGRect(x: 0, y: height - 100, width: width, height: self.metricViewModels.isEmpty ? 0 : 100)
+        self.frame = CGRect(x: 0, y: 0, width: self.width, height: self.metricViewModels.isEmpty ? (self.width * 0.7) : (self.width * 0.7) + 100)
     }
     
     /// Configure view
@@ -54,6 +55,8 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
         // Update chart
         chartView.configure(with: chartViewModel)
         self.metricViewModels = metricViewModels
+        collectionView.frame = CGRect(x: 0, y: height - 100, width: width, height: self.metricViewModels.isEmpty ? 0 : 100)
+        collectionView.isHidden = self.metricViewModels.isEmpty
         collectionView.reloadData()
     }
     
