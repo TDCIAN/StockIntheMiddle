@@ -59,7 +59,7 @@ final class WatchListTableViewCell: UITableViewCell {
     // Change Label
     private let changeLabel: UILabel = {
        let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.layer.masksToBounds = true

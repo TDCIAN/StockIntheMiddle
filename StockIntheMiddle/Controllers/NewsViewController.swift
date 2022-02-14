@@ -31,18 +31,6 @@ final class NewsViewController: UIViewController {
     
     /// Collection of models
     private var stories: [NewsStory] = []
-//    private var stories: [NewsStory] = [
-//        NewsStory(
-//            category: "tech",
-//            datetime: 123,
-//            headline: "Some headline should go here",
-//            image: "",
-//            related: "Related",
-//            source: "CNBC",
-//            summary: "",
-//            url: ""
-//        )
-//    ]
     
     /// Instance of a type
     private let type: Type

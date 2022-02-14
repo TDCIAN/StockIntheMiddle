@@ -123,9 +123,6 @@ final class WatchListViewController: UIViewController {
     private func createViewModels() {
         var viewModels = [WatchListTableViewCell.ViewModel]()
         for (symbol, candleSticks) in watchlistMap {
-//            let changePercentage = getChangePercentage(
-//                data: candleSticks
-//            )
             let changePercentage = candleSticks.getPercentage()
             viewModels.append(
                 .init(
@@ -144,27 +141,8 @@ final class WatchListViewController: UIViewController {
                 )
             )
         }
-//        print("WatchlistVC - viewModels: \(viewModels)")
         self.viewModels = viewModels.sorted(by: { $0.symbol < $1.symbol })
     }
-    
-    /// Gets change percentage for symbol data
-    /// - Parameters:
-    ///   - data: Collection of data
-    /// - Returns: Double percentage
-//    private func getChangePercentage(symbol: String, data: [CandleStick]) -> Double {
-//    private func getChangePercentage(data: [CandleStick]) -> Double {
-//        let latestDate = data[0].date
-//        guard let latestClose = data.first?.close,
-//              let priorClose = data.first(where:  {
-//                  !Calendar.current.isDate($0.date, inSameDayAs: latestDate)
-//              })?.close else {
-//                  return 0
-//              }
-//
-//        let diff: CGFloat = 1 - (priorClose / latestClose)
-//        return diff
-//    }
     
     /// Get latest closing price
     /// - Parameter data: Collection of data
@@ -186,7 +164,6 @@ final class WatchListViewController: UIViewController {
     /// Sets up floating news panels
     private func setUpFloatingPanel() {
         let vc = NewsViewController(type: .topStories)
-//        let vc = NewsViewController(type: .company(symbol: "MSFT"))
         let panel = FloatingPanelController(delegate: self)
         panel.surfaceView.backgroundColor = .secondarySystemBackground
         panel.set(contentViewController: vc)

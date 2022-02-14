@@ -128,8 +128,5 @@ final class NewsStoryTableViewCell: UITableViewCell {
         sourceLabel.text = viewModel.source
         dateLabel.text = viewModel.dateString
         storyImageView.sd_setImage(with: viewModel.imageURL, completed: nil)
-        
-        // Manually set image
-//        storyImageView.setImage(with: viewModel.imageURL)
     }
 }
