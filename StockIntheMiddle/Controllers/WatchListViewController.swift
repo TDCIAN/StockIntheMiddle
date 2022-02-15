@@ -241,9 +241,6 @@ extension WatchListViewController: UISearchResultsUpdating {
                 }
             }
         })
-
-        
-        print(query)
     }
 }
 

@@ -271,7 +271,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1E7A214F27AEBB56008D1C05 /* Build configuration list for PBXProject "StockIntheMiddle" */;
+			buildConfigurationList = 1E7A214F27AEBB56008D1C05 /* Build configuration list for PBXProject "Stock in the Middle" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -537,6 +537,7 @@
 				DEVELOPMENT_TEAM = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StockIntheMiddle/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Stock in the Middle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -567,6 +568,7 @@
 				DEVELOPMENT_TEAM = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StockIntheMiddle/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Stock in the Middle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -625,7 +627,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1E7A214F27AEBB56008D1C05 /* Build configuration list for PBXProject "StockIntheMiddle" */ = {
+		1E7A214F27AEBB56008D1C05 /* Build configuration list for PBXProject "Stock in the Middle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E7A216627AEBB58008D1C05 /* Debug */,
