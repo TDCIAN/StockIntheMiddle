@@ -27,6 +27,7 @@ class MainTabBarViewController: UITabBarController {
         let watchNav = UINavigationController(rootViewController: watchListVC)
         let newsNav = UINavigationController(rootViewController: newsVC)
         let settingsNav = UINavigationController(rootViewController: settingsVC)
+
         setViewControllers([watchNav, newsNav, settingsNav], animated: true)
     }
 }

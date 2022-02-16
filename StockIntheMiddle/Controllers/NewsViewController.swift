@@ -20,7 +20,7 @@ final class NewsViewController: UIViewController {
         var title: String {
             switch self {
             case .topStories:
-                return "Top Stories"
+                return "Market News"
             case .company(let symbol):
                 return symbol.uppercased()
             }
@@ -59,6 +59,8 @@ final class NewsViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setUpTable()
         fetchNews()
     }
