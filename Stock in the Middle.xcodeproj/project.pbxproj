@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E335EE527BD339800C4BC2F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */; };
+		1E335EE727BD33DA00C4BC2F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */; };
 		1E75BCC127B08015009CC6D4 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC027B08015009CC6D4 /* NewsViewController.swift */; };
 		1E75BCC327B08027009CC6D4 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */; };
 		1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC027B08015009CC6D4 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailsViewController.swift; sourceTree = "<group>"; };
@@ -158,10 +162,12 @@
 		1E7A216D27AEBC01008D1C05 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */,
 				1E7A215B27AEBB56008D1C05 /* WatchListViewController.swift */,
 				1E75BCC027B08015009CC6D4 /* NewsViewController.swift */,
 				1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */,
 				1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */,
+				1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -359,6 +365,7 @@
 				1ED5E24227B3641500413F51 /* MarketDataResponse.swift in Sources */,
 				1E75BCCB27B081CE009CC6D4 /* HapticsManager.swift in Sources */,
 				1EC6585B27B615B000B1C09F /* MetricCollectionViewCell.swift in Sources */,
+				1E335EE527BD339800C4BC2F /* MainTabBarViewController.swift in Sources */,
 				1E75BCCF27B08ED7009CC6D4 /* SearchResultTableViewCell.swift in Sources */,
 				1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */,
 				1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */,
@@ -370,6 +377,7 @@
 				1E8AD80227B1D8C60041BBE5 /* NewsStoryTableViewCell.swift in Sources */,
 				1ED5E24627B36C6A00413F51 /* StockChartView.swift in Sources */,
 				1E75BCC727B081B7009CC6D4 /* APICaller.swift in Sources */,
+				1E335EE727BD33DA00C4BC2F /* SettingsViewController.swift in Sources */,
 				1E8AD7FA27B1BA0E0041BBE5 /* SearchResponse.swift in Sources */,
 				1E8AD7FE27B1C9F90041BBE5 /* NewsHeaderView.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,

@@ -17,6 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///   - launchOptions: Launch properties
     /// - Returns: Bool for success
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if #available(iOS 15, *) {
+            let appearance = UITabBarAppearance()
+            let tabBar = UITabBar()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.systemGray5
+            tabBar.standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
         return true
     }
 

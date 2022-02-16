@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let vc = WatchListViewController()
+        let vc = MainTabBarViewController()
         let navVC = UINavigationController(rootViewController: vc)
         window.rootViewController = navVC
         window.makeKeyAndVisible()
