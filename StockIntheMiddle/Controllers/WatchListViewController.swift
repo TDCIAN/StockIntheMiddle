@@ -40,12 +40,11 @@ final class WatchListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationController?.setNavigationBarHidden(true, animated: false)
         setUpSearchController()
         setUpTableView()
         fetchWatchlistData()
         setUpFloatingPanel()
-//        setUpTitleView()
+        setUpTitleView()
         setUpObserver()
     }
     
@@ -174,21 +173,21 @@ final class WatchListViewController: UIViewController {
     }
     
     /// Set up custom title view
-//    private func setUpTitleView() {
-//        let titleView = UIView(
-//            frame: CGRect(
-//                x: 0,
-//                y: 0,
-//                width: view.width,
-//                height: navigationController?.navigationBar.height ?? 100
-//            )
-//        )
-//        let label = UILabel(frame: CGRect(x: 10, y: 0, width: titleView.width - 20, height: titleView.height))
-//        label.text = "Stocks"
-//        label.font = .systemFont(ofSize: 40, weight: .medium)
-//        titleView.addSubview(label)
-//        navigationItem.titleView = titleView
-//    }
+    private func setUpTitleView() {
+        let titleView = UIView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: view.width,
+                height: navigationController?.navigationBar.height ?? 100
+            )
+        )
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: titleView.width - 20, height: titleView.height))
+        label.text = "Stocks"
+        label.font = .systemFont(ofSize: 40, weight: .medium)
+        titleView.addSubview(label)
+        navigationItem.titleView = titleView
+    }
     
     /// Set up search and results controller
     private func setUpSearchController() {

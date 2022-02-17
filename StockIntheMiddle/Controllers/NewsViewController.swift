@@ -60,7 +60,7 @@ final class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.setNavigationBarHidden(true, animated: false)
         setUpTable()
         fetchNews()
     }
