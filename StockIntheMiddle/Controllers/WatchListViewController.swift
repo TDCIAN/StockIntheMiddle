@@ -7,6 +7,7 @@
 
 import UIKit
 import FloatingPanel
+import SnapKit
 
 /// VC to render user watch list
 final class WatchListViewController: UIViewController {
