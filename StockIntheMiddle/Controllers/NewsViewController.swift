@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import SnapKit
 
 /// Controller to show news
 final class NewsViewController: UIViewController {
@@ -28,6 +29,7 @@ final class NewsViewController: UIViewController {
     }
     
     // MARK: - Properties
+    private var queryString: String = ""
     
     /// Collection of models
     private var stories: [NewsStory] = []
@@ -40,7 +42,6 @@ final class NewsViewController: UIViewController {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
-        table.backgroundColor = .clear
         return table
     }()
     
@@ -60,36 +61,70 @@ final class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-//        navigationController?.setNavigationBarHidden(true, animated: false)
-        setUpTable()
-        fetchNews()
+        setUpTitleView()
+        setNavigationItems()
+        setTableViewLayout()
+
+        fetchNews(with: "")
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+    private func setUpTitleView() {
+        let titleView = UIView()
+        let label = UILabel()
+        label.text = "News"
+        label.font = .systemFont(ofSize: 40, weight: .medium)
+        titleView.addSubview(label)
+        label.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(10)
+        }
+        navigationItem.titleView = titleView
+    }
+    
+    private func setNavigationItems() {
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = "Search news with keyword"
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        
+        navigationItem.searchController = searchController
+    }
+    
+    private func setTableViewLayout() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     // MARK: - Private
     
-    /// Sets up tableView
-    private func setUpTable() {
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-    
     /// Fetch news models
-    private func fetchNews() {
-        APICaller.shared.news(for: type) { [weak self] result in
-            switch result {
-            case .success(let stories):
-                DispatchQueue.main.async {
-                    self?.stories = stories
-                    self?.tableView.reloadData()
+    private func fetchNews(with query: String) {
+        if query.isEmpty {
+            APICaller.shared.news(for: type) { [weak self] result in
+                switch result {
+                case .success(let stories):
+                    DispatchQueue.main.async {
+                        self?.stories = stories
+                        self?.tableView.reloadData()
+                    }
+                case .failure(let error):
+                    print("NewsVC - fetchNews - error: \(error)")
                 }
-            case .failure(let error):
-                print("NewsVC - fetchNews - error: \(error)")
+            }
+        } else {
+            APICaller.shared.news(for: .company(symbol: query)) { [weak self] result in
+                switch result {
+                case .success(let stories):
+                    DispatchQueue.main.async {
+                        self?.stories = stories
+                        self?.tableView.reloadData()
+                    }
+                case .failure(let error):
+                    print("NewsVC - fetchNews - error: \(error)")
+                }
             }
         }
     }
@@ -102,8 +137,25 @@ final class NewsViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDelegate
 
+extension NewsViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//        tableView.reloadData()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.queryString = ""
+        fetchNews(with: self.queryString)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.queryString = searchText
+        fetchNews(with: self.queryString)
+    }
+    
+}
+
+// MARK: - UITableViewDelegate
 extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stories.count

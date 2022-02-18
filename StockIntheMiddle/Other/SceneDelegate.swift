@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let vc = MainTabBarViewController()
         let navVC = UINavigationController(rootViewController: vc)
+//        window.backgroundColor = .systemBackground
         window.rootViewController = navVC
         window.makeKeyAndVisible()
         
