@@ -44,7 +44,7 @@ final class WatchListViewController: UIViewController {
         setUpSearchController()
         setUpTableView()
         fetchWatchlistData()
-        setUpFloatingPanel()
+//        setUpFloatingPanel()
         setUpTitleView()
         setUpObserver()
     }
@@ -196,7 +196,7 @@ final class WatchListViewController: UIViewController {
         resultVC.delegate = self
         let searchVC = UISearchController(searchResultsController: resultVC)
         searchVC.searchResultsUpdater = self
-        searchVC.searchBar.placeholder = "Search Stocks(Name, Ticker)"
+        searchVC.searchBar.placeholder = "Search stocks(name, ticker)"
         navigationItem.searchController = searchVC
         navigationItem.hidesSearchBarWhenScrolling = false
     }
