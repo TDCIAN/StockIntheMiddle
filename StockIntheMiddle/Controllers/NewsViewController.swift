@@ -63,7 +63,7 @@ final class NewsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpTitleView()
         setNavigationItems()
-        setTableViewLayout()
+        setTableView()
 
         fetchNews(with: "")
     }
@@ -89,7 +89,7 @@ final class NewsViewController: UIViewController {
         navigationItem.searchController = searchController
     }
     
-    private func setTableViewLayout() {
+    private func setTableView() {
         tableView.dataSource = self
         tableView.delegate = self
         view.addSubview(tableView)

@@ -86,7 +86,7 @@ final class APICaller {
                     "to": "\(Int(today.timeIntervalSince1970))"
                ]
         )
-        
+        print("마켓데이터 - 넘버오브데이즈: \(numberOfDays), URL: \(url)")
         request(url: url, expecting: MarketDataResponse.self, completion: completion)
     }
     
