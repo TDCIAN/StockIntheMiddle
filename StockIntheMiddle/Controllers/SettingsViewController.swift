@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 struct Section {
     let title: String
@@ -14,20 +15,20 @@ struct Section {
 
 enum SettingsOptionType {
     case staticCell(model: SettingsOption)
-    case switchCell(model: SettingsSwitchOption)
+    case switchCell(model: SystemSettingsOption)
 }
 
-struct SettingsSwitchOption {
+struct SystemSettingsOption {
     let title: String
     let icon: UIImage?
     let iconBackgroundColor: UIColor
-    var isOn: Bool
 }
 
 struct SettingsOption {
     let title: String
     let icon: UIImage?
     let iconBackgroundColor: UIColor
+    let isHidden: Bool
     let handler: (() -> Void)
 }
 
@@ -39,6 +40,13 @@ final class SettingsViewController: UIViewController {
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
         return table
     }()
+    
+    private var appVersion: String {
+        guard let dictionary = Bundle.main.infoDictionary,
+              let version = dictionary["CFBundleShortVersionString"] as? String else { return "1.0.0" }
+        let versionBuild: String = version
+        return versionBuild
+    }
     
     var models: [Section] = []
 
@@ -71,60 +79,54 @@ final class SettingsViewController: UIViewController {
     
     private func configure() {
         models.append(Section(title: "System Settings", options: [
-            .switchCell(model: SettingsSwitchOption(
+            .switchCell(model: SystemSettingsOption(
                 title: "Dark Mode",
                 icon: UIImage(systemName: "sun.max"),
-                iconBackgroundColor: .systemGray4,
-                isOn: ConfigManager.getInstance.isDarkMode
+                iconBackgroundColor: .systemBlue
             ))
         ]))
         
-        models.append(Section(title: "General", options: [
-            .staticCell(model: SettingsOption(title: "Wifi", icon: UIImage(systemName: "house"), iconBackgroundColor: .systemPink) {
-                
+        models.append(Section(title: "App Info", options: [
+            .staticCell(model: SettingsOption(
+                title: "App Version \(self.appVersion)",
+                icon: UIImage(systemName: "info.circle"),
+                iconBackgroundColor: .systemBlue, isHidden: true) {
+                    
             }),
-            .staticCell(model: SettingsOption(title: "Bluetooth", icon: UIImage(systemName: "network"), iconBackgroundColor: .link) {
-                
+            .staticCell(model: SettingsOption(title: "Opensource License", icon: UIImage(systemName: "book"), iconBackgroundColor: .systemBlue, isHidden: false) {
+                self.showOpensourceView()
             }),
-            .staticCell(model: SettingsOption(title: "Airplane Model", icon: UIImage(systemName: "airplane"), iconBackgroundColor: .systemGreen) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "iCloud", icon: UIImage(systemName: "cloud"), iconBackgroundColor: .systemOrange) {
-                
+            .staticCell(model: SettingsOption(title: "Privacy Policy", icon: UIImage(systemName: "person.fill.checkmark"), iconBackgroundColor: .systemBlue, isHidden: false) {
+                self.tapPrivacyPolicyButton()
             })
         ]))
         
-        models.append(Section(title: "Information", options: [
-            .staticCell(model: SettingsOption(title: "Wifi", icon: UIImage(systemName: "house"), iconBackgroundColor: .systemPink) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "Bluetooth", icon: UIImage(systemName: "network"), iconBackgroundColor: .link) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "Airplane Model", icon: UIImage(systemName: "airplane"), iconBackgroundColor: .systemGreen) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "iCloud", icon: UIImage(systemName: "cloud"), iconBackgroundColor: .systemOrange) {
-                
-            })
-        ]))
-        
-        models.append(Section(title: "Apps", options: [
-            .staticCell(model: SettingsOption(title: "Wifi", icon: UIImage(systemName: "house"), iconBackgroundColor: .systemPink) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "Bluetooth", icon: UIImage(systemName: "network"), iconBackgroundColor: .link) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "Airplane Model", icon: UIImage(systemName: "airplane"), iconBackgroundColor: .systemGreen) {
-                
-            }),
-            .staticCell(model: SettingsOption(title: "iCloud", icon: UIImage(systemName: "cloud"), iconBackgroundColor: .systemOrange) {
+        models.append(Section(title: "Contact", options: [
+            .staticCell(model: SettingsOption(
+                title: "tdcian71@gmail.com",
+                icon: UIImage(systemName: "mail"),
+                iconBackgroundColor: .systemBlue,
+                isHidden: true) {
                 
             })
         ]))
     }
+    
+    private func showOpensourceView() {
+        let openSourceVC = OpenSourceViewController()
+        self.present(openSourceVC, animated: true, completion: nil)
+    }
 
+    private func tapPrivacyPolicyButton() {
+        guard let privacyURL = URL(string: "https://github.com/TDCIAN/StockInTheMiddlePrivacyPolicy/blob/main/PrivacyPolicy.md") else { return }
+        let config = SFSafariViewController.Configuration()
+        config.entersReaderIfAvailable = true
+        let safari = SFSafariViewController(url: privacyURL, configuration: config)
+        safari.preferredBarTintColor = UIColor.white
+        safari.preferredControlTintColor = UIColor.systemBlue
+        
+        present(safari, animated: true, completion: nil)
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -164,7 +166,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .staticCell(model: let model):
             model.handler()
         case .switchCell:
-            print("스위치 셀 만짐")
+            return
         }
     }
 }

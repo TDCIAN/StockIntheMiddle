@@ -38,7 +38,6 @@ class SettingTableViewCell: UITableViewCell {
         }
         iconContainer.addSubview(iconImageView)
         contentView.clipsToBounds = true
-        accessoryType = .disclosureIndicator
     }
     
     required init?(coder: NSCoder) {
@@ -76,5 +75,10 @@ class SettingTableViewCell: UITableViewCell {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
+        if model.isHidden {
+            accessoryType = .none
+        } else {
+            accessoryType = .disclosureIndicator
+        }
     }
 }

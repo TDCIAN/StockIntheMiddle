@@ -34,7 +34,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillResignActive(_ scene: UIScene) { }
 
-    func sceneWillEnterForeground(_ scene: UIScene) { }
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        if UserDefaults.standard.bool(forKey: Constants.IS_DARK_MODE) {
+            window?.overrideUserInterfaceStyle = .dark
+        } else {
+            window?.overrideUserInterfaceStyle = .light
+        }
+    }
 
     func sceneDidEnterBackground(_ scene: UIScene) { }
 }

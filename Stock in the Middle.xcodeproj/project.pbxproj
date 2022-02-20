@@ -32,6 +32,7 @@
 		1ECCAC5D27C22EE0007A8ED2 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECCAC5C27C22EE0007A8ED2 /* SettingTableViewCell.swift */; };
 		1ECCAC5F27C22EFB007A8ED2 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECCAC5E27C22EFB007A8ED2 /* SwitchTableViewCell.swift */; };
 		1ECCAC6127C232FF007A8ED2 /* ConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECCAC6027C232FF007A8ED2 /* ConfigManager.swift */; };
+		1ECCAC6627C289B4007A8ED2 /* OpenSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECCAC6527C289B4007A8ED2 /* OpenSourceViewController.swift */; };
 		1ED5E24227B3641500413F51 /* MarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24127B3641500413F51 /* MarketDataResponse.swift */; };
 		1ED5E24427B36AE500413F51 /* WatchListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24327B36AE500413F51 /* WatchListTableViewCell.swift */; };
 		1ED5E24627B36C6A00413F51 /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5E24527B36C6A00413F51 /* StockChartView.swift */; };
@@ -77,6 +78,7 @@
 		1ECCAC5C27C22EE0007A8ED2 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		1ECCAC5E27C22EFB007A8ED2 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1ECCAC6027C232FF007A8ED2 /* ConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigManager.swift; sourceTree = "<group>"; };
+		1ECCAC6527C289B4007A8ED2 /* OpenSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceViewController.swift; sourceTree = "<group>"; };
 		1ED5E24127B3641500413F51 /* MarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataResponse.swift; sourceTree = "<group>"; };
 		1ED5E24327B36AE500413F51 /* WatchListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListTableViewCell.swift; sourceTree = "<group>"; };
 		1ED5E24527B36C6A00413F51 /* StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
@@ -161,8 +163,7 @@
 				1ED5E24527B36C6A00413F51 /* StockChartView.swift */,
 				1EC6585827B5DC5000B1C09F /* StockDetailHeaderView.swift */,
 				1EC6585A27B615B000B1C09F /* MetricCollectionViewCell.swift */,
-				1ECCAC5C27C22EE0007A8ED2 /* SettingTableViewCell.swift */,
-				1ECCAC5E27C22EFB007A8ED2 /* SwitchTableViewCell.swift */,
+				1ECCAC6427C2896A007A8ED2 /* SettingsView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -176,6 +177,7 @@
 				1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */,
 				1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */,
 				1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */,
+				1ECCAC6527C289B4007A8ED2 /* OpenSourceViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -200,6 +202,15 @@
 				1E75BCCC27B08A8B009CC6D4 /* Extensions.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		1ECCAC6427C2896A007A8ED2 /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				1ECCAC5C27C22EE0007A8ED2 /* SettingTableViewCell.swift */,
+				1ECCAC5E27C22EFB007A8ED2 /* SwitchTableViewCell.swift */,
+			);
+			path = SettingsView;
 			sourceTree = "<group>";
 		};
 		1EF86B2027B9C88000A40562 /* StockIntheMiddleTests */ = {
@@ -377,6 +388,7 @@
 				1E335EE527BD339800C4BC2F /* MainTabBarViewController.swift in Sources */,
 				1E75BCCF27B08ED7009CC6D4 /* SearchResultTableViewCell.swift in Sources */,
 				1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */,
+				1ECCAC6627C289B4007A8ED2 /* OpenSourceViewController.swift in Sources */,
 				1ECCAC5D27C22EE0007A8ED2 /* SettingTableViewCell.swift in Sources */,
 				1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */,
 				1EC6585727B5D97A00B1C09F /* FinancialMetricsResponse.swift in Sources */,
@@ -553,7 +565,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202202211;
 				DEVELOPMENT_TEAM = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StockIntheMiddle/Info.plist;
@@ -568,7 +580,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeongminkim.StockIntheMiddle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -584,7 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202202211;
 				DEVELOPMENT_TEAM = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StockIntheMiddle/Info.plist;
@@ -599,7 +611,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeongminkim.StockIntheMiddle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -31,7 +31,7 @@ class SwitchTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let mySwitch: UISwitch = {
+    private let settingSwitch: UISwitch = {
        let mySwitch = UISwitch()
         mySwitch.onTintColor = .systemBlue
         mySwitch.addTarget(self, action: #selector(handleSwitch(sender:)), for: .touchUpInside)
@@ -40,7 +40,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        [iconContainer, label, mySwitch].forEach {
+        [iconContainer, label, settingSwitch].forEach {
             contentView.addSubview($0)
         }
         iconContainer.addSubview(iconImageView)
@@ -64,12 +64,12 @@ class SwitchTableViewCell: UITableViewCell {
             width: imageSize,
             height: imageSize)
         
-        mySwitch.sizeToFit()
-        mySwitch.frame = CGRect(
-            x: contentView.frame.size.width - mySwitch.frame.size.width - 20,
-            y: (contentView.frame.size.height - mySwitch.frame.size.height) / 2,
-            width: mySwitch.frame.size.width,
-            height: mySwitch.frame.size.height
+        settingSwitch.sizeToFit()
+        settingSwitch.frame = CGRect(
+            x: contentView.frame.size.width - settingSwitch.frame.size.width - 20,
+            y: (contentView.frame.size.height - settingSwitch.frame.size.height) / 2,
+            width: settingSwitch.frame.size.width,
+            height: settingSwitch.frame.size.height
         )
         
         label.frame = CGRect(
@@ -85,25 +85,24 @@ class SwitchTableViewCell: UITableViewCell {
         iconImageView.image = nil
         label.text = nil
         iconContainer.backgroundColor = nil
-        mySwitch.isOn = false
+        settingSwitch.isOn = ConfigManager.shared.isDarkMode
     }
     
-    public func configure(with model: SettingsSwitchOption) {
+    public func configure(with model: SystemSettingsOption) {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
-        mySwitch.isOn = model.isOn
-        
+        settingSwitch.isOn = ConfigManager.shared.isDarkMode
     }
     
     @objc func handleSwitch(sender: UISwitch) {
         print("핸들 스위치 - 이즈온: \(sender.isOn)")
         if sender.isOn {
             contentView.window?.overrideUserInterfaceStyle = .dark
-            ConfigManager.getInstance.isDarkMode = true
+            ConfigManager.shared.isDarkMode = true
         } else {
             contentView.window?.overrideUserInterfaceStyle = .light
-            ConfigManager.getInstance.isDarkMode = false
+            ConfigManager.shared.isDarkMode = false
         }
     }
 }
