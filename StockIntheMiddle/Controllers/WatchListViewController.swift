@@ -8,6 +8,7 @@
 import UIKit
 import FloatingPanel
 import SnapKit
+import AppTrackingTransparency
 
 /// VC to render user watch list
 final class WatchListViewController: UIViewController {
@@ -41,6 +42,7 @@ final class WatchListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        requestTrackingAuth()
         setUpSearchController()
         setUpTableView()
         fetchWatchlistData()
@@ -55,6 +57,24 @@ final class WatchListViewController: UIViewController {
     }
     
     // MARK: - Private
+    private func requestTrackingAuth() {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    print("requestTrackingAuth - authorized")
+                case .denied:
+                    print("requestTrackingAuth - denied")
+                case .notDetermined:
+                    print("requestTrackingAuth - notDetermined")
+                case .restricted:
+                    print("requestTrackingAuth - restricted")
+                @unknown default:
+                    print("requestTrackingAuth - default")
+                }
+            }
+        }
+    }
     
     /// Sets up observer for watch list updates
     private func setUpObserver() {
