@@ -168,7 +168,10 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
             self?.hideLoadingAnimation()
             print("handleSelection - success: \(timeSeriesMonthlyAdjusted.getMonthInfos())")
             let asset = Asset(searchResult: searchResult, timeSeriesMonthlyAdjusted: timeSeriesMonthlyAdjusted)
-            self?.performSegue(withIdentifier: "showCalculator", sender: asset)
+//            self?.performSegue(withIdentifier: "showCalculator", sender: asset)
+            let calculatorVc = CalculatorTableViewController()
+            calculatorVc.asset = asset
+            self?.navigationController?.pushViewController(calculatorVc, animated: true)
             self?.searchController.searchBar.text = nil
         }.store(in: &subscribers)
     }

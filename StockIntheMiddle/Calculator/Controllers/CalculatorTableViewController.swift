@@ -7,23 +7,94 @@
 
 import UIKit
 import Combine
+import SnapKit
 
 class CalculatorTableViewController: UITableViewController {
     
-    @IBOutlet weak var currentValueLabel: UILabel!
-    @IBOutlet weak var investmentAmountLabel: UILabel!
-    @IBOutlet weak var gainLabel: UILabel!
-    @IBOutlet weak var yieldLabel: UILabel!
-    @IBOutlet weak var annualReturnLabel: UILabel!
+//    @IBOutlet weak var symbolLabel: UILabel!
+    private let symbolLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.sizeToFit()
+        return label
+    }()
+//    @IBOutlet weak var nameLabel: UILabel!
+    private let nameLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .tertiaryLabel
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.sizeToFit()
+        return label
+    }()
     
-    @IBOutlet weak var initialInvestmentAmountTextField: UITextField!
-    @IBOutlet weak var monthlyDollarCostAveragingTextField: UITextField!
-    @IBOutlet weak var initialDateOfInvestmentTextField: UITextField!
-    @IBOutlet weak var symbolLabel: UILabel!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet var currencyLabels: [UILabel]!
-    @IBOutlet weak var investmentAmountCurrencyLabel: UILabel!
-    @IBOutlet weak var dateSlider: UISlider!
+    private let currentValueTitleLabel: UILabel = {
+        let label = UILabel()
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 16, weight: .medium)
+         label.sizeToFit()
+         return label
+    }()
+    
+    private let currentValueLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.sizeToFit()
+        return label
+    }()
+    
+//    @IBOutlet var currencyLabels: [UILabel]!
+//    @IBOutlet weak var investmentAmountCurrencyLabel: UILabel!
+    private let investmentAmountCurrencyLabel: UILabel = {
+       let label = UILabel()
+        return label
+    }()
+    
+
+    
+//    @IBOutlet weak var investmentAmountLabel: UILabel!
+    private let investmentAmountLabel: UILabel = {
+       let label = UILabel()
+        return label
+    }()
+//    @IBOutlet weak var gainLabel: UILabel!
+    private let gainLabel: UILabel = {
+       let label = UILabel()
+        return label
+    }()
+//    @IBOutlet weak var yieldLabel: UILabel!
+    private let yieldLabel: UILabel = {
+       let label = UILabel()
+        return label
+    }()
+//    @IBOutlet weak var annualReturnLabel: UILabel!
+    private let annualReturnLabel: UILabel = {
+       let label = UILabel()
+        return label
+    }()
+    
+//    @IBOutlet weak var initialInvestmentAmountTextField: UITextField!
+    private let initialInvestmentAmountTextField: UITextField = {
+       let textField = UITextField()
+        return textField
+    }()
+//    @IBOutlet weak var monthlyDollarCostAveragingTextField: UITextField!
+    private let monthlyDollarCostAveragingTextField: UITextField = {
+       let textField = UITextField()
+        return textField
+    }()
+//    @IBOutlet weak var initialDateOfInvestmentTextField: UITextField!
+    private let initialDateOfInvestmentTextField: UITextField = {
+       let textField = UITextField()
+        return textField
+    }()
+
+//    @IBOutlet weak var dateSlider: UISlider!
+    private let dateSlider: UISlider = {
+        let slider = UISlider()
+        return slider
+    }()
     
     var asset: Asset?
     
@@ -38,6 +109,7 @@ class CalculatorTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setLayout()
         setupTextField()
         setupDateSlider()
         observeForm()
@@ -53,9 +125,34 @@ class CalculatorTableViewController: UITableViewController {
         navigationItem.title = asset?.searchResult.symbol
         symbolLabel.text = asset?.searchResult.symbol
         nameLabel.text = asset?.searchResult.name
+        currentValueTitleLabel.text = "Current Value \(asset?.searchResult.currency.addBrackets() ?? "(USD)")"
         investmentAmountCurrencyLabel.text = asset?.searchResult.currency
-        currencyLabels.forEach { label in
-            label.text = asset?.searchResult.currency.addBrackets()
+//        currencyLabels.forEach { label in
+//            label.text = asset?.searchResult.currency.addBrackets()
+//        }
+    }
+    
+    private func setLayout() {
+        self.view.addSubviews(symbolLabel, nameLabel, currentValueTitleLabel, currentValueLabel)
+        
+        symbolLabel.snp.makeConstraints {
+            $0.top.equalTo(25)
+            $0.leading.equalTo(15)
+        }
+        
+        nameLabel.snp.makeConstraints {
+            $0.centerY.equalTo(symbolLabel)
+            $0.leading.equalTo(symbolLabel.snp.trailing).offset(10)
+        }
+        
+        currentValueTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(15)
+            $0.leading.equalTo(15)
+        }
+        
+        currentValueLabel.snp.makeConstraints {
+            $0.top.equalTo(currentValueTitleLabel.snp.bottom).offset(5)
+            $0.leading.equalTo(15)
         }
     }
     
