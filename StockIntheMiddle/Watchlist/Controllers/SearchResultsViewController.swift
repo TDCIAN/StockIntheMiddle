@@ -23,6 +23,14 @@ class SearchResultsViewController: UIViewController {
     
     /// Collection of results
     private var results: [SearchResult] = []
+    let noResultsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No results found"
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.textColor = .systemGray
+        label.isHidden = true
+        return label
+    }()
     
     /// Primary view
     private let tableView: UITableView = {
@@ -49,6 +57,11 @@ class SearchResultsViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        view.addSubview(noResultsLabel)
+        noResultsLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-100)
+        }
     }
     // MARK: - Public
         
@@ -57,6 +70,8 @@ class SearchResultsViewController: UIViewController {
     public func update(with results: [SearchResult]) {
         self.results = results
         tableView.isHidden = results.isEmpty
+        noResultsLabel.isHidden = !results.isEmpty
+        
         tableView.reloadData()
     }
 }

@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import MBProgressHUD
+import SnapKit
 
 class SearchTableViewController: UITableViewController, UIAnimatable {
     
@@ -31,54 +32,97 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     private var searchResults: CalcSearchResults?
     @Published private var mode: Mode = .onboarding
     @Published private var searchQuery = String()
-        
+    
+    let noResultsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No results found"
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.textColor = .systemGray
+        label.isHidden = true
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpTitleView()
         // Do any additional setup after loading the view.
         setupNavigationBar()
         setupTableView()
         observeForm()
     }
     
+    private func setUpTitleView() {
+        let titleView = UIView()
+        let label = UILabel()
+        label.text = "Yield Calculator"
+        label.font = .systemFont(ofSize: 40, weight: .medium)
+        titleView.addSubview(label)
+        label.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(10)
+        }
+        navigationItem.titleView = titleView
+    }
+    
     private func setupNavigationBar() {
         navigationItem.searchController = searchController
-        navigationItem.title = "Search"
     }
     
     private func setupTableView() {
         tableView.isScrollEnabled = false
         tableView.tableFooterView = UIView()
         tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
+        view.addSubview(noResultsLabel)
+        noResultsLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-100)
+        }
     }
     
     private func observeForm() {
         $searchQuery
             .debounce(for: .milliseconds(750), scheduler: RunLoop.main)
             .sink { [unowned self] (searchQuery) in
-                guard !searchQuery.isEmpty else { return }
-                showLoadingAnimation()
-                self.apiService.fetchSymbolsPublisher(keywords: searchQuery).sink {
-                    (completion) in
-                    hideLoadingAnimation()
-                    switch completion {
-                    case .failure(let error):
-                        print("performSearch - error: \(error.localizedDescription)")
-                    case .finished:
-                        break
-                    }
-                } receiveValue: { (searchResults) in
-                    print("performSearch - searchResults: \(searchResults)")
-                    self.searchResults = searchResults
+                if searchQuery.isEmpty {
+                    self.searchResults = nil
                     self.tableView.reloadData()
-                    self.tableView.isScrollEnabled = true
-                }.store(in: &self.subscribers)
+                    self.tableView.isScrollEnabled = false
+                } else {
+                    showLoadingAnimation()
+                    self.apiService.fetchSymbolsPublisher(keywords: searchQuery).sink {
+                        (completion) in
+                        hideLoadingAnimation()
+                        switch completion {
+                        case .failure(let error):
+                            print("performSearch - error: \(error.localizedDescription)")
+                        case .finished:
+                            break
+                        }
+                    } receiveValue: { (searchResults) in
+                        print("performSearch - searchResults: \(searchResults)")
+                        self.searchResults = searchResults
+                        if let items = self.searchResults?.items {
+                            if items.isEmpty {
+                                self.tableView.reloadData()
+                                self.tableView.isScrollEnabled = false
+                                self.noResultsLabel.isHidden = false
+                            } else {
+                                self.noResultsLabel.isHidden = true
+                                self.tableView.reloadData()
+                                self.tableView.isScrollEnabled = true
+                            }
+                        }
+
+                    }.store(in: &self.subscribers)
+                }
             }.store(in: &subscribers)
         
         $mode.sink { mode in
             switch mode {
             case .onboarding:
+                print("온보딩모드")
                 self.tableView.backgroundView = SearchPlaceholderView()
             case .search:
+                print("서치모드")
                 self.tableView.backgroundView = nil
             }
         }.store(in: &subscribers)
@@ -138,14 +182,42 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     }
 }
 
-extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchQuery = searchController.searchBar.text, !searchQuery.isEmpty else { return }
-        self.searchQuery = searchQuery
+        print("업데이트서치리절트")
+//        guard let searchQuery = searchController.searchBar.text, !searchQuery.isEmpty else { return }
+        guard let searchQuery = searchController.searchBar.text else { return }
+        if searchQuery.isEmpty {
+            self.searchQuery = ""
+            self.mode = .onboarding
+            self.noResultsLabel.isHidden = true
+        } else {
+            self.searchQuery = searchQuery
+            self.mode = .search
+        }
+        
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
+        print("윌프레젠트서치컨트롤러")
         mode = .search
     }
     
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print("서치바텍스트디드엔드에디팅")
+        self.searchQuery = ""
+        self.mode = .onboarding
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("텍스트디드체인지")
+        self.searchQuery = searchText
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("서치바캔슬버튼클릭드")
+        self.searchQuery = ""
+        self.mode = .onboarding
+        
+    }
 }

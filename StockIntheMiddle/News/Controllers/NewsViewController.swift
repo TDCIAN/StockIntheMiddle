@@ -45,6 +45,15 @@ final class NewsViewController: UIViewController {
         return table
     }()
     
+    let noResultsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No results found"
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.textColor = .systemGray
+        label.isHidden = true
+        return label
+    }()
+    
     // MARK: - Init
     
     /// Create VC with type
@@ -96,6 +105,11 @@ final class NewsViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        view.addSubview(noResultsLabel)
+        noResultsLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-100)
+        }
     }
     
     // MARK: - Private
@@ -108,6 +122,8 @@ final class NewsViewController: UIViewController {
                 case .success(let stories):
                     DispatchQueue.main.async {
                         self?.stories = stories
+                        self?.tableView.isHidden = stories.isEmpty
+                        self?.noResultsLabel.isHidden  = !stories.isEmpty
                         self?.tableView.reloadData()
                     }
                 case .failure(let error):
@@ -120,6 +136,8 @@ final class NewsViewController: UIViewController {
                 case .success(let stories):
                     DispatchQueue.main.async {
                         self?.stories = stories
+                        self?.tableView.isHidden = stories.isEmpty
+                        self?.noResultsLabel.isHidden  = !stories.isEmpty
                         self?.tableView.reloadData()
                     }
                 case .failure(let error):
