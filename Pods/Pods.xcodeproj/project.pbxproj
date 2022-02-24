@@ -594,7 +594,7 @@
 		9BB894B3704C6D9FD7533D4676C7F424 /* Pods-StockIntheMiddle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-StockIntheMiddle.debug.xcconfig"; sourceTree = "<group>"; };
 		9C620906EE602D1681F912CEFADE9887 /* Highlight.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Highlight.swift; path = Source/Charts/Highlight/Highlight.swift; sourceTree = "<group>"; };
 		9D4EFBCFA08FFFAE9EF55B4C0F4315A7 /* SDWebImageDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloader.h; path = SDWebImage/Core/SDWebImageDownloader.h; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DB7FE6B80C73D8F9F03756F57E8B51B /* XShapeRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XShapeRenderer.swift; path = Source/Charts/Renderers/Scatter/XShapeRenderer.swift; sourceTree = "<group>"; };
 		9DE4EF8A74A62A4B867D7BD52B002584 /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/Core/UIImage+GIF.h"; sourceTree = "<group>"; };
 		9DEFB8A2FDDB762758F7E09509F0031A /* SDWebImageIndicator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageIndicator.h; path = SDWebImage/Core/SDWebImageIndicator.h; sourceTree = "<group>"; };
@@ -680,7 +680,7 @@
 		CA794680D2830712BABE23E8D78A899D /* IRadarChartDataSet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IRadarChartDataSet.swift; path = Source/Charts/Data/Interfaces/IRadarChartDataSet.swift; sourceTree = "<group>"; };
 		CACAFEEA35B0801CB02A031C2D82E01D /* ConstraintMakerExtendable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerExtendable.swift; path = Source/ConstraintMakerExtendable.swift; sourceTree = "<group>"; };
 		CAD51B980F6FA8291F62975B25180216 /* LayoutAnchoring.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutAnchoring.swift; path = Sources/LayoutAnchoring.swift; sourceTree = "<group>"; };
-		CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-StockIntheMiddle"; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDAB607DDE3FBBF10B3805362E37F7E9 /* ICandleChartDataSet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ICandleChartDataSet.swift; path = Source/Charts/Data/Interfaces/ICandleChartDataSet.swift; sourceTree = "<group>"; };
 		CE5AD69F6C1098D302184159A0BA0585 /* SDImageLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageLoader.h; path = SDWebImage/Core/SDImageLoader.h; sourceTree = "<group>"; };
 		CE60E7E843D3682BE2E43A7E8F366F41 /* SurfaceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SurfaceView.swift; path = Sources/SurfaceView.swift; sourceTree = "<group>"; };
@@ -1019,7 +1019,6 @@
 				F5DF77ADD6A27431429BF389D07C3B75 /* Core */,
 				1667A98499FB59A4B0D3096867175435 /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -1058,7 +1057,6 @@
 				B52C9D50BBA2D6CDA10D2DEC0C838546 /* Transitioning.swift */,
 				E3D1AB82FA3405AE18C727CD048BFC5D /* Support Files */,
 			);
-			name = FloatingPanel;
 			path = FloatingPanel;
 			sourceTree = "<group>";
 		};
@@ -1068,7 +1066,6 @@
 				25F12074F0CE7DC81A45DE061DCA0E83 /* Core */,
 				420DA95EADFF20541582F07C9FE5AB04 /* Support Files */,
 			);
-			name = Charts;
 			path = Charts;
 			sourceTree = "<group>";
 		};
@@ -1152,7 +1149,6 @@
 				F7DF9D02EC547EEAD19B79D2863C944B /* UILayoutSupport+Extensions.swift */,
 				7C606DFA102EF0AC35BF886244EFFD80 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -1325,7 +1321,7 @@
 			children = (
 				A1C1B977ED8804E8AEEC884E7359EE58 /* Charts */,
 				6FAAB7D3DE9B2564509ABD18687E938E /* FloatingPanel */,
-				CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */,
+				CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */,
 				B0B214D775196BA7CA8E17E53048A493 /* SDWebImage */,
 				979486118B3E90C08386079D57962701 /* SnapKit */,
 			);
@@ -1550,7 +1546,7 @@
 			);
 			name = "Pods-StockIntheMiddle";
 			productName = Pods_StockIntheMiddle;
-			productReference = CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */;
+			productReference = CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */

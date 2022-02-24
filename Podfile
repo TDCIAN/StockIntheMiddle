@@ -10,5 +10,7 @@ target 'StockIntheMiddle' do
   pod 'SDWebImage', '~> 5.0'
   pod 'Charts'
   pod 'SnapKit', '~> 5.0.0'
+  pod 'MBProgressHUD'
+  pod 'Loaf'
 
 end
