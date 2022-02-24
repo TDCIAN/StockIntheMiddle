@@ -26,6 +26,10 @@
 		1E8AD7FE27B1C9F90041BBE5 /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8AD7FD27B1C9F90041BBE5 /* NewsHeaderView.swift */; };
 		1E8AD80027B1D2320041BBE5 /* NewsStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8AD7FF27B1D2320041BBE5 /* NewsStory.swift */; };
 		1E8AD80227B1D8C60041BBE5 /* NewsStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8AD80127B1D8C60041BBE5 /* NewsStoryTableViewCell.swift */; };
+		1E9CF93D27C7782F00898828 /* UIAnimatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF93C27C7782F00898828 /* UIAnimatable.swift */; };
+		1E9CF93F27C7784900898828 /* CalcSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF93E27C7784900898828 /* CalcSearchResults.swift */; };
+		1E9CF94127C7791300898828 /* TimeSeriesMonthlyAdjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94027C7791300898828 /* TimeSeriesMonthlyAdjusted.swift */; };
+		1E9CF94327C7793500898828 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94227C7793500898828 /* Asset.swift */; };
 		1EC6585727B5D97A00B1C09F /* FinancialMetricsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585627B5D97A00B1C09F /* FinancialMetricsResponse.swift */; };
 		1EC6585927B5DC5000B1C09F /* StockDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585827B5DC5000B1C09F /* StockDetailHeaderView.swift */; };
 		1EC6585B27B615B000B1C09F /* MetricCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585A27B615B000B1C09F /* MetricCollectionViewCell.swift */; };
@@ -72,6 +76,10 @@
 		1E8AD7FD27B1C9F90041BBE5 /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
 		1E8AD7FF27B1D2320041BBE5 /* NewsStory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStory.swift; sourceTree = "<group>"; };
 		1E8AD80127B1D8C60041BBE5 /* NewsStoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStoryTableViewCell.swift; sourceTree = "<group>"; };
+		1E9CF93C27C7782F00898828 /* UIAnimatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAnimatable.swift; sourceTree = "<group>"; };
+		1E9CF93E27C7784900898828 /* CalcSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcSearchResults.swift; sourceTree = "<group>"; };
+		1E9CF94027C7791300898828 /* TimeSeriesMonthlyAdjusted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSeriesMonthlyAdjusted.swift; sourceTree = "<group>"; };
+		1E9CF94227C7793500898828 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		1EC6585627B5D97A00B1C09F /* FinancialMetricsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialMetricsResponse.swift; sourceTree = "<group>"; };
 		1EC6585827B5DC5000B1C09F /* StockDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailHeaderView.swift; sourceTree = "<group>"; };
 		1EC6585A27B615B000B1C09F /* MetricCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -179,6 +187,9 @@
 		1E9CF91627C762C200898828 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				1E9CF93B27C7781B00898828 /* Protocol */,
+				1E9CF93A27C7781400898828 /* Model */,
+				1E9CF93927C7780900898828 /* Service */,
 				1E9CF92727C7661D00898828 /* Controllers */,
 				1E9CF92527C7660A00898828 /* Views */,
 			);
@@ -291,6 +302,31 @@
 			children = (
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		1E9CF93927C7780900898828 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		1E9CF93A27C7781400898828 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1E9CF93E27C7784900898828 /* CalcSearchResults.swift */,
+				1E9CF94027C7791300898828 /* TimeSeriesMonthlyAdjusted.swift */,
+				1E9CF94227C7793500898828 /* Asset.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1E9CF93B27C7781B00898828 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				1E9CF93C27C7782F00898828 /* UIAnimatable.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		1EF86B2027B9C88000A40562 /* StockIntheMiddleTests */ = {
@@ -470,7 +506,9 @@
 				1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */,
 				1ECCAC6627C289B4007A8ED2 /* OpenSourceViewController.swift in Sources */,
 				1ECCAC5D27C22EE0007A8ED2 /* SettingTableViewCell.swift in Sources */,
+				1E9CF94327C7793500898828 /* Asset.swift in Sources */,
 				1E7A215C27AEBB56008D1C05 /* WatchListViewController.swift in Sources */,
+				1E9CF93F27C7784900898828 /* CalcSearchResults.swift in Sources */,
 				1EC6585727B5D97A00B1C09F /* FinancialMetricsResponse.swift in Sources */,
 				1E75BCC127B08015009CC6D4 /* NewsViewController.swift in Sources */,
 				1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */,
@@ -483,12 +521,14 @@
 				1E75BCC727B081B7009CC6D4 /* APICaller.swift in Sources */,
 				1E335EE727BD33DA00C4BC2F /* SettingsViewController.swift in Sources */,
 				1E8AD7FA27B1BA0E0041BBE5 /* SearchResponse.swift in Sources */,
+				1E9CF93D27C7782F00898828 /* UIAnimatable.swift in Sources */,
 				1E8AD7FE27B1C9F90041BBE5 /* NewsHeaderView.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,
 				1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */,
 				1EC6585927B5DC5000B1C09F /* StockDetailHeaderView.swift in Sources */,
 				1ED5E24427B36AE500413F51 /* WatchListTableViewCell.swift in Sources */,
 				1E75BCC327B08027009CC6D4 /* SearchResultsViewController.swift in Sources */,
+				1E9CF94127C7791300898828 /* TimeSeriesMonthlyAdjusted.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
