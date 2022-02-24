@@ -216,7 +216,7 @@ final class WatchListViewController: UIViewController {
         resultVC.delegate = self
         let searchVC = UISearchController(searchResultsController: resultVC)
         searchVC.searchResultsUpdater = self
-        searchVC.searchBar.placeholder = "Search stocks(name, ticker)"
+        searchVC.searchBar.placeholder = "Search stocks and add to watchlist"
         navigationItem.searchController = searchVC
         navigationItem.hidesSearchBarWhenScrolling = false
     }
