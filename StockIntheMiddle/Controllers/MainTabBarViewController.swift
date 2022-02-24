@@ -16,7 +16,7 @@ class MainTabBarViewController: UITabBarController {
         let newsVC = NewsViewController(type: .topStories)
         let settingsVC = SettingsViewController()
         
-        watchListVC.title = "Stocks"
+        watchListVC.title = "Watchlist"
         watchListVC.tabBarItem.image = UIImage(systemName: "chart.bar.xaxis")
         
         newsVC.title = "News"

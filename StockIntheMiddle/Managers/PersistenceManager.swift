@@ -74,7 +74,9 @@ final class PersistenceManager {
         let map: [String: String] = [
             "SPY": "SPDR S&P 500 ETF TRUST",
             "QQQ": "INVESCO QQQ TRUST SERIES 1",
-            "DIA": "SPDR DJIA TRUST"
+            "DIA": "SPDR DJIA TRUST",
+            "VIXY": "PROSHARES VIX MID-TERM FUT",
+            "GLD": "SPDR GOLD SHARES"
         ]
         
         let symbols = map.keys.map { $0 }
