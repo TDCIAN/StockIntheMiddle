@@ -82,6 +82,18 @@ extension String {
         let formatter = NumberFormatter.numberFormatter
         return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
+    
+    func addBrackets() -> String {
+        return "(\(self))"
+    }
+    
+    func prefix(withText text: String) -> String {
+        return text + self
+    }
+    
+    func toDouble() -> Double? {
+        return Double(self)
+    }
 }
 
 // MARK: - DateFormatter
@@ -150,5 +162,106 @@ extension Array where Element == CandleStick {
               }
         let diff = 1 - (priorClose / latestClose)
         return diff
+    }
+}
+
+extension UIColor {
+    
+    static let themeRedShade = UIColor("FAE2E1")
+    static let themeGreenShade = UIColor("B0F1DD")
+    
+    convenience init(_ hex: String, alpha: CGFloat = 1.0) {
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.removeFirst()
+        }
+        
+        if ((cString.count) != 6) {
+            self.init("ff0000") // return red color for wrong hex input
+            return
+        }
+        
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+        
+        self.init(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+                  green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+                  blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+                  alpha: alpha)
+    }
+    
+}
+
+extension Double {
+    var stringValue: String {
+        return String(describing: self)
+    }
+    
+    var twoDecimalPlaceString: String {
+        return String(format: "%.2f", self)
+    }
+    
+    var currencyFormat: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = .init(identifier: "en_US")
+        return formatter.string(from: self as NSNumber) ?? twoDecimalPlaceString
+    }
+    
+    var percentageFormat: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 2
+        return formatter.string(from: self as NSNumber) ?? twoDecimalPlaceString
+    }
+    
+    func toCurrencyFormat(hasDollarSymbol: Bool = true, hasDecimalPlaces: Bool = true) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = .init(identifier: "en_US")
+        if hasDollarSymbol == false {
+            formatter.currencySymbol = ""
+        }
+        if hasDecimalPlaces == false {
+            formatter.maximumFractionDigits = 0
+        }
+        return formatter.string(from: self as NSNumber) ?? twoDecimalPlaceString
+    }
+}
+
+extension Int {
+    var floatValue: Float {
+        return Float(self)
+    }
+    
+    var doubleValue: Double {
+        return Double(self)
+    }
+}
+
+extension Date {
+    var MMYYFormat: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        return dateFormatter.string(from: self)
+    }
+}
+
+extension UITextField {
+    func addDoneButton() {
+        let screenWidth = UIScreen.main.bounds.width
+        let doneToolBar: UIToolbar = UIToolbar(frame: .init(x: 0, y: 0, width: screenWidth, height: 50))
+        doneToolBar.barStyle = .default
+        let flexBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        let items = [flexBarButtonItem, doneBarButtonItem]
+        doneToolBar.items = items
+        doneToolBar.sizeToFit()
+        inputAccessoryView = doneToolBar
+    }
+    
+    @objc private func dismissKeyboard() {
+        resignFirstResponder()
     }
 }
