@@ -10,7 +10,7 @@ import SafariServices
 import SnapKit
 
 /// Controller to show news
-final class NewsViewController: UIViewController {
+final class NewsViewController: UIViewController, UIAnimatable {
     
     /// Type of news
     enum `Type` {
@@ -29,6 +29,8 @@ final class NewsViewController: UIViewController {
     }
     
     // MARK: - Properties
+    private var searchTimer: Timer?
+    
     private var queryString: String = ""
     
     /// Collection of models
@@ -116,8 +118,10 @@ final class NewsViewController: UIViewController {
     
     /// Fetch news models
     private func fetchNews(with query: String) {
+        self.showLoadingAnimation()
         if query.isEmpty {
             APICaller.shared.news(for: type) { [weak self] result in
+                self?.hideLoadingAnimation()
                 switch result {
                 case .success(let stories):
                     DispatchQueue.main.async {
@@ -132,6 +136,7 @@ final class NewsViewController: UIViewController {
             }
         } else {
             APICaller.shared.news(for: .company(symbol: query)) { [weak self] result in
+                self?.hideLoadingAnimation()
                 switch result {
                 case .success(let stories):
                     DispatchQueue.main.async {
@@ -168,7 +173,12 @@ extension NewsViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.queryString = searchText
-        fetchNews(with: self.queryString)
+        if !self.queryString.isEmpty {
+            searchTimer?.invalidate()
+            searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+                self.fetchNews(with: self.queryString)
+            })
+        }
     }
     
 }

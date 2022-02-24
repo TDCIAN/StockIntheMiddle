@@ -9,6 +9,7 @@ import UIKit
 import FloatingPanel
 import SnapKit
 import AppTrackingTransparency
+import MBProgressHUD
 
 /// VC to render user watch list
 final class WatchListViewController: UIViewController {

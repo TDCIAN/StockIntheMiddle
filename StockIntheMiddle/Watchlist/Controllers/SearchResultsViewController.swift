@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 /// Delegate for search results
 protocol SearchResultsViewControllerDelegate: AnyObject {
@@ -16,7 +17,7 @@ protocol SearchResultsViewControllerDelegate: AnyObject {
 }
 
 /// VC to show search results
-class SearchResultsViewController: UIViewController {
+class SearchResultsViewController: UIViewController, UIAnimatable {
     
     /// Delegate to get events
     weak var delegate: SearchResultsViewControllerDelegate?
@@ -68,11 +69,12 @@ class SearchResultsViewController: UIViewController {
     /// Update results on VC
     /// - Parameter results: Collection of new results
     public func update(with results: [SearchResult]) {
+        self.showLoadingAnimation()
         self.results = results
         tableView.isHidden = results.isEmpty
         noResultsLabel.isHidden = !results.isEmpty
-        
         tableView.reloadData()
+        self.hideLoadingAnimation()
     }
 }
 
