@@ -131,6 +131,10 @@
 		1E7A215627AEBB56008D1C05 /* StockIntheMiddle */ = {
 			isa = PBXGroup;
 			children = (
+				1E9CF91527C762B500898828 /* Watchlist */,
+				1E9CF91627C762C200898828 /* Calculator */,
+				1E9CF91727C762CE00898828 /* News */,
+				1E9CF91827C762D800898828 /* Settings */,
 				1E7A216F27AEBC11008D1C05 /* Other */,
 				1E7A216E27AEBC0A008D1C05 /* Managers */,
 				1E7A216D27AEBC01008D1C05 /* Controllers */,
@@ -202,6 +206,34 @@
 				1E75BCCC27B08A8B009CC6D4 /* Extensions.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		1E9CF91527C762B500898828 /* Watchlist */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Watchlist;
+			sourceTree = "<group>";
+		};
+		1E9CF91627C762C200898828 /* Calculator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calculator;
+			sourceTree = "<group>";
+		};
+		1E9CF91727C762CE00898828 /* News */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		1E9CF91827C762D800898828 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		1ECCAC6427C2896A007A8ED2 /* SettingsView */ = {
