@@ -12,7 +12,7 @@ import AppTrackingTransparency
 import MBProgressHUD
 
 /// VC to render user watch list
-final class WatchListViewController: UIViewController {
+final class WatchListViewController: UIViewController, UIAnimatable {
     
     /// Timer to optimize searching
     private var searchTimer: Timer?
@@ -91,6 +91,7 @@ final class WatchListViewController: UIViewController {
     
     /// Fetch watch list models
     private func fetchWatchlistData() {
+        showLoadingAnimation()
         let symbols = PersistenceManager.shared.watchlist
         
         createPlaceholderViewModels()
@@ -115,6 +116,8 @@ final class WatchListViewController: UIViewController {
         group.notify(queue: .main) { [weak self] in
             self?.createViewModels()
             self?.tableView.reloadData()
+            self?.tableView.isHidden = false
+            self?.hideLoadingAnimation()
         }
     }
     
@@ -181,6 +184,7 @@ final class WatchListViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isHidden = true
     }
     
     /// Sets up floating news panels
