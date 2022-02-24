@@ -12,28 +12,30 @@ final class SearchTableViewCell: UITableViewCell {
     
     static let identifier = "SearchTableViewCell"
     static let preferredHeight: CGFloat = 88
-    
-//    @IBOutlet weak var assetNameLabel: UILabel!
-//    @IBOutlet weak var assetSymbolLabel: UILabel!
-//    @IBOutlet weak var assetTypeLabel: UILabel!
-    
-    private let assetNameLabel: UILabel = {
-       let label = UILabel()
-        return label
-    }()
+
     private let assetSymbolLabel: UILabel = {
        let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = .label
         return label
     }()
     private let assetTypeLabel: UILabel = {
        let label = UILabel()
+        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.textColor = .systemGray
+        return label
+    }()
+    private let assetNameLabel: UILabel = {
+       let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .label
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.clipsToBounds = true
-        addSubviews(assetNameLabel, assetSymbolLabel, assetTypeLabel)
+        addSubviews(assetSymbolLabel, assetTypeLabel, assetNameLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -44,11 +46,11 @@ final class SearchTableViewCell: UITableViewCell {
         super.layoutSubviews()
         assetSymbolLabel.snp.makeConstraints {
             $0.leading.equalTo(15)
-            $0.bottom.equalToSuperview().offset(-7)
+            $0.bottom.equalTo(contentView.snp.centerY).offset(-3)
         }
         assetTypeLabel.snp.makeConstraints {
             $0.leading.equalTo(15)
-            $0.top.equalToSuperview().offset(7)
+            $0.top.equalTo(contentView.snp.centerY).offset(7.5)
         }
         assetNameLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
