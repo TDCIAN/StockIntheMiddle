@@ -33,6 +33,11 @@
 		1E9CF94527C7797100898828 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94427C7797100898828 /* APIService.swift */; };
 		1E9CF94727C7799F00898828 /* DCAService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94627C7799F00898828 /* DCAService.swift */; };
 		1E9CF94927C779C400898828 /* CalculatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94827C779C400898828 /* CalculatorPresenter.swift */; };
+		1E9CF94B27C77C5E00898828 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94A27C77C5E00898828 /* SearchTableViewController.swift */; };
+		1E9CF94D27C77C9900898828 /* CalculatorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94C27C77C9900898828 /* CalculatorTableViewController.swift */; };
+		1E9CF94F27C77CBC00898828 /* DateSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF94E27C77CBC00898828 /* DateSelectionTableViewController.swift */; };
+		1E9CF95127C77CD900898828 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF95027C77CD900898828 /* SearchTableViewCell.swift */; };
+		1E9CF95327C77CFB00898828 /* SearchPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CF95227C77CFB00898828 /* SearchPlaceholderView.swift */; };
 		1EC6585727B5D97A00B1C09F /* FinancialMetricsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585627B5D97A00B1C09F /* FinancialMetricsResponse.swift */; };
 		1EC6585927B5DC5000B1C09F /* StockDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585827B5DC5000B1C09F /* StockDetailHeaderView.swift */; };
 		1EC6585B27B615B000B1C09F /* MetricCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6585A27B615B000B1C09F /* MetricCollectionViewCell.swift */; };
@@ -86,6 +91,11 @@
 		1E9CF94427C7797100898828 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		1E9CF94627C7799F00898828 /* DCAService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAService.swift; sourceTree = "<group>"; };
 		1E9CF94827C779C400898828 /* CalculatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPresenter.swift; sourceTree = "<group>"; };
+		1E9CF94A27C77C5E00898828 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		1E9CF94C27C77C9900898828 /* CalculatorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTableViewController.swift; sourceTree = "<group>"; };
+		1E9CF94E27C77CBC00898828 /* DateSelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionTableViewController.swift; sourceTree = "<group>"; };
+		1E9CF95027C77CD900898828 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		1E9CF95227C77CFB00898828 /* SearchPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceholderView.swift; sourceTree = "<group>"; };
 		1EC6585627B5D97A00B1C09F /* FinancialMetricsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialMetricsResponse.swift; sourceTree = "<group>"; };
 		1EC6585827B5DC5000B1C09F /* StockDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailHeaderView.swift; sourceTree = "<group>"; };
 		1EC6585A27B615B000B1C09F /* MetricCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -299,6 +309,8 @@
 		1E9CF92527C7660A00898828 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1E9CF95027C77CD900898828 /* SearchTableViewCell.swift */,
+				1E9CF95227C77CFB00898828 /* SearchPlaceholderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -306,6 +318,9 @@
 		1E9CF92727C7661D00898828 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1E9CF94A27C77C5E00898828 /* SearchTableViewController.swift */,
+				1E9CF94C27C77C9900898828 /* CalculatorTableViewController.swift */,
+				1E9CF94E27C77CBC00898828 /* DateSelectionTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -510,6 +525,7 @@
 				1ED5E24227B3641500413F51 /* MarketDataResponse.swift in Sources */,
 				1E75BCCB27B081CE009CC6D4 /* HapticsManager.swift in Sources */,
 				1EC6585B27B615B000B1C09F /* MetricCollectionViewCell.swift in Sources */,
+				1E9CF95327C77CFB00898828 /* SearchPlaceholderView.swift in Sources */,
 				1E335EE527BD339800C4BC2F /* MainTabBarViewController.swift in Sources */,
 				1E75BCCF27B08ED7009CC6D4 /* SearchResultTableViewCell.swift in Sources */,
 				1E75BCC527B08040009CC6D4 /* StockDetailsViewController.swift in Sources */,
@@ -522,8 +538,11 @@
 				1E9CF94727C7799F00898828 /* DCAService.swift in Sources */,
 				1E75BCC127B08015009CC6D4 /* NewsViewController.swift in Sources */,
 				1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */,
+				1E9CF94D27C77C9900898828 /* CalculatorTableViewController.swift in Sources */,
 				1ECCAC6127C232FF007A8ED2 /* ConfigManager.swift in Sources */,
 				1E8AD80027B1D2320041BBE5 /* NewsStory.swift in Sources */,
+				1E9CF94B27C77C5E00898828 /* SearchTableViewController.swift in Sources */,
+				1E9CF94F27C77CBC00898828 /* DateSelectionTableViewController.swift in Sources */,
 				1ECCAC5F27C22EFB007A8ED2 /* SwitchTableViewCell.swift in Sources */,
 				1E75BCCD27B08A8B009CC6D4 /* Extensions.swift in Sources */,
 				1E8AD80227B1D8C60041BBE5 /* NewsStoryTableViewCell.swift in Sources */,
@@ -533,6 +552,7 @@
 				1E9CF94527C7797100898828 /* APIService.swift in Sources */,
 				1E8AD7FA27B1BA0E0041BBE5 /* SearchResponse.swift in Sources */,
 				1E9CF93D27C7782F00898828 /* UIAnimatable.swift in Sources */,
+				1E9CF95127C77CD900898828 /* SearchTableViewCell.swift in Sources */,
 				1E8AD7FE27B1C9F90041BBE5 /* NewsHeaderView.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,
 				1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */,
