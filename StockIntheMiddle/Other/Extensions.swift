@@ -244,6 +244,7 @@ extension Date {
     var MMYYFormat: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM yyyy"
+        dateFormatter.locale = .autoupdatingCurrent
         return dateFormatter.string(from: self)
     }
 }

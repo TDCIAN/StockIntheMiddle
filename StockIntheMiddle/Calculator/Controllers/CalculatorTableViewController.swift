@@ -11,88 +11,153 @@ import SnapKit
 
 class CalculatorTableViewController: UITableViewController {
     
-//    @IBOutlet weak var symbolLabel: UILabel!
     private let symbolLabel: UILabel = {
        let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.sizeToFit()
         return label
     }()
-//    @IBOutlet weak var nameLabel: UILabel!
+
     private let nameLabel: UILabel = {
        let label = UILabel()
         label.textColor = .tertiaryLabel
         label.font = .systemFont(ofSize: 18, weight: .medium)
-        label.sizeToFit()
+        
         return label
     }()
     
     private let currentValueTitleLabel: UILabel = {
         let label = UILabel()
          label.textColor = .label
-         label.font = .systemFont(ofSize: 16, weight: .medium)
-         label.sizeToFit()
+         label.font = .systemFont(ofSize: 14, weight: .regular)
+         
          return label
     }()
     
     private let currentValueLabel: UILabel = {
        let label = UILabel()
         label.textColor = .label
+        label.text = "$2000.22"
         label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.sizeToFit()
+        
         return label
     }()
     
-//    @IBOutlet var currencyLabels: [UILabel]!
-//    @IBOutlet weak var investmentAmountCurrencyLabel: UILabel!
-    private let investmentAmountCurrencyLabel: UILabel = {
+    private let investmentAmountTitleLabel: UILabel = {
        let label = UILabel()
+        label.text = "Investment amount : "
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 15, weight: .regular)
+        
         return label
     }()
-    
 
-    
-//    @IBOutlet weak var investmentAmountLabel: UILabel!
     private let investmentAmountLabel: UILabel = {
        let label = UILabel()
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        
         return label
     }()
-//    @IBOutlet weak var gainLabel: UILabel!
+
+    private let gainTitleLabel: UILabel = {
+        let label = UILabel()
+         label.text = "Gain : "
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 15, weight: .regular)
+         
+         return label
+    }()
+    
     private let gainLabel: UILabel = {
        let label = UILabel()
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.text = "-"
         return label
     }()
-//    @IBOutlet weak var yieldLabel: UILabel!
+
     private let yieldLabel: UILabel = {
        let label = UILabel()
-        return label
-    }()
-//    @IBOutlet weak var annualReturnLabel: UILabel!
-    private let annualReturnLabel: UILabel = {
-       let label = UILabel()
+        label.textColor = .systemGreen
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.text = "-"
         return label
     }()
     
-//    @IBOutlet weak var initialInvestmentAmountTextField: UITextField!
+    private let annualReturnTitleLabel: UILabel = {
+        let label = UILabel()
+         label.text = "Annual return : "
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 15, weight: .regular)
+         return label
+    }()
+    
+    private let annualReturnLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .systemGreen
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.text = "-"
+        return label
+    }()
+    
     private let initialInvestmentAmountTextField: UITextField = {
        let textField = UITextField()
+        textField.placeholder = "Enter your initial investment amount"
+        textField.font = .systemFont(ofSize: 15, weight: .semibold)
+        textField.textColor = .systemBlue
         return textField
     }()
+    
+    private let initialInvestmentAmountTitleLabel: UILabel = {
+        let label = UILabel()
+         label.text = "Initial investment amount"
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 13, weight: .thin)
+         return label
+    }()
+    
 //    @IBOutlet weak var monthlyDollarCostAveragingTextField: UITextField!
     private let monthlyDollarCostAveragingTextField: UITextField = {
-       let textField = UITextField()
+        let textField = UITextField()
+         textField.placeholder = "Monthly dollar cost averaging amount"
+         textField.font = .systemFont(ofSize: 15, weight: .semibold)
+        textField.textColor = .systemBlue
         return textField
     }()
+    
+    private let monthlyDollarCostAveragingTitleLabel: UILabel = {
+        let label = UILabel()
+         label.text = "Monthly dollar cost averaging amount"
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 13, weight: .thin)
+         return label
+    }()
+    
 //    @IBOutlet weak var initialDateOfInvestmentTextField: UITextField!
     private let initialDateOfInvestmentTextField: UITextField = {
-       let textField = UITextField()
+        let textField = UITextField()
+         textField.placeholder = "Enter the initial date of investment"
+         textField.font = .systemFont(ofSize: 15, weight: .semibold)
+        textField.textColor = .systemBlue
         return textField
+    }()
+    
+    private let initialDateOfInvestmentTitleLabel: UILabel = {
+        let label = UILabel()
+         label.text = "initial date of investment"
+         label.textColor = .label
+         label.font = .systemFont(ofSize: 13, weight: .thin)
+         return label
     }()
 
 //    @IBOutlet weak var dateSlider: UISlider!
     private let dateSlider: UISlider = {
         let slider = UISlider()
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.value = 0.5
+        slider.addTarget(self, action: #selector(dateSliderDidChange(_:)), for: .valueChanged)
         return slider
     }()
     
@@ -126,18 +191,28 @@ class CalculatorTableViewController: UITableViewController {
         symbolLabel.text = asset?.searchResult.symbol
         nameLabel.text = asset?.searchResult.name
         currentValueTitleLabel.text = "Current Value \(asset?.searchResult.currency.addBrackets() ?? "(USD)")"
-        investmentAmountCurrencyLabel.text = asset?.searchResult.currency
+//        investmentAmountCurrencyLabel.text = asset?.searchResult.currency
 //        currencyLabels.forEach { label in
 //            label.text = asset?.searchResult.currency.addBrackets()
 //        }
     }
     
     private func setLayout() {
-        self.view.addSubviews(symbolLabel, nameLabel, currentValueTitleLabel, currentValueLabel)
+        self.view.addSubviews(
+            symbolLabel, nameLabel,
+            currentValueTitleLabel, currentValueLabel,
+            investmentAmountTitleLabel, investmentAmountLabel,
+            gainTitleLabel, yieldLabel, gainLabel,
+            annualReturnTitleLabel, annualReturnLabel,
+            initialInvestmentAmountTextField, initialInvestmentAmountTitleLabel,
+            monthlyDollarCostAveragingTextField, monthlyDollarCostAveragingTitleLabel,
+            initialDateOfInvestmentTextField, initialDateOfInvestmentTitleLabel,
+            dateSlider
+        )
         
         symbolLabel.snp.makeConstraints {
-            $0.top.equalTo(25)
-            $0.leading.equalTo(15)
+            $0.top.equalTo(20)
+            $0.leading.equalTo(20)
         }
         
         nameLabel.snp.makeConstraints {
@@ -147,12 +222,83 @@ class CalculatorTableViewController: UITableViewController {
         
         currentValueTitleLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(15)
-            $0.leading.equalTo(15)
+            $0.leading.equalTo(20)
         }
         
         currentValueLabel.snp.makeConstraints {
             $0.top.equalTo(currentValueTitleLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(15)
+            $0.leading.equalTo(20)
+        }
+        
+        investmentAmountTitleLabel.snp.makeConstraints {
+            $0.leading.equalTo(20)
+            $0.top.equalTo(currentValueLabel.snp.bottom).offset(10)
+        }
+        
+        investmentAmountLabel.snp.makeConstraints {
+            $0.centerY.equalTo(investmentAmountTitleLabel.snp.centerY)
+            $0.leading.equalTo(investmentAmountTitleLabel.snp.trailing)
+        }
+        
+        gainTitleLabel.snp.makeConstraints {
+            $0.leading.equalTo(20)
+            $0.top.equalTo(investmentAmountTitleLabel.snp.bottom).offset(10)
+        }
+        
+        gainLabel.snp.makeConstraints {
+            $0.centerY.equalTo(yieldLabel.snp.centerY)
+            $0.leading.equalTo(gainTitleLabel.snp.trailing)
+        }
+
+        yieldLabel.snp.makeConstraints {
+            $0.centerY.equalTo(gainTitleLabel.snp.centerY)
+            $0.leading.equalTo(gainLabel.snp.trailing).offset(5)
+        }
+        
+        annualReturnTitleLabel.snp.makeConstraints {
+            $0.leading.equalTo(20)
+            $0.top.equalTo(gainTitleLabel.snp.bottom).offset(10)
+        }
+        
+        annualReturnLabel.snp.makeConstraints {
+            $0.centerY.equalTo(annualReturnTitleLabel.snp.centerY)
+            $0.leading.equalTo(annualReturnTitleLabel.snp.trailing)
+        }
+        
+        initialInvestmentAmountTextField.snp.makeConstraints {
+            $0.top.equalTo(annualReturnTitleLabel.snp.bottom).offset(30)
+            $0.leading.equalTo(20)
+        }
+        
+        initialInvestmentAmountTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(initialInvestmentAmountTextField.snp.bottom).offset(5)
+            $0.leading.equalTo(20)
+        }
+        
+        monthlyDollarCostAveragingTextField.snp.makeConstraints {
+            $0.top.equalTo(initialInvestmentAmountTitleLabel.snp.bottom).offset(20)
+            $0.leading.equalTo(20)
+        }
+        
+        monthlyDollarCostAveragingTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(monthlyDollarCostAveragingTextField.snp.bottom).offset(5)
+            $0.leading.equalTo(20)
+        }
+        
+        initialDateOfInvestmentTextField.snp.makeConstraints {
+            $0.top.equalTo(monthlyDollarCostAveragingTitleLabel.snp.bottom).offset(20)
+            $0.leading.equalTo(20)
+        }
+        
+        initialDateOfInvestmentTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(initialDateOfInvestmentTextField.snp.bottom).offset(5)
+            $0.leading.equalTo(20)
+        }
+        
+        dateSlider.snp.makeConstraints {
+            $0.top.equalTo(initialDateOfInvestmentTitleLabel.snp.bottom).offset(10)
+            $0.leading.equalTo(20)
+            $0.width.equalTo(UIScreen.main.bounds.width - 40)
         }
     }
     
@@ -224,7 +370,8 @@ class CalculatorTableViewController: UITableViewController {
             
             this.currentValueLabel.backgroundColor = presentation.currentValueLabelBackgroundColor
             this.currentValueLabel.text = presentation.currentValue
-            this.investmentAmountLabel.text = presentation.investmentAmount
+            
+            this.investmentAmountLabel.text = asset.searchResult.currency + " " + presentation.investmentAmount
             this.gainLabel.text = presentation.gain
             this.yieldLabel.text = presentation.yield
             this.yieldLabel.textColor = presentation.yieldLabelTextColor
@@ -266,7 +413,7 @@ class CalculatorTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func dateSliderDidChange(_ sender: UISlider) {
+    @objc func dateSliderDidChange(_ sender: UISlider) {
         initialDateOfInvestmentIndex = Int(sender.value)
     }
 }

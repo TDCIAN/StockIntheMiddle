@@ -36,4 +36,9 @@ class MainTabBarViewController: UITabBarController {
 
         setViewControllers([watchNav, calcNav, newsNav, settingsNav], animated: true)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 }
