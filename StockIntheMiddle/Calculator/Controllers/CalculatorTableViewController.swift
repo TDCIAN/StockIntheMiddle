@@ -377,7 +377,6 @@ class CalculatorTableViewController: UITableViewController {
     }
     
     private func handleDateSelection(at index: Int) {
-        print("핸들데이트셀렉션 - 인덱스: \(index)")
         guard navigationController?.visibleViewController is DateSelectionTableViewController else { return }
         navigationController?.popViewController(animated: true)
         if let monthInfos = asset?.timeSeriesMonthlyAdjusted.getMonthInfos() {

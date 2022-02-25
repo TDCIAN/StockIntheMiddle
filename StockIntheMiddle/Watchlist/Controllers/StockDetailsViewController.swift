@@ -121,7 +121,6 @@ final class StockDetailsViewController: UIViewController {
             case .success(let response):
                 let metrics = response.metric
                 self?.metrics = metrics
-                print("metrics - \(metrics)")
             case .failure(let error):
                 print("StockDetailVC - fetchFinancialData - error: \(error)")
             }

@@ -98,7 +98,6 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
                             break
                         }
                     } receiveValue: { (searchResults) in
-                        print("performSearch - searchResults: \(searchResults)")
                         self.searchResults = searchResults
                         if let items = self.searchResults?.items {
                             if items.isEmpty {
@@ -119,10 +118,8 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         $mode.sink { mode in
             switch mode {
             case .onboarding:
-                print("온보딩모드")
                 self.tableView.backgroundView = SearchPlaceholderView()
             case .search:
-                print("서치모드")
                 self.tableView.backgroundView = nil
             }
         }.store(in: &subscribers)
@@ -166,13 +163,11 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
             }
         } receiveValue: { [weak self] (timeSeriesMonthlyAdjusted) in
             self?.hideLoadingAnimation()
-//            print("handleSelection - success: \(timeSeriesMonthlyAdjusted.getMonthInfos())")
             let asset = Asset(searchResult: searchResult, timeSeriesMonthlyAdjusted: timeSeriesMonthlyAdjusted)
-//            self?.performSegue(withIdentifier: "showCalculator", sender: asset)
             let calculatorVc = CalculatorTableViewController()
             calculatorVc.asset = asset
             self?.navigationController?.pushViewController(calculatorVc, animated: true)
-//            self?.searchController.searchBar.text = nil
+            self?.searchController.searchBar.text = nil
         }.store(in: &subscribers)
     }
     
@@ -187,8 +182,6 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
 
 extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        print("업데이트서치리절트")
-//        guard let searchQuery = searchController.searchBar.text, !searchQuery.isEmpty else { return }
         guard let searchQuery = searchController.searchBar.text else { return }
         if searchQuery.isEmpty {
             self.searchQuery = ""
@@ -202,25 +195,20 @@ extension SearchTableViewController: UISearchResultsUpdating, UISearchController
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        print("윌프레젠트서치컨트롤러")
         mode = .search
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print("서치바텍스트디드엔드에디팅")
         self.searchQuery = ""
         self.mode = .onboarding
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("텍스트디드체인지")
         self.searchQuery = searchText
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("서치바캔슬버튼클릭드")
         self.searchQuery = ""
         self.mode = .onboarding
-        
     }
 }

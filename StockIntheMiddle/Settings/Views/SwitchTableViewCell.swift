@@ -96,7 +96,6 @@ class SwitchTableViewCell: UITableViewCell {
     }
     
     @objc func handleSwitch(sender: UISwitch) {
-        print("핸들 스위치 - 이즈온: \(sender.isOn)")
         if sender.isOn {
             contentView.window?.overrideUserInterfaceStyle = .dark
             ConfigManager.shared.isDarkMode = true
