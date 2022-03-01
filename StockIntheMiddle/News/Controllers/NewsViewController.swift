@@ -8,9 +8,12 @@
 import UIKit
 import SafariServices
 import SnapKit
+import RxSwift
+import RxCocoa
 
 /// Controller to show news
 final class NewsViewController: UIViewController, UIAnimatable {
+    let disposeBag = DisposeBag()
     
     /// Type of news
     enum `Type` {
@@ -31,7 +34,9 @@ final class NewsViewController: UIViewController, UIAnimatable {
     // MARK: - Properties
     private var searchTimer: Timer?
     
-    private var queryString: String = ""
+    private let searchButtonTapped = PublishRelay<Void>()
+//    private var queryString: String = ""
+    private var queryString = Observable<String>.of("")
     
     /// Collection of models
     private var stories: [NewsStory] = []
@@ -75,7 +80,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
         setUpTitleView()
         setNavigationItems()
         setTableView()
-
+        bind()
         fetchNews(with: "")
     }
     
@@ -112,6 +117,13 @@ final class NewsViewController: UIViewController, UIAnimatable {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(-100)
         }
+    }
+    
+    private func bind() {
+        Observable
+            .merge(
+                self.rx.searchButtonClicked.asObservable()
+            )
     }
     
     // MARK: - Private
