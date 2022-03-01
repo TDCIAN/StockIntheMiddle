@@ -659,7 +659,7 @@
 		9BD1C04D5F064290AD177906E4CD9C9B /* Platform+Gestures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Platform+Gestures.swift"; path = "Source/Charts/Utils/Platform+Gestures.swift"; sourceTree = "<group>"; };
 		9C98FB3F381C1DD3FEEC02F87B440BE3 /* Behavior.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Behavior.swift; path = Sources/Behavior.swift; sourceTree = "<group>"; };
 		9CB03EBE75C7DAFE04888B6C0C791ED4 /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DAC2D6CD8010F9FCA929F789530D431 /* TransformerHorizontalBarChart.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TransformerHorizontalBarChart.swift; path = Source/Charts/Utils/TransformerHorizontalBarChart.swift; sourceTree = "<group>"; };
 		9DB511AD3A8732A80136E2EF47E001F7 /* SDImageCoderHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageCoderHelper.h; path = SDWebImage/Core/SDImageCoderHelper.h; sourceTree = "<group>"; };
 		9F02B6D48458AF34391E2C1B7B3245CD /* Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Sources/Extensions.swift; sourceTree = "<group>"; };
@@ -751,7 +751,7 @@
 		C86820761CE08878B8577A63D5788A70 /* MarkerImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MarkerImage.swift; path = Source/Charts/Components/MarkerImage.swift; sourceTree = "<group>"; };
 		C88321C951D9D8B7D3201910A310F915 /* Pods-StockIntheMiddle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-StockIntheMiddle.release.xcconfig"; sourceTree = "<group>"; };
 		C97098F9D33528576B6E1DB368111608 /* Charts-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Charts-Info.plist"; sourceTree = "<group>"; };
-		CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-StockIntheMiddle"; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB5728BC12F348C04DD43F045BEF8AB1 /* ConstraintInsets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintInsets.swift; path = Source/ConstraintInsets.swift; sourceTree = "<group>"; };
 		CB59F5F700E515BB8AD306E42D71C4FE /* LayoutConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraintItem.swift; path = Source/LayoutConstraintItem.swift; sourceTree = "<group>"; };
 		CD416112A9E3205481F5E4B3ABF7F073 /* RadarHighlighter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RadarHighlighter.swift; path = Source/Charts/Highlight/RadarHighlighter.swift; sourceTree = "<group>"; };
@@ -911,7 +911,6 @@
 				2B2AB4A057D650D82DAD94786A938C88 /* Core */,
 				F44E58421C8A8F7C973740DA3B27C597 /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -1222,7 +1221,6 @@
 				BC98800D0FC2BB36B30454AA904CA9D4 /* Manager.swift */,
 				FD3E7A198A62350E2BBE114416B061A8 /* Support Files */,
 			);
-			name = Loaf;
 			path = Loaf;
 			sourceTree = "<group>";
 		};
@@ -1267,7 +1265,6 @@
 				E5D80E28F982EE44F9B335B8727ABDA9 /* UILayoutSupport+Extensions.swift */,
 				B4CC322924BC1C61728844B34E50F401 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -1303,7 +1300,6 @@
 				EA6A7AA4CAD8ADB904B28388B2955A6D /* Transitioning.swift */,
 				98AB130D8CAA93B98E07289061237991 /* Support Files */,
 			);
-			name = FloatingPanel;
 			path = FloatingPanel;
 			sourceTree = "<group>";
 		};
@@ -1314,7 +1310,7 @@
 				6FAAB7D3DE9B2564509ABD18687E938E /* FloatingPanel */,
 				4BE730510F6EBDAEF7EF02CB99F4B209 /* Loaf */,
 				8B8FAB0D627B17EDE1366984278705D9 /* MBProgressHUD */,
-				CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */,
+				CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */,
 				B0B214D775196BA7CA8E17E53048A493 /* SDWebImage */,
 				979486118B3E90C08386079D57962701 /* SnapKit */,
 			);
@@ -1342,7 +1338,6 @@
 				3AF9012084399EA9D789FFACDE24D111 /* Core */,
 				E14CB88AA473DC0BB99F2AFF2A078EC1 /* Support Files */,
 			);
-			name = Charts;
 			path = Charts;
 			sourceTree = "<group>";
 		};
@@ -1434,7 +1429,6 @@
 				BCDB0FAC8B6E6DF1C8ABD08F7CA6928A /* MBProgressHUD.m */,
 				FF25EC59BB30B975881D266B8139D425 /* Support Files */,
 			);
-			name = MBProgressHUD;
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -1741,7 +1735,7 @@
 			);
 			name = "Pods-StockIntheMiddle";
 			productName = Pods_StockIntheMiddle;
-			productReference = CB053861D990C82EDAD14D8D5250B0E4 /* Pods-StockIntheMiddle */;
+			productReference = CB053861D990C82EDAD14D8D5250B0E4 /* Pods_StockIntheMiddle.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
