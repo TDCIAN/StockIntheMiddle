@@ -120,10 +120,22 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     private func bind() {
-        Observable
-            .merge(
-                self.rx.searchButtonClicked.asObservable()
-            )
+        let newsResult = queryString
+            .map { query in
+                print("쿼리 - query: \(query), isEmpty: \(query.isEmpty)")
+                APICaller.shared.news(for: .topStories) { result in
+                    switch result {
+                    case .success(let news):
+                        print("success - news: \(news)")
+                    case .failure(let error):
+                        print("bind error - error: \(error)")
+                    }
+                }
+            }
+            .share()
+        
+        let cellData = newsRe
+            
     }
     
     // MARK: - Private
