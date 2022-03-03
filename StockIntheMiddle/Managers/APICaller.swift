@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 /// Object to manage api calls
 final class APICaller {
@@ -140,6 +141,23 @@ final class APICaller {
         urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
         print("APICaller - url: \(urlString)")
         return URL(string: urlString)
+    }
+    
+    func composeUrlRequest() -> URLRequest {
+        let url = url(for: .topStories, queryParams: ["category": "general"])!
+        return URLRequest(url: url)
+    }
+    
+    func fetchGeneralNews() -> Observable<[NewsStory]> {
+        let request = composeUrlRequest()
+        
+        return URLSession.shared.rx.data(request: request)
+            .map { data -> [NewsStory] in
+                let decoder = JSONDecoder()
+                let news = try decoder.decode([NewsStory].self, from: data)
+                return news
+            }
+            .catchAndReturn([])
     }
         
     /// Perform api call

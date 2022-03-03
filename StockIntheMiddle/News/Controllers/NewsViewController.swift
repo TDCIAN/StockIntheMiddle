@@ -35,11 +35,13 @@ final class NewsViewController: UIViewController, UIAnimatable {
     private var searchTimer: Timer?
     
     private let searchButtonTapped = PublishRelay<Void>()
-//    private var queryString: String = ""
-    private var queryString = Observable<String>.of("")
+    private var queryString: String = ""
+//    private var queryString = Observable<String>.of("")
     
     /// Collection of models
     private var stories: [NewsStory] = []
+    
+    var cellData = PublishSubject<[NewsStory]>()
     
     /// Instance of a type
     private let type: Type
@@ -120,21 +122,15 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     private func bind() {
-        let newsResult = queryString
-            .map { query in
-                print("쿼리 - query: \(query), isEmpty: \(query.isEmpty)")
-                APICaller.shared.news(for: .topStories) { result in
-                    switch result {
-                    case .success(let news):
-                        print("success - news: \(news)")
-                    case .failure(let error):
-                        print("bind error - error: \(error)")
-                    }
-                }
+        cellData = APICaller.shared.fetchGeneralNews()
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.rx.items) { tableView, row, data in
+                let index = IndexPath(row: row, section: 0)
+                let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: index) as! NewsStoryTableViewCell
+                cell.configure(with: data)
+                return cell
             }
-            .share()
-        
-        let cellData = newsRe
+            .disposed(by: disposeBag)
             
     }
     
