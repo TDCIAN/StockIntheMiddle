@@ -119,6 +119,7 @@ final class APICaller {
     private enum APIError: Error {
         case invalidURL
         case noDataReturned
+        case networkError
     }
     
     /// Try to create url for endpoint
@@ -158,6 +159,31 @@ final class APICaller {
                 return news
             }
             .catchAndReturn([])
+    }
+    /*
+     1. Single<Result<[NewsStory], Error>> 로 리턴 받는 API를 만든다
+     2. Observable<[NewsStory]> 타입으로 뉴스 데이터 호출 결과를 받는다
+     2. PublishSubject<[NewsStory]>로 뉴스 데이터를 받는다
+     3. 받은 뉴스 데이터를 asDriver로 테이블뷰와 묶는다
+     */
+    func fetchAllNews() -> Single<Result<[NewsStory], Error>> {
+        guard let url = url(for: .topStories, queryParams: ["category": "general"]) else {
+            return .just(.failure(APIError.networkError))
+        }
+        let request = URLRequest(url: url)
+        return URLSession.shared.rx.data(request: request)
+            .map { data in
+                do {
+                    let newsData = try JSONDecoder().decode([NewsStory].self, from: data)
+                    return .success(newsData)
+                } catch {
+                    return .failure(APIError.noDataReturned)
+                }
+            }
+            .catch { _ in
+                .just(.failure(APIError.networkError))
+            }
+            .asSingle()
     }
         
     /// Perform api call

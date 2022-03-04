@@ -47,10 +47,11 @@ final class NewsViewController: UIViewController, UIAnimatable {
     private let type: Type
     
     /// Primary news view
-    let tableView: UITableView = {
+    let newsTableView: UITableView = {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
-        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
+        table.rowHeight = NewsStoryTableViewCell.preferredHeight
+//        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
         return table
     }()
     
@@ -83,7 +84,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
         setNavigationItems()
         setTableView()
         bind()
-        fetchNews(with: "")
+//        fetchNews(with: "")
     }
     
     private func setUpTitleView() {
@@ -108,10 +109,10 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     private func setTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints {
+//        newsTableView.dataSource = self
+//        newsTableView.delegate = self
+        view.addSubview(newsTableView)
+        newsTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         view.addSubview(noResultsLabel)
@@ -122,16 +123,28 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     private func bind() {
-        cellData = APICaller.shared.fetchGeneralNews()
+        print("바인드 콜")
+        APICaller.shared.fetchAllNews()
+            .asObservable()
+            .compactMap { data -> [NewsStory] in
+                guard case .success(let value) = data else {
+                    return []
+                }
+                return value
+            }
+            .bind(to: self.cellData)
+            .disposed(by: disposeBag)
+        
+        self.cellData
             .asDriver(onErrorJustReturn: [])
-            .drive(self.rx.items) { tableView, row, data in
+            .drive(newsTableView.rx.items) { tableView, row, data in
                 let index = IndexPath(row: row, section: 0)
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: index) as! NewsStoryTableViewCell
-                cell.configure(with: data)
+                let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
+                cell.configure(with: viewModel)
                 return cell
             }
             .disposed(by: disposeBag)
-            
     }
     
     // MARK: - Private
@@ -146,9 +159,9 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 case .success(let stories):
                     DispatchQueue.main.async {
                         self?.stories = stories
-                        self?.tableView.isHidden = stories.isEmpty
+                        self?.newsTableView.isHidden = stories.isEmpty
                         self?.noResultsLabel.isHidden  = !stories.isEmpty
-                        self?.tableView.reloadData()
+                        self?.newsTableView.reloadData()
                     }
                 case .failure(let error):
                     print("NewsVC - fetchNews - error: \(error)")
@@ -161,9 +174,9 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 case .success(let stories):
                     DispatchQueue.main.async {
                         self?.stories = stories
-                        self?.tableView.isHidden = stories.isEmpty
+                        self?.newsTableView.isHidden = stories.isEmpty
                         self?.noResultsLabel.isHidden  = !stories.isEmpty
-                        self?.tableView.reloadData()
+                        self?.newsTableView.reloadData()
                     }
                 case .failure(let error):
                     print("NewsVC - fetchNews - error: \(error)")
@@ -204,55 +217,55 @@ extension NewsViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stories.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: indexPath) as? NewsStoryTableViewCell else {
-            fatalError()
-        }
-        cell.configure(with: .init(model: stories[indexPath.row]))
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return NewsStoryTableViewCell.preferredHeight
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: NewsHeaderView.identifier) as? NewsHeaderView else { return nil }
-        header.configure(with: NewsHeaderView.ViewModel(
-            title: self.type.title,
-            shouldShowAddButton: false
-        ))
-        return header
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return NewsHeaderView.preferredHeight
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        HapticsManager.shared.vibrateForSelection()
-        
-        // open news story
-        let story = stories[indexPath.row]
-        guard let url = URL(string: story.url) else {
-            presentFailedToOpenAlert()
-            return
-        }
-        open(url: url)
-    }
-    
-    /// Present an alert to show an error occurred when opening story
-    private func presentFailedToOpenAlert() {
-        HapticsManager.shared.vibrate(for: .error)
-        let alert = UIAlertController(title: "Unable to Open", message: "We were unable to open the article.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-        present(alert, animated: true)
-    }
-}
+//extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return stories.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: indexPath) as? NewsStoryTableViewCell else {
+//            fatalError()
+//        }
+//        cell.configure(with: .init(model: stories[indexPath.row]))
+//        return cell
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return NewsStoryTableViewCell.preferredHeight
+//    }
+//
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: NewsHeaderView.identifier) as? NewsHeaderView else { return nil }
+//        header.configure(with: NewsHeaderView.ViewModel(
+//            title: self.type.title,
+//            shouldShowAddButton: false
+//        ))
+//        return header
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return NewsHeaderView.preferredHeight
+//    }
+//
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//
+//        HapticsManager.shared.vibrateForSelection()
+//
+//        // open news story
+//        let story = stories[indexPath.row]
+//        guard let url = URL(string: story.url) else {
+//            presentFailedToOpenAlert()
+//            return
+//        }
+//        open(url: url)
+//    }
+//
+//    /// Present an alert to show an error occurred when opening story
+//    private func presentFailedToOpenAlert() {
+//        HapticsManager.shared.vibrate(for: .error)
+//        let alert = UIAlertController(title: "Unable to Open", message: "We were unable to open the article.", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+//        present(alert, animated: true)
+//    }
+//}
