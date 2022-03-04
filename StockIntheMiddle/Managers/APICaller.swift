@@ -144,22 +144,6 @@ final class APICaller {
         return URL(string: urlString)
     }
     
-    func composeUrlRequest() -> URLRequest {
-        let url = url(for: .topStories, queryParams: ["category": "general"])!
-        return URLRequest(url: url)
-    }
-    
-    func fetchGeneralNews() -> Observable<[NewsStory]> {
-        let request = composeUrlRequest()
-        
-        return URLSession.shared.rx.data(request: request)
-            .map { data -> [NewsStory] in
-                let decoder = JSONDecoder()
-                let news = try decoder.decode([NewsStory].self, from: data)
-                return news
-            }
-            .catchAndReturn([])
-    }
     /*
      1. Single<Result<[NewsStory], Error>> 로 리턴 받는 API를 만든다
      2. Observable<[NewsStory]> 타입으로 뉴스 데이터 호출 결과를 받는다
@@ -167,7 +151,7 @@ final class APICaller {
      3. 받은 뉴스 데이터를 asDriver로 테이블뷰와 묶는다
      */
     func fetchAllNews() -> Single<Result<[NewsStory], Error>> {
-        guard let url = url(for: .topStories, queryParams: ["category": "general"]) else {
+        guard let url = url(for: .topStories, queryParams: ["category": "MSFT"]) else {
             return .just(.failure(APIError.networkError))
         }
         let request = URLRequest(url: url)

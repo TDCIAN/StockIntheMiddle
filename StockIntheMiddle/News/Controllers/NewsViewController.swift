@@ -51,7 +51,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         table.rowHeight = NewsStoryTableViewCell.preferredHeight
-//        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
+        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
         return table
     }()
     
