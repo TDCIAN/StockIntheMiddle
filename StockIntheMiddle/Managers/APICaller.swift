@@ -151,7 +151,7 @@ final class APICaller {
      3. 받은 뉴스 데이터를 asDriver로 테이블뷰와 묶는다
      */
     func fetchAllNews() -> Single<Result<[NewsStory], Error>> {
-        guard let url = url(for: .topStories, queryParams: ["category": "MSFT"]) else {
+        guard let url = url(for: .topStories, queryParams: ["category": "general"]) else {
             return .just(.failure(APIError.networkError))
         }
         let request = URLRequest(url: url)

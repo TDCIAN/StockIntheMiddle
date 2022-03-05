@@ -41,7 +41,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
     /// Collection of models
     private var stories: [NewsStory] = []
     
-    var cellData = PublishSubject<[NewsStory]>()
+    var newsData = PublishSubject<[NewsStory]>()
     
     /// Instance of a type
     private let type: Type
@@ -123,7 +123,28 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     private func bind() {
-        print("바인드 콜")
+//        APICaller.shared.fetchAllNews()
+//            .asObservable()
+//            .compactMap { data -> [NewsStory] in
+//                guard case .success(let value) = data else {
+//                    return []
+//                }
+//                return value
+//            }
+//            .bind(to: self.cellData)
+//            .disposed(by: disposeBag)
+//
+//        self.cellData
+//            .asDriver(onErrorJustReturn: [])
+//            .drive(newsTableView.rx.items) { tableView, row, data in
+//                let index = IndexPath(row: row, section: 0)
+//                let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: index) as! NewsStoryTableViewCell
+//                let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
+//                cell.configure(with: viewModel)
+//                return cell
+//            }
+//            .disposed(by: disposeBag)
+        
         APICaller.shared.fetchAllNews()
             .asObservable()
             .compactMap { data -> [NewsStory] in
@@ -132,19 +153,27 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 }
                 return value
             }
-            .bind(to: self.cellData)
-            .disposed(by: disposeBag)
-        
-        self.cellData
             .asDriver(onErrorJustReturn: [])
-            .drive(newsTableView.rx.items) { tableView, row, data in
-                let index = IndexPath(row: row, section: 0)
-                let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: index) as! NewsStoryTableViewCell
+            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { row, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
-                return cell
             }
             .disposed(by: disposeBag)
+        
+        Observable.zip(
+            newsTableView.rx.modelSelected(NewsStory.self),
+            newsTableView.rx.itemSelected
+        )
+        .bind { [weak self] news, indexPath in
+            HapticsManager.shared.vibrateForSelection()
+            self?.newsTableView.deselectRow(at: indexPath, animated: true)
+            guard let url = URL(string: news.url) else {
+                self?.presentFailedToOpenAlert()
+                return
+            }
+            self?.open(url: url)
+        }
+        .disposed(by: disposeBag)
     }
     
     // MARK: - Private
@@ -190,6 +219,13 @@ final class NewsViewController: UIViewController, UIAnimatable {
     private func open(url: URL) {
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)
+    }
+    /// Present an alert to show an error occurred when opening story
+    private func presentFailedToOpenAlert() {
+        HapticsManager.shared.vibrate(for: .error)
+        let alert = UIAlertController(title: "Unable to Open", message: "We were unable to open the article.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+        present(alert, animated: true)
     }
 }
 
@@ -261,11 +297,5 @@ extension NewsViewController: UISearchBarDelegate {
 //        open(url: url)
 //    }
 //
-//    /// Present an alert to show an error occurred when opening story
-//    private func presentFailedToOpenAlert() {
-//        HapticsManager.shared.vibrate(for: .error)
-//        let alert = UIAlertController(title: "Unable to Open", message: "We were unable to open the article.", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-//        present(alert, animated: true)
-//    }
+
 //}
