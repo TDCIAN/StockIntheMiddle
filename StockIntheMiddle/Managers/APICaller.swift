@@ -70,7 +70,7 @@ final class APICaller {
         }
     }
     
-    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {
+    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {   
         guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return .just(.failure(APIError.invalidURL))
         }

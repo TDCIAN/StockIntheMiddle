@@ -102,8 +102,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
         let searchController = UISearchController()
         searchController.searchBar.placeholder = "Search news with ticker"
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        
         navigationItem.searchController = searchController
     }
     
@@ -121,17 +119,32 @@ final class NewsViewController: UIViewController, UIAnimatable {
     
     private func bind() {
         self.navigationItem.searchController?.searchBar.rx.text.orEmpty
-            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance) // 0.5초 기다림
+            .debounce(RxTimeInterval.milliseconds(750), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .flatMapLatest { query in
-                APICaller.shared.fetchNews(query: query)
+            .do(onNext: { [weak self] _ in
+                self?.showLoadingAnimation()
+            })
+            .observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background))
+            .flatMapLatest { query -> Single<Result<[NewsStory], Error>> in
+                return APICaller.shared.fetchNews(query: query)
             }
+            .observe(on: MainScheduler.instance)
             .compactMap { data -> [NewsStory] in
-                guard case .success(let value) = data else {
-                    return []
+                var newsResult: [NewsStory] = []
+                switch data {
+                case .success(let value):
+                    newsResult = value
+                case .failure(let error):
+                    print("NewsVC - fetchNews - error: \(error)")
                 }
-                return value
+                return newsResult
             }
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] newsResult in
+                self?.hideLoadingAnimation()
+                self?.newsTableView.isHidden = newsResult.isEmpty
+                self?.noResultsLabel.isHidden = !newsResult.isEmpty
+            })
             .asDriver(onErrorJustReturn: [])
             .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { row, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
@@ -209,24 +222,24 @@ final class NewsViewController: UIViewController, UIAnimatable {
 }
 
 
-extension NewsViewController: UISearchBarDelegate {
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        tableView.reloadData()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.queryString = ""
-        fetchNews(with: self.queryString)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.queryString = searchText
-        if !self.queryString.isEmpty {
-            searchTimer?.invalidate()
-            searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
-                self.fetchNews(with: self.queryString)
-            })
-        }
-    }
-    
-}
+//extension NewsViewController: UISearchBarDelegate {
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+////        tableView.reloadData()
+//    }
+//
+//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+//        self.queryString = ""
+//        fetchNews(with: self.queryString)
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        self.queryString = searchText
+//        if !self.queryString.isEmpty {
+//            searchTimer?.invalidate()
+//            searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+//                self.fetchNews(with: self.queryString)
+//            })
+//        }
+//    }
+//
+//}
