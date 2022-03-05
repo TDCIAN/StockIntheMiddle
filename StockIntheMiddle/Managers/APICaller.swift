@@ -70,6 +70,50 @@ final class APICaller {
         }
     }
     
+    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {
+        guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return .just(.failure(APIError.invalidURL))
+        }
+        var endPoint: Endpoint = .topStories
+        var queryParams: [String: String] = [:]
+        if safeQuery.isEmpty {
+            endPoint = .topStories
+            queryParams = [
+                "category": "general"
+            ]
+        } else {
+            endPoint = .companyNews
+            let today = Date()
+            let oneWeekBack = today.addingTimeInterval(-(Constants.day * 7))
+            queryParams = [
+                "symbol": safeQuery,
+                "from": DateFormatter.newsDateFormatter.string(from: oneWeekBack),
+                "to": DateFormatter.newsDateFormatter.string(from: today)
+            ]
+        }
+        guard let url = url(
+            for: endPoint,
+            queryParams: queryParams
+        ) else {
+            return .just(.failure(APIError.networkError))
+        }
+        print("APICaller - fetchNews \n (1) safeQuery: \(safeQuery) \n (2) endPoint: \(endPoint), \n (3) queryParams: \(queryParams), \n (4) url: \(url)")
+        let request = URLRequest(url: url)
+        return URLSession.shared.rx.data(request: request)
+            .map { data in
+                do {
+                    let newsData = try JSONDecoder().decode([NewsStory].self, from: data)
+                    return .success(newsData)
+                } catch {
+                    return .failure(APIError.noDataReturned)
+                }
+            }
+            .catch { _ in
+                .just(.failure(APIError.networkError))
+            }
+            .asSingle()
+    }
+    
     /// Get market data
     /// - Parameters:
     ///   - symbol: Given symbol
@@ -142,32 +186,6 @@ final class APICaller {
         urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
         print("APICaller - url: \(urlString)")
         return URL(string: urlString)
-    }
-    
-    /*
-     1. Single<Result<[NewsStory], Error>> 로 리턴 받는 API를 만든다
-     2. Observable<[NewsStory]> 타입으로 뉴스 데이터 호출 결과를 받는다
-     2. PublishSubject<[NewsStory]>로 뉴스 데이터를 받는다
-     3. 받은 뉴스 데이터를 asDriver로 테이블뷰와 묶는다
-     */
-    func fetchAllNews() -> Single<Result<[NewsStory], Error>> {
-        guard let url = url(for: .topStories, queryParams: ["category": "general"]) else {
-            return .just(.failure(APIError.networkError))
-        }
-        let request = URLRequest(url: url)
-        return URLSession.shared.rx.data(request: request)
-            .map { data in
-                do {
-                    let newsData = try JSONDecoder().decode([NewsStory].self, from: data)
-                    return .success(newsData)
-                } catch {
-                    return .failure(APIError.noDataReturned)
-                }
-            }
-            .catch { _ in
-                .just(.failure(APIError.networkError))
-            }
-            .asSingle()
     }
         
     /// Perform api call
