@@ -124,7 +124,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
             .do(onNext: { [weak self] _ in
                 self?.showLoadingAnimation()
             })
-            .observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background))
+            .observe(on: ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
             .flatMapLatest { query -> Single<Result<[NewsStory], Error>> in
                 return APICaller.shared.fetchNews(query: query)
             }
@@ -139,7 +139,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 }
                 return newsResult
             }
-            .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] newsResult in
                 self?.hideLoadingAnimation()
                 self?.newsTableView.isHidden = newsResult.isEmpty
