@@ -32,21 +32,11 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
     
     // MARK: - Properties
-    private var searchTimer: Timer?
-    
     private let searchButtonTapped = PublishRelay<Void>()
-    private var queryString: String = ""
-//    private var queryString = Observable<String>.of("")
-    
-    /// Collection of models
-    private var stories: [NewsStory] = []
-    
     var newsData = PublishSubject<[NewsStory]>()
     
-    /// Instance of a type
     private let type: Type
     
-    /// Primary news view
     let newsTableView: UITableView = {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
@@ -64,8 +54,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }()
     
     // MARK: - Init
-    
-    /// Create VC with type
     init(type: Type) {
         self.type = type
         super.init(nibName: nil, bundle: nil)
@@ -144,15 +132,9 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.noResultsLabel.isHidden = !newsResult.isEmpty
             })
             .asDriver(onErrorJustReturn: [])
-//            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { row, data, cell in
-//                let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
-//                cell.configure(with: viewModel)
-//            }
-            .drive(newsTableView.rx.items) { tableView, row, data in
-                let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: IndexPath(row: row, section: 0)) as! NewsStoryTableViewCell
+            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { row, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
-                return cell
             }
             .disposed(by: disposeBag)
         
@@ -172,51 +154,11 @@ final class NewsViewController: UIViewController, UIAnimatable {
         .disposed(by: disposeBag)
     }
     
-    // MARK: - Private
-    
-    /// Fetch news models
-    private func fetchNews(with query: String) {
-        self.showLoadingAnimation()
-        if query.isEmpty {
-            APICaller.shared.news(for: type) { [weak self] result in
-                self?.hideLoadingAnimation()
-                switch result {
-                case .success(let stories):
-                    DispatchQueue.main.async {
-                        self?.stories = stories
-                        self?.newsTableView.isHidden = stories.isEmpty
-                        self?.noResultsLabel.isHidden  = !stories.isEmpty
-                        self?.newsTableView.reloadData()
-                    }
-                case .failure(let error):
-                    print("NewsVC - fetchNews - error: \(error)")
-                }
-            }
-        } else {
-            APICaller.shared.news(for: .company(symbol: query)) { [weak self] result in
-                self?.hideLoadingAnimation()
-                switch result {
-                case .success(let stories):
-                    DispatchQueue.main.async {
-                        self?.stories = stories
-                        self?.newsTableView.isHidden = stories.isEmpty
-                        self?.noResultsLabel.isHidden  = !stories.isEmpty
-                        self?.newsTableView.reloadData()
-                    }
-                case .failure(let error):
-                    print("NewsVC - fetchNews - error: \(error)")
-                }
-            }
-        }
-    }
-    
-    /// Open a story
-    /// - Parameter url: URL to open
     private func open(url: URL) {
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)
     }
-    /// Present an alert to show an error occurred when opening story
+
     private func presentFailedToOpenAlert() {
         HapticsManager.shared.vibrate(for: .error)
         let alert = UIAlertController(title: "Unable to Open", message: "We were unable to open the article.", preferredStyle: .alert)
@@ -224,26 +166,3 @@ final class NewsViewController: UIViewController, UIAnimatable {
         present(alert, animated: true)
     }
 }
-
-
-//extension NewsViewController: UISearchBarDelegate {
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-////        tableView.reloadData()
-//    }
-//
-//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        self.queryString = ""
-//        fetchNews(with: self.queryString)
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        self.queryString = searchText
-//        if !self.queryString.isEmpty {
-//            searchTimer?.invalidate()
-//            searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
-//                self.fetchNews(with: self.queryString)
-//            })
-//        }
-//    }
-//
-//}

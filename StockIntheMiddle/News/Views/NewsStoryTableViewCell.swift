@@ -8,16 +8,12 @@
 import UIKit
 import SDWebImage
 
-/// News story tableView Cell
 final class NewsStoryTableViewCell: UITableViewCell {
     
-    /// Cell id
     static let identifier = "NewsStoryTableViewCell"
     
-    /// Ideal height of cell
-    static let preferredHeight: CGFloat = 140
+    static let preferredHeight: CGFloat = 150
     
-    /// Cell viewModel
     struct ViewModel {
         let source: String
         let headline: String
@@ -32,22 +28,19 @@ final class NewsStoryTableViewCell: UITableViewCell {
         }
     }
     
-    // Source
     private let sourceLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .medium)
         return label
     }()
     
-    // Headline
     private let headlineLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .regular)
+        label.font = .systemFont(ofSize: 20, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
     
-    // Date
     private let dateLabel: UILabel = {
        let label = UILabel()
         label.textColor = .secondaryLabel
@@ -55,7 +48,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         return label
     }()
     
-    // Image
     private let storyImageView: UIImageView = {
       let imageView = UIImageView()
         imageView.backgroundColor = .tertiarySystemBackground
@@ -70,7 +62,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .secondarySystemBackground
         backgroundColor = .secondarySystemBackground
-        addSubviews(sourceLabel, headlineLabel, dateLabel, storyImageView)
     }
     
     required init?(coder: NSCoder) {
@@ -80,37 +71,34 @@ final class NewsStoryTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let imageSize: CGFloat = contentView.height / 1.4
-        storyImageView.frame = CGRect(
-            x: contentView.width - imageSize - 10,
-            y: (contentView.height - imageSize) / 2,
-            width: imageSize,
-            height: imageSize
-        )
+        addSubviews(sourceLabel, headlineLabel, dateLabel, storyImageView)
         
-        // Layout labels
-        let availableWidth: CGFloat = contentView.width - separatorInset.left - imageSize - 15
-        dateLabel.frame = CGRect(
-            x: separatorInset.left,
-            y: contentView.height - 40,
-            width: availableWidth,
-            height: 40
-        )
+        [storyImageView, sourceLabel, headlineLabel, dateLabel].forEach {
+            contentView.addSubview($0)
+        }
         
-        sourceLabel.sizeToFit()
-        sourceLabel.frame = CGRect(
-            x: separatorInset.left,
-            y: 4,
-            width: availableWidth,
-            height: sourceLabel.height
-        )
+        storyImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(15)
+            $0.width.height.equalTo(120)
+        }
         
-        headlineLabel.frame = CGRect(
-            x: separatorInset.left,
-            y: sourceLabel.bottom + 5,
-            width: availableWidth,
-            height: contentView.height - sourceLabel.bottom - dateLabel.height - 10
-        )
+        sourceLabel.snp.makeConstraints {
+            $0.top.equalTo(storyImageView.snp.top)
+            $0.leading.equalToSuperview().inset(15)
+        }
+        
+        headlineLabel.snp.makeConstraints {
+            $0.top.equalTo(sourceLabel.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().inset(15)
+            $0.height.lessThanOrEqualTo(75)
+            $0.trailing.lessThanOrEqualTo(storyImageView.snp.leading).offset(-10)
+        }
+        
+        dateLabel.snp.makeConstraints {
+            $0.bottom.equalTo(storyImageView.snp.bottom)
+            $0.leading.equalToSuperview().inset(15)
+        }
     }
     
     override func prepareForReuse() {
@@ -121,8 +109,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         storyImageView.image = nil
     }
     
-    /// Configure view
-    /// - Parameter viewModel: View ViewModel
     public func configure(with viewModel: ViewModel) {
         headlineLabel.text = viewModel.headline
         sourceLabel.text = viewModel.source
