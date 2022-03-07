@@ -51,7 +51,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         table.rowHeight = NewsStoryTableViewCell.preferredHeight
-        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
         return table
     }()
     
@@ -150,8 +149,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
 //                cell.configure(with: viewModel)
 //            }
             .drive(newsTableView.rx.items) { tableView, row, data in
-                tableView.tableHeaderView = NewsHeaderView()
-                tableView.sectionHeaderHeight = NewsHeaderView.preferredHeight
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: IndexPath(row: row, section: 0)) as! NewsStoryTableViewCell
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
