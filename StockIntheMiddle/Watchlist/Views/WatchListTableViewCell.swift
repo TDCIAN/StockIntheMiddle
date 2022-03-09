@@ -92,55 +92,34 @@ final class WatchListTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        symbolLabel.sizeToFit()
-        nameLabel.sizeToFit()
-        priceLabel.sizeToFit()
-        changeLabel.sizeToFit()
-        
-        let yStart: CGFloat = (contentView.height - symbolLabel.height - nameLabel.height) / 2
-        symbolLabel.frame = CGRect(
-            x: separatorInset.left,
-            y: yStart,
-            width: symbolLabel.width,
-            height: symbolLabel.height
-        )
-        
-        nameLabel.frame = CGRect(
-            x: separatorInset.left,
-            y: symbolLabel.bottom,
-            width: (contentView.width * 0.35) > nameLabel.width ? nameLabel.width : contentView.width * 0.35,
-            height: nameLabel.height
-        )
-        
-        let currentWidth = max(
-            max(priceLabel.width, changeLabel.width),
-            WatchListViewController.maxChangeWidth
-        )
-        
-        if currentWidth > WatchListViewController.maxChangeWidth {
-            WatchListViewController.maxChangeWidth = currentWidth
-            delegate?.didUpdateMaxWidth()
+
+        symbolLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(10)
         }
-        priceLabel.frame = CGRect(
-            x: contentView.width - 10 - currentWidth,
-            y: (contentView.height - priceLabel.height - changeLabel.height) / 2,
-            width: currentWidth,
-            height: priceLabel.height
-        )
+
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(symbolLabel.snp.bottom)
+            $0.width.lessThanOrEqualTo(contentView.width * 0.4)
+        }
         
-        changeLabel.frame = CGRect(
-            x: contentView.width - 10 - currentWidth,
-            y: priceLabel.bottom,
-            width: currentWidth,
-            height: changeLabel.height
-        )
+        priceLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(10)
+        }
         
-        miniChartView.frame = CGRect(
-            x: priceLabel.left - (contentView.width / 3) - 5,
-            y: 6,
-            width: contentView.width / 3,
-            height: contentView.height - 12
-        )
+        changeLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(priceLabel.snp.bottom)
+        }
+        
+        miniChartView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.33)
+            $0.height.equalTo(contentView.height - 12)
+            $0.trailing.equalToSuperview().inset(80)
+        }
     }
     
     override func prepareForReuse() {
