@@ -14,7 +14,7 @@ class Constants {
 
 class ConfigManager {
     static let shared = ConfigManager()
-    
+
     var isDarkMode: Bool {
         get {
             UserDefaults.standard.bool(forKey: Constants.IS_DARK_MODE)
@@ -23,7 +23,7 @@ class ConfigManager {
             UserDefaults.standard.set(newValue, forKey: Constants.IS_DARK_MODE)
         }
     }
-    
+
     var chartPeriod: Int {
         get {
             UserDefaults.standard.integer(forKey: Constants.CHART_PERIOD)
@@ -32,7 +32,7 @@ class ConfigManager {
             UserDefaults.standard.set(newValue, forKey: Constants.CHART_PERIOD)
         }
     }
-    
+
     var numberOfDays: TimeInterval {
         var numberOfDays: TimeInterval = 1
         if chartPeriod == 0 {

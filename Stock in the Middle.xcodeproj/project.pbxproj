@@ -65,6 +65,7 @@
 /* Begin PBXFileReference section */
 		1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		1E3682C827E2C11C0059E6DD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		1E75BCC027B08015009CC6D4 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC227B08027009CC6D4 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		1E75BCC427B08040009CC6D4 /* StockDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailsViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +136,7 @@
 		1E7A214B27AEBB56008D1C05 = {
 			isa = PBXGroup;
 			children = (
+				1E3682C827E2C11C0059E6DD /* .swiftlint.yml */,
 				1E7A215627AEBB56008D1C05 /* StockIntheMiddle */,
 				1EF86B2027B9C88000A40562 /* StockIntheMiddleTests */,
 				1E7A215527AEBB56008D1C05 /* Products */,
@@ -390,6 +392,7 @@
 				1E7A215127AEBB56008D1C05 /* Frameworks */,
 				1E7A215227AEBB56008D1C05 /* Resources */,
 				B420DCDB82A91F3DB3551FD3 /* [CP] Embed Pods Frameworks */,
+				1E3682C727E2C00B0059E6DD /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -476,6 +479,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1E3682C727E2C00B0059E6DD /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint --path \"${PROJECT_DIR}/.swiftlint.yml\"\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		A08F2E59595A127CBDD1CF8D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

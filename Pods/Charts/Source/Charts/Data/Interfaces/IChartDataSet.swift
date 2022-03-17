@@ -13,8 +13,7 @@ import Foundation
 import CoreGraphics
 
 @objc
-public protocol IChartDataSet
-{
+public protocol IChartDataSet {
     // MARK: - Data functions and accessors
     
     /// Use this method to tell the data set that the underlying data has changed

@@ -10,7 +10,7 @@ import Charts
 
 /// View to show a chart
 final class StockChartView: UIView {
-    
+
     /// Chart View ViewModel
     struct ViewModel {
         let data: [Double]
@@ -18,7 +18,7 @@ final class StockChartView: UIView {
         let showAxis: Bool
         let fillColor: UIColor
     }
-    
+
     /// Chart View
     private let chartView: LineChartView = {
        let chartView = LineChartView()
@@ -31,27 +31,27 @@ final class StockChartView: UIView {
         chartView.rightAxis.enabled = false
         return chartView
     }()
-    
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(chartView)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         chartView.frame = bounds
     }
-    
+
     // Reset the chart view
     func reset() {
         chartView.data = nil
     }
-    
+
     /// Configure View
     /// - Parameter viewModel: View ViewModel
     func configure(with viewModel: ViewModel) {

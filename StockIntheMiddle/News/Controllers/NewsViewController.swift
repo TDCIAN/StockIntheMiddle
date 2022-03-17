@@ -14,12 +14,12 @@ import RxCocoa
 /// Controller to show news
 final class NewsViewController: UIViewController, UIAnimatable {
     let disposeBag = DisposeBag()
-    
+
     /// Type of news
     enum `Type` {
         case topStories
         case company(symbol: String)
-        
+
         /// Title for given type
         var title: String {
             switch self {
@@ -30,20 +30,20 @@ final class NewsViewController: UIViewController, UIAnimatable {
             }
         }
     }
-    
+
     // MARK: - Properties
     private let searchButtonTapped = PublishRelay<Void>()
     var newsData = PublishSubject<[NewsStory]>()
-    
+
     private let type: Type
-    
+
     let newsTableView: UITableView = {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         table.rowHeight = NewsStoryTableViewCell.preferredHeight
         return table
     }()
-    
+
     let noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
@@ -52,17 +52,17 @@ final class NewsViewController: UIViewController, UIAnimatable {
         label.isHidden = true
         return label
     }()
-    
+
     // MARK: - Init
     init(type: Type) {
         self.type = type
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +72,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
         setTableView()
         bind()
     }
-    
+
     private func setUpTitleView() {
         let titleView = UIView()
         let label = UILabel()
@@ -84,14 +84,14 @@ final class NewsViewController: UIViewController, UIAnimatable {
         }
         navigationItem.titleView = titleView
     }
-    
+
     private func setNavigationItems() {
         let searchController = UISearchController()
         searchController.searchBar.placeholder = "Search news with ticker"
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
     }
-    
+
     private func setTableView() {
         view.addSubview(newsTableView)
         newsTableView.snp.makeConstraints {
@@ -103,7 +103,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
             $0.centerY.equalToSuperview().offset(-100)
         }
     }
-    
+
     private func bind() {
         self.navigationItem.searchController?.searchBar.rx.text.orEmpty
             .debounce(RxTimeInterval.milliseconds(750), scheduler: MainScheduler.instance)
@@ -132,12 +132,12 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.noResultsLabel.isHidden = !newsResult.isEmpty
             })
             .asDriver(onErrorJustReturn: [])
-            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { row, data, cell in
+            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { _, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
             }
             .disposed(by: disposeBag)
-        
+
         Observable.zip(
             newsTableView.rx.modelSelected(NewsStory.self),
             newsTableView.rx.itemSelected
@@ -153,7 +153,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
         }
         .disposed(by: disposeBag)
     }
-    
+
     private func open(url: URL) {
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)

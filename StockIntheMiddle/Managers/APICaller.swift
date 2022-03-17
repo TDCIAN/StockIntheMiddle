@@ -10,23 +10,22 @@ import RxSwift
 
 /// Object to manage api calls
 final class APICaller {
-    
+
     /// Singleton
     static let shared = APICaller()
-    
+
     private struct Constants {
         static let apiKey = "c805soiad3i8n3bhbcmg"
         static let sandbaxApiKey = "sandbox_c805soiad3i8n3bhbcn0"
         static let baseURL = "https://finnhub.io/api/v1/"
         static let day: TimeInterval = 3600 * 24
     }
-    
+
     /// Private constructor
     private init() {}
-    
+
     // MARK: - Public
-    
-    
+
     /// Search for a company
     /// - Parameters:
     ///   - query: Query string(symbol or name)
@@ -34,12 +33,12 @@ final class APICaller {
     public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> Void) {
         guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         request(
-            url: url(for: .search, queryParams: ["q":safeQuery]),
+            url: url(for: .search, queryParams: ["q": safeQuery]),
             expecting: SearchResponse.self,
             completion: completion
         )
     }
-    
+
     /// Get news for type
     /// - Parameters:
     ///   - type: Company or top stories
@@ -69,8 +68,8 @@ final class APICaller {
             )
         }
     }
-    
-    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {   
+
+    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {
         guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return .just(.failure(APIError.invalidURL))
         }
@@ -113,7 +112,7 @@ final class APICaller {
             }
             .asSingle()
     }
-    
+
     /// Get market data
     /// - Parameters:
     ///   - symbol: Given symbol
@@ -133,7 +132,7 @@ final class APICaller {
         )
         request(url: url, expecting: MarketDataResponse.self, completion: completion)
     }
-    
+
     /// Get financial metrics
     /// - Parameters:
     ///   - symbol: Symbol of company
@@ -149,7 +148,7 @@ final class APICaller {
             completion: completion
         )
     }
-    
+
     // MARK: - Private
     
     private enum Endpoint: String {
@@ -159,13 +158,13 @@ final class APICaller {
         case marketData = "stock/candle"
         case financials = "stock/metric"
     }
-    
+
     private enum APIError: Error {
         case invalidURL
         case noDataReturned
         case networkError
     }
-    
+
     /// Try to create url for endpoint
     /// - Parameters:
     ///   - endpoint: Endpoint to create for
@@ -173,7 +172,7 @@ final class APICaller {
     /// - Returns: Optional URL
     private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
         var urlString = Constants.baseURL + endpoint.rawValue
-        
+
         var queryItems = [URLQueryItem]()
         // Add any parameters
         for (name, value) in queryParams {
@@ -181,13 +180,13 @@ final class APICaller {
         }
         // Add token
         queryItems.append(.init(name: "token", value: Constants.apiKey))
-        
+
         // Convert query items to suffix string
         urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
         print("APICaller - url: \(urlString)")
         return URL(string: urlString)
     }
-        
+
     /// Perform api call
     /// - Parameters
     ///     - url: URL to hit
@@ -199,8 +198,8 @@ final class APICaller {
             completion(.failure(APIError.invalidURL))
             return
         }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 if let error = error {
                     completion(.failure(error))
@@ -216,7 +215,7 @@ final class APICaller {
                 completion(.failure(error))
             }
         }
-        
+
         task.resume()
     }
 }

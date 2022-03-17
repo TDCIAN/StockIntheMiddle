@@ -15,7 +15,7 @@ struct MarketDataResponse: Codable {
     let low: [Double]
     let status: String
     let timestamps: [TimeInterval]
-    
+
     enum CodingKeys: String, CodingKey {
         case open = "o"
         case close = "c"
@@ -24,11 +24,11 @@ struct MarketDataResponse: Codable {
         case status = "s"
         case timestamps = "t"
     }
-    
+
     /// Convert market data to array of candle stick models
     var candleSticks: [CandleStick] {
         var result = [CandleStick]()
-        
+
         for index in 0..<open.count {
             result.append(
                 .init(
@@ -40,7 +40,7 @@ struct MarketDataResponse: Codable {
                 )
             )
         }
-        
+
         let sortedData = result.sorted(by: { $0.date > $1.date })
         return sortedData
     }

@@ -10,14 +10,14 @@ import UIKit
 
 // MARK: - Notification
 extension Notification.Name {
-    
+
     /// Notification for when symbol gets added to watchlist
     static let didAddToWatchList = Notification.Name("didAddToWatchList")
 }
 
 // MARK: - NumberFormatter
 extension NumberFormatter {
-    
+
     /// Formatter for percent style
     static let percentFormatter: NumberFormatter = {
        let formatter = NumberFormatter()
@@ -26,7 +26,7 @@ extension NumberFormatter {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
-    
+
     /// Formatter for decimal style
     static let numberFormatter: NumberFormatter = {
        let formatter = NumberFormatter()
@@ -39,7 +39,7 @@ extension NumberFormatter {
 
 // MARK: - ImageView
 extension UIImageView {
-    
+
     /// Sets image from remote url
     /// - Parameter url: URL to fetch from
     func setImage(with url: URL?) {
@@ -58,7 +58,7 @@ extension UIImageView {
 
 // MARK: - String
 extension String {
-    
+
     /// Create string from time interval
     /// - Parameter timeInterval: Timeinterval since 1970
     /// - Returns: Formatted string
@@ -66,7 +66,7 @@ extension String {
         let date = Date(timeIntervalSince1970: timeInterval)
         return DateFormatter.newsDateFormatter.string(from: date)
     }
-    
+
     /// Percentage formatted string
     /// - Parameter double: Double to format
     /// - Returns: String to percent format
@@ -74,7 +74,7 @@ extension String {
         let formatter = NumberFormatter.percentFormatter
         return formatter.string(from: NSNumber(value: double)) ?? "\(double)"
     }
-    
+
     /// Format number to string
     /// - Parameter number: Number to form
     /// - Returns: Formatted string
@@ -82,15 +82,15 @@ extension String {
         let formatter = NumberFormatter.numberFormatter
         return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
-    
+
     func addBrackets() -> String {
         return "(\(self))"
     }
-    
+
     func prefix(withText text: String) -> String {
         return text + self
     }
-    
+
     func toDouble() -> Double? {
         return Double(self)
     }
@@ -103,7 +103,7 @@ extension DateFormatter {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
-    
+
     static let prettyDateFormatter: DateFormatter = {
        let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -113,7 +113,7 @@ extension DateFormatter {
 
 // MARK: - Add Subview
 extension UIView {
-    
+
     /// Adds multiple subviews
     /// - Parameter views: Collection of subviews
     func addSubviews(_ views: UIView...) {
@@ -128,23 +128,23 @@ extension UIView {
     var width: CGFloat {
         frame.size.width
     }
-    
+
     var height: CGFloat {
         frame.size.height
     }
-    
+
     var left: CGFloat {
         frame.origin.x
     }
-    
+
     var right: CGFloat {
         left + width
     }
-    
+
     var top: CGFloat {
         frame.origin.y
     }
-        
+
     var bottom: CGFloat {
         top + height
     }
@@ -166,56 +166,56 @@ extension Array where Element == CandleStick {
 }
 
 extension UIColor {
-    
+
     static let themeRedShade = UIColor("FAE2E1")
     static let themeGreenShade = UIColor("B0F1DD")
-    
+
     convenience init(_ hex: String, alpha: CGFloat = 1.0) {
         var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
-        if (cString.hasPrefix("#")) {
+
+        if cString.hasPrefix("#") {
             cString.removeFirst()
         }
-        
-        if ((cString.count) != 6) {
+
+        if (cString.count) != 6 {
             self.init("ff0000") // return red color for wrong hex input
             return
         }
-        
+
         var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-        
+
         self.init(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
                   green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
                   blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                   alpha: alpha)
     }
-    
+
 }
 
 extension Double {
     var stringValue: String {
         return String(describing: self)
     }
-    
+
     var twoDecimalPlaceString: String {
         return String(format: "%.2f", self)
     }
-    
+
     var currencyFormat: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = .init(identifier: "en_US")
         return formatter.string(from: self as NSNumber) ?? twoDecimalPlaceString
     }
-    
+
     var percentageFormat: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.maximumFractionDigits = 2
         return formatter.string(from: self as NSNumber) ?? twoDecimalPlaceString
     }
-    
+
     func toCurrencyFormat(hasDollarSymbol: Bool = true, hasDecimalPlaces: Bool = true) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -234,7 +234,7 @@ extension Int {
     var floatValue: Float {
         return Float(self)
     }
-    
+
     var doubleValue: Double {
         return Double(self)
     }
@@ -261,7 +261,7 @@ extension UITextField {
         doneToolBar.sizeToFit()
         inputAccessoryView = doneToolBar
     }
-    
+
     @objc private func dismissKeyboard() {
         resignFirstResponder()
     }

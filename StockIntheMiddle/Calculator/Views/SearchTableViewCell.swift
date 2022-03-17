@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class SearchTableViewCell: UITableViewCell {
-    
+
     static let identifier = "SearchTableViewCell"
     static let preferredHeight: CGFloat = 88
 
@@ -31,17 +31,17 @@ final class SearchTableViewCell: UITableViewCell {
         label.textColor = .label
         return label
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.clipsToBounds = true
         addSubviews(assetSymbolLabel, assetTypeLabel, assetNameLabel)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         assetSymbolLabel.snp.makeConstraints {
@@ -58,7 +58,7 @@ final class SearchTableViewCell: UITableViewCell {
             $0.width.lessThanOrEqualTo(contentView.frame.width * 0.45)
         }
     }
-    
+
     func configure(with searchResult: CalcSearchResult) {
         assetNameLabel.text = searchResult.name
         assetSymbolLabel.text = searchResult.symbol

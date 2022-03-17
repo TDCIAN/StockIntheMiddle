@@ -9,7 +9,7 @@ import UIKit
 
 /// Delegate to notify of header events
 protocol NewsHeaderViewDelegate: AnyObject {
-    
+
     /// Notify user tapped header button
     /// - Parameter headerView: Ref of header view
     func newsHeaderViewDidTapAddButton(_ headerView: NewsHeaderView)
@@ -17,28 +17,28 @@ protocol NewsHeaderViewDelegate: AnyObject {
 
 /// TableView header for news
 final class NewsHeaderView: UITableViewHeaderFooterView {
-    
+
     /// Header identifier
     static let identifier = "NewsHeaderView"
-    
+
     /// Ideal height of header
     static let preferredHeight: CGFloat = 70
-    
+
     /// Delegate instance for events
     weak var delegate: NewsHeaderViewDelegate?
-    
+
     /// ViewModel for header view
     struct ViewModel {
         let title: String
         let shouldShowAddButton: Bool
     }
-    
+
     private let label: UILabel = {
        let label = UILabel()
         label.font = .boldSystemFont(ofSize: 32)
         return label
     }()
-    
+
     let button: UIButton = {
        let button = UIButton()
         button.setTitle("+ Watchlist", for: .normal)
@@ -48,7 +48,7 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         button.layer.masksToBounds = true
         return button
     }()
-    
+
     // MARK: - Init
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -56,11 +56,11 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         contentView.addSubviews(label, button)
         button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         label.frame = CGRect(x: 14, y: 0, width: contentView.width - 28, height: contentView.height)
@@ -70,18 +70,18 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
                               width: button.width + 8,
                               height: button.height)
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         label.text = nil
     }
-    
+
     /// Handle button tap
     @objc private func didTapButton() {
         // Call delegate
         delegate?.newsHeaderViewDidTapAddButton(self)
     }
-    
+
     /// Configure view
     /// - Parameter viewModel: View ViewModel
     public func configure(with viewModel: ViewModel) {

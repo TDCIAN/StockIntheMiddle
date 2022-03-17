@@ -9,9 +9,9 @@
 import UIKit
 
 final public class Loaf {
-    
+
     // MARK: - Specifiers
-    
+
     /// Define a custom style for the loaf.
     public struct Style {
         /// Specifies the position of the icon on the loaf. (Default is `.left`)
@@ -22,7 +22,7 @@ final public class Loaf {
             case left
             case right
         }
-		
+
         /// Specifies the width of the Loaf. (Default is `.fixed(280)`)
         ///
         /// - fixed: Specified as pixel size. i.e. 280
@@ -31,31 +31,31 @@ final public class Loaf {
             case fixed(CGFloat)
             case screenPercentage(CGFloat)
         }
-        
+
         /// The background color of the loaf.
         let backgroundColor: UIColor
-        
+
         /// The color of the label's text
         let textColor: UIColor
-        
+
         /// The color of the icon (Assuming it's rendered as template)
         let tintColor: UIColor
-        
+
         /// The font of the label
         let font: UIFont
-        
+
         /// The icon on the loaf
         let icon: UIImage?
-        
+
         /// The alignment of the text within the Loaf
         let textAlignment: NSTextAlignment
-        
+
         /// The position of the icon
         let iconAlignment: IconAlignment
-		
+
         /// The width of the loaf
         let width: Width
-		
+
         public init(
             backgroundColor: UIColor,
             textColor: UIColor = .white,
@@ -75,7 +75,7 @@ final public class Loaf {
             self.width = width
         }
     }
-    
+
     /// Defines the loaf's status. (Default is `.info`)
     ///
     /// - success: Represents a success message
@@ -90,7 +90,7 @@ final public class Loaf {
         case info
         case custom(Style)
     }
-    
+
     /// Defines the loaction to display the loaf. (Default is `.bottom`)
     ///
     /// - top: Top of the display
@@ -99,7 +99,7 @@ final public class Loaf {
         case top
         case bottom
     }
-    
+
     /// Defines either the presenting or dismissing direction of loaf. (Default is `.vertical`)
     ///
     /// - left: To / from the left
@@ -110,7 +110,7 @@ final public class Loaf {
         case right
         case vertical
     }
-    
+
     /// Defines the duration of the loaf presentation. (Default is .`avergae`)
     ///
     /// - short: 2 seconds
@@ -122,7 +122,7 @@ final public class Loaf {
         case average
         case long
         case custom(TimeInterval)
-        
+
         var length: TimeInterval {
             switch self {
             case .short:   return 2.0
@@ -133,7 +133,7 @@ final public class Loaf {
             }
         }
     }
-    
+
     /// Icons used in basic states
     public enum Icon {
         public static let success = Icons.imageOfSuccess().withRenderingMode(.alwaysTemplate)
@@ -141,13 +141,13 @@ final public class Loaf {
         public static let warning = Icons.imageOfWarning().withRenderingMode(.alwaysTemplate)
         public static let info = Icons.imageOfInfo().withRenderingMode(.alwaysTemplate)
     }
-    
+
     // Reason a Loaf was dismissed
     public enum DismissalReason {
         case tapped
         case timedOut
     }
-    
+
     // MARK: - Properties
     public typealias LoafCompletionHandler = ((DismissalReason) -> Void)?
     var message: String
@@ -158,7 +158,7 @@ final public class Loaf {
     var dismissingDirection: Direction
     var completionHandler: LoafCompletionHandler = nil
     weak var sender: UIViewController?
-    
+
     // MARK: - Public methods
     public init(_ message: String,
                 state: State = .info,
@@ -173,7 +173,7 @@ final public class Loaf {
         self.dismissingDirection = dismissingDirection
         self.sender = sender
     }
-    
+
     /// Show the loaf for a specified duration. (Default is `.average`)
     ///
     /// - Parameter duration: Length the loaf will be presented
@@ -182,11 +182,11 @@ final public class Loaf {
         self.completionHandler = completionHandler
         LoafManager.shared.queueAndPresent(self)
     }
-	
+
 	/// Manually dismiss a currently presented Loaf
 	///
 	/// - Parameter animated: Whether the dismissal will be animated
-	public static func dismiss(sender: UIViewController, animated: Bool = true){
+	public static func dismiss(sender: UIViewController, animated: Bool = true) {
 		guard LoafManager.shared.isPresenting else { return }
 		guard let vc = sender.presentedViewController as? LoafViewController else { return }
 		vc.dismiss(animated: animated) {
@@ -195,22 +195,22 @@ final public class Loaf {
 	}
 }
 
-final fileprivate class LoafManager: LoafDelegate {
+final private class LoafManager: LoafDelegate {
     static let shared = LoafManager()
-    
+
     fileprivate var queue = Queue<Loaf>()
     fileprivate var isPresenting = false
-    
+
     fileprivate func queueAndPresent(_ loaf: Loaf) {
         queue.enqueue(loaf)
         presentIfPossible()
     }
-    
+
     func loafDidDismiss() {
         isPresenting = false
         presentIfPossible()
     }
-    
+
     fileprivate func presentIfPossible() {
         guard isPresenting == false, let loaf = queue.dequeue(), let sender = loaf.sender else { return }
         isPresenting = true
@@ -226,24 +226,24 @@ protocol LoafDelegate: AnyObject {
 
 final class LoafViewController: UIViewController {
     var loaf: Loaf
-    
+
     let label = UILabel()
     let imageView = UIImageView(image: nil)
     var font = UIFont.systemFont(ofSize: 14, weight: .medium)
     var textAlignment: NSTextAlignment = .left
     var transDelegate: UIViewControllerTransitioningDelegate
     weak var delegate: LoafDelegate?
-    
+
     init(_ toast: Loaf) {
         self.loaf = toast
         self.transDelegate = Manager(loaf: toast, size: .zero)
         super.init(nibName: nil, bundle: nil)
-		
+
         var width: CGFloat?
         if case let Loaf.State.custom(style) = loaf.state {
             self.font = style.font
             self.textAlignment = style.textAlignment
-			
+
             switch style.width {
             case .fixed(let value):
                 width = value
@@ -252,18 +252,18 @@ final class LoafViewController: UIViewController {
                 width = UIScreen.main.bounds.width * percentage
             }
         }
-        
+
         let height = max(toast.message.heightWithConstrainedWidth(width: 240, font: font) + 12, 40)
         preferredContentSize = CGSize(width: width ?? 280, height: height)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         label.text = loaf.message
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -272,11 +272,11 @@ final class LoafViewController: UIViewController {
         label.textAlignment = textAlignment
         label.setContentCompressionResistancePriority(.required, for: .vertical)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         switch loaf.state {
         case .success:
             imageView.image = Loaf.Icon.success
@@ -302,10 +302,10 @@ final class LoafViewController: UIViewController {
             label.font = style.font
             constrainWithIconAlignment(style.iconAlignment, showsIcon: imageView.image != nil)
         }
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + loaf.duration.length, execute: {
             self.dismiss(animated: true) { [weak self] in
                 self?.delegate?.loafDidDismiss()
@@ -313,20 +313,20 @@ final class LoafViewController: UIViewController {
             }
         })
     }
-    
+
     @objc private func handleTap() {
         dismiss(animated: true) { [weak self] in
             self?.delegate?.loafDidDismiss()
             self?.loaf.completionHandler?(.tapped)
         }
     }
-    
+
     private func constrainWithIconAlignment(_ alignment: Loaf.Style.IconAlignment, showsIcon: Bool = true) {
         view.addSubview(label)
-        
+
         if showsIcon {
             view.addSubview(imageView)
-            
+
             switch alignment {
             case .left:
                 NSLayoutConstraint.activate([
@@ -334,7 +334,7 @@ final class LoafViewController: UIViewController {
                     imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                     imageView.heightAnchor.constraint(equalToConstant: 28),
                     imageView.widthAnchor.constraint(equalToConstant: 28),
-                    
+
                     label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
                     label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4),
                     label.topAnchor.constraint(equalTo: view.topAnchor),
@@ -346,7 +346,7 @@ final class LoafViewController: UIViewController {
                     imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                     imageView.heightAnchor.constraint(equalToConstant: 28),
                     imageView.widthAnchor.constraint(equalToConstant: 28),
-                    
+
                     label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
                     label.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -4),
                     label.topAnchor.constraint(equalTo: view.topAnchor),
@@ -366,11 +366,11 @@ final class LoafViewController: UIViewController {
 
 private struct Queue<T> {
     fileprivate var array = [T]()
-    
+
     mutating func enqueue(_ element: T) {
         array.append(element)
     }
-    
+
     mutating func dequeue() -> T? {
         if array.isEmpty {
             return nil
@@ -379,4 +379,3 @@ private struct Queue<T> {
         }
     }
 }
-

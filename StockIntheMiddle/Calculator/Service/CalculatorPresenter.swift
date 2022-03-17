@@ -9,10 +9,10 @@ import UIKit
 
 struct CalculatorPresenter {
     func getPresentation(result: DCAResult) -> CalculatorPresentation {
-        
+
         let isProfitable = result.isProfitable == true
         let gainSymbol = isProfitable ? "+" : ""
-        
+
         return .init(currentValueLabelBackgroundColor: isProfitable ? .themeGreenShade : .themeRedShade,
                      currentValue: result.currentValue.currencyFormat,
                      investmentAmount: result.investmentAmount.toCurrencyFormat(hasDecimalPlaces: false),

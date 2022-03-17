@@ -33,21 +33,21 @@ struct SettingsOption {
 }
 
 final class SettingsViewController: UIViewController {
-    
+
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
         return table
     }()
-    
+
     private var appVersion: String {
         guard let dictionary = Bundle.main.infoDictionary,
               let version = dictionary["CFBundleShortVersionString"] as? String else { return "1.0.0" }
         let versionBuild: String = version
         return versionBuild
     }
-    
+
     var models: [Section] = []
 
     override func viewDidLoad() {
@@ -57,7 +57,7 @@ final class SettingsViewController: UIViewController {
         setTableView()
         configure()
     }
-    
+
     private func setUpTitleView() {
         let titleView = UIView()
         let label = UILabel()
@@ -69,14 +69,14 @@ final class SettingsViewController: UIViewController {
         }
         navigationItem.titleView = titleView
     }
-    
+
     private func setTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = view.bounds
     }
-    
+
     private func configure() {
         models.append(Section(title: "System Settings", options: [
             .switchCell(model: SystemSettingsOption(
@@ -85,13 +85,13 @@ final class SettingsViewController: UIViewController {
                 iconBackgroundColor: .systemBlue
             ))
         ]))
-        
+
         models.append(Section(title: "App Info", options: [
             .staticCell(model: SettingsOption(
                 title: "App Version \(self.appVersion)",
                 icon: UIImage(systemName: "info.circle"),
                 iconBackgroundColor: .systemBlue, isHidden: true) {
-                    
+
             }),
             .staticCell(model: SettingsOption(title: "Opensource License", icon: UIImage(systemName: "book"), iconBackgroundColor: .systemBlue, isHidden: false) {
                 self.showOpensourceView()
@@ -100,18 +100,18 @@ final class SettingsViewController: UIViewController {
                 self.tapPrivacyPolicyButton()
             })
         ]))
-        
+
         models.append(Section(title: "Contact", options: [
             .staticCell(model: SettingsOption(
                 title: "tdcian71@gmail.com",
                 icon: UIImage(systemName: "mail"),
                 iconBackgroundColor: .systemBlue,
                 isHidden: true) {
-                
+
             })
         ]))
     }
-    
+
     private func showOpensourceView() {
         let openSourceVC = OpenSourceViewController()
         self.present(openSourceVC, animated: true, completion: nil)
@@ -124,26 +124,26 @@ final class SettingsViewController: UIViewController {
         let safari = SFSafariViewController(url: privacyURL, configuration: config)
         safari.preferredBarTintColor = UIColor.white
         safari.preferredControlTintColor = UIColor.systemBlue
-        
+
         present(safari, animated: true, completion: nil)
     }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
         return section.title
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models[section].options.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.section].options[indexPath.row]
         switch model.self {
@@ -158,7 +158,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let type = models[indexPath.section].options[indexPath.row]
@@ -170,4 +170,3 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
-

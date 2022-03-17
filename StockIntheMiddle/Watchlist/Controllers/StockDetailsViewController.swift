@@ -12,16 +12,16 @@ import SafariServices
 final class StockDetailsViewController: UIViewController {
 
     // MARK: - Properties
-    
+
     /// Stock symbol
     private let symbol: String
-    
+
     /// Company name
     private let companyName: String
-    
+
     /// Collection of data
     private var candleStickData: [CandleStick]
-    
+
     /// Primary view
     private let tableView: UITableView = {
        let table = UITableView()
@@ -29,13 +29,13 @@ final class StockDetailsViewController: UIViewController {
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         return table
     }()
-    
+
     /// Collection of news stories
     private var stories: [NewsStory] = []
-    
+
     /// Company metrics
     private var metrics: Metrics?
-    
+
     // MARK: - Init
     init(symbol: String, companyName: String, candleStickData: [CandleStick] = []) {
         self.symbol = symbol
@@ -43,13 +43,13 @@ final class StockDetailsViewController: UIViewController {
         self.candleStickData = candleStickData
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -65,7 +65,7 @@ final class StockDetailsViewController: UIViewController {
         tableView.frame = view.bounds
     }
     // MARK: - Private
-    
+
     /// Sets up close button
     private func setUpCloseButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -74,12 +74,12 @@ final class StockDetailsViewController: UIViewController {
             action: #selector(didTapClose)
         )
     }
-    
+
     /// Handle close button tap
     @objc private func didTapClose() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     /// Sets up tableView
     private func setUpTable() {
         view.addSubviews(tableView)
@@ -89,11 +89,11 @@ final class StockDetailsViewController: UIViewController {
             frame: CGRect(x: 0, y: 0, width: view.width, height: (view.width * 0.7) + 100)
         )
     }
-    
+
     /// Fetch financial metrics
     private func fetchFinancialData() {
         let group = DispatchGroup()
-        
+
         // Fetch candle sticks if needed
         if candleStickData.isEmpty {
             group.enter()
@@ -109,14 +109,14 @@ final class StockDetailsViewController: UIViewController {
                 }
             }
         }
-        
+
         // Fetch financial metrics
         group.enter()
         APICaller.shared.financialMetrics(for: symbol) { [weak self] result in
             defer {
                 group.leave()
             }
-            
+
             switch result {
             case .success(let response):
                 let metrics = response.metric
@@ -129,7 +129,7 @@ final class StockDetailsViewController: UIViewController {
             self?.renderChart()
         }
     }
-    
+
     /// Fetch news for given type
     private func fetchNews() {
         APICaller.shared.news(for: .company(symbol: symbol)) { [weak self] result in
@@ -144,7 +144,7 @@ final class StockDetailsViewController: UIViewController {
             }
         }
     }
-    
+
     /// Render chart and metrics
     private func renderChart() {
         // Chart VM | FinancialMetricViewModel(s)
@@ -156,7 +156,7 @@ final class StockDetailsViewController: UIViewController {
                 height: (view.width * 0.7) + 100
             )
         )
-        
+
         var viewModels = [MetricCollectionViewCell.ViewModel]()
         if let metrics = self.metrics {
             viewModels.append(.init(name: "52W High", value: "\(metrics.AnnualWeekHigh)"))
@@ -165,7 +165,7 @@ final class StockDetailsViewController: UIViewController {
             viewModels.append(.init(name: "Beta", value: "\(metrics.beta)"))
             viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
         }
-        
+
         // Configure
         let change = candleStickData.getPercentage()
         headerView.configure(
@@ -179,7 +179,7 @@ final class StockDetailsViewController: UIViewController {
         )
         tableView.tableHeaderView = headerView
     }
-    
+
 }
 
 // MARK: - TableView
@@ -188,7 +188,7 @@ extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stories.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsStoryTableViewCell.identifier, for: indexPath) as? NewsStoryTableViewCell else {
             fatalError()
@@ -196,11 +196,11 @@ extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate
         cell.configure(with: .init(model: stories[indexPath.row]))
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return NewsStoryTableViewCell.preferredHeight
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: NewsHeaderView.identifier) as? NewsHeaderView else {
             return nil
@@ -214,11 +214,11 @@ extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate
         )
         return header
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return NewsHeaderView.preferredHeight
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let url = URL(string: stories[indexPath.row].url) else { return }
@@ -231,15 +231,15 @@ extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate
 // MARK: - NewsHeaderViewDelegate
 extension StockDetailsViewController: NewsHeaderViewDelegate {
     func newsHeaderViewDidTapAddButton(_ headerView: NewsHeaderView) {
-        
+
         HapticsManager.shared.vibrate(for: .success)
-        
+
         headerView.button.isHidden = true
         PersistenceManager.shared.addToWatchList(
             symbol: symbol,
             companyName: companyName
         )
-        
+
         let alert = UIAlertController(
             title: "Added to Watchlist",
             message: "We've added \(companyName) to your watchlist.",

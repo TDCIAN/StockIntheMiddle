@@ -10,26 +10,25 @@
 import UIKit
 
 class Icons: NSObject {
-    
-    
-    //MARK: - Canvas Drawings
-    
+
+    // MARK: - Canvas Drawings
+
     /// Page 1
-    
+
     class func drawInfo(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 299, height: 302), resizing: ResizingBehavior = .aspectFit) {
         /// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         /// Resize to Target Frame
         context.saveGState()
         let resizedFrame = resizing.apply(rect: CGRect(x: 0, y: 0, width: 299, height: 302), target: targetFrame)
         context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
         context.scaleBy(x: resizedFrame.width / 299, y: resizedFrame.height / 302)
-        
+
         /// info
         do {
             context.saveGState()
-            
+
             /// Path
             let path = UIBezierPath()
             path.move(to: CGPoint(x: 15, y: 105))
@@ -45,7 +44,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             path.fill()
             context.restoreGState()
-            
+
             /// Oval
             let oval = UIBezierPath()
             oval.move(to: CGPoint(x: 15, y: 30))
@@ -59,7 +58,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             oval.fill()
             context.restoreGState()
-            
+
             /// Shape
             let shape = UIBezierPath()
             shape.move(to: CGPoint(x: 149.5, y: 302))
@@ -79,31 +78,31 @@ class Icons: NSObject {
             UIColor.white.setFill()
             shape.fill()
             context.restoreGState()
-            
+
             context.restoreGState()
         }
-        
+
         context.restoreGState()
     }
-    
+
     class func drawSuccess(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 304, height: 302), resizing: ResizingBehavior = .aspectFit) {
         /// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         /// Resize to Target Frame
         context.saveGState()
         let resizedFrame = resizing.apply(rect: CGRect(x: 0, y: 0, width: 304, height: 302), target: targetFrame)
         context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
         context.scaleBy(x: resizedFrame.width / 304, y: resizedFrame.height / 302)
-        
+
         /// success
         do {
             context.saveGState()
-            
+
             /// Group
             do {
                 context.saveGState()
-                
+
                 /// Shape
                 let shape = UIBezierPath()
                 shape.move(to: CGPoint(x: 152.07, y: 0))
@@ -125,7 +124,7 @@ class Icons: NSObject {
                 UIColor.white.setFill()
                 shape.fill()
                 context.restoreGState()
-                
+
                 /// Path
                 let path = UIBezierPath()
                 path.move(to: CGPoint(x: 153.03, y: 0.01))
@@ -149,30 +148,30 @@ class Icons: NSObject {
                 UIColor.white.setFill()
                 path.fill()
                 context.restoreGState()
-                
+
                 context.restoreGState()
             }
-            
+
             context.restoreGState()
         }
-        
+
         context.restoreGState()
     }
-    
+
     class func drawError(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 302, height: 302), resizing: ResizingBehavior = .aspectFit) {
         /// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         /// Resize to Target Frame
         context.saveGState()
         let resizedFrame = resizing.apply(rect: CGRect(x: 0, y: 0, width: 302, height: 302), target: targetFrame)
         context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
         context.scaleBy(x: resizedFrame.width / 302, y: resizedFrame.height / 302)
-        
+
         /// error
         do {
             context.saveGState()
-            
+
             /// Shape
             let shape = UIBezierPath()
             shape.move(to: CGPoint(x: 151, y: 302))
@@ -191,7 +190,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             shape.fill()
             context.restoreGState()
-            
+
             /// Path
             let path = UIBezierPath()
             path.move(to: CGPoint(x: 102.24, y: 88.96))
@@ -209,7 +208,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             path.fill()
             context.restoreGState()
-            
+
             /// Path
             let path2 = UIBezierPath()
             path2.move(to: CGPoint(x: 2.76, y: 88.96))
@@ -227,27 +226,27 @@ class Icons: NSObject {
             UIColor.white.setFill()
             path2.fill()
             context.restoreGState()
-            
+
             context.restoreGState()
         }
-        
+
         context.restoreGState()
     }
-    
+
     class func drawWarning(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 327, height: 302), resizing: ResizingBehavior = .aspectFit) {
         /// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         /// Resize to Target Frame
         context.saveGState()
         let resizedFrame = resizing.apply(rect: CGRect(x: 0, y: 0, width: 327, height: 302), target: targetFrame)
         context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
         context.scaleBy(x: resizedFrame.width / 327, y: resizedFrame.height / 302)
-        
+
         /// warning
         do {
             context.saveGState()
-            
+
             /// Shape
             let shape = UIBezierPath()
             shape.move(to: CGPoint(x: 46.99, y: 302))
@@ -270,7 +269,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             shape.fill()
             context.restoreGState()
-            
+
             /// Path
             let path = UIBezierPath()
             path.move(to: CGPoint(x: 8.53, y: 114))
@@ -288,7 +287,7 @@ class Icons: NSObject {
             UIColor.white.setFill()
             path.fill()
             context.restoreGState()
-            
+
             /// Oval
             let oval = UIBezierPath()
             oval.move(to: CGPoint(x: 16, y: 32))
@@ -302,18 +301,17 @@ class Icons: NSObject {
             UIColor.white.setFill()
             oval.fill()
             context.restoreGState()
-            
+
             context.restoreGState()
         }
-        
+
         context.restoreGState()
     }
-    
-    
-    //MARK: - Canvas Images
-    
+
+    // MARK: - Canvas Images
+
     /// Page 1
-    
+
     class func imageOfInfo() -> UIImage {
         struct LocalCache {
             static var image: UIImage!
@@ -322,16 +320,16 @@ class Icons: NSObject {
             return LocalCache.image
         }
         var image: UIImage
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 299, height: 302), false, 0)
         Icons.drawInfo()
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         LocalCache.image = image
         return image
     }
-    
+
     class func imageOfSuccess() -> UIImage {
         struct LocalCache {
             static var image: UIImage!
@@ -340,16 +338,16 @@ class Icons: NSObject {
             return LocalCache.image
         }
         var image: UIImage
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 304, height: 302), false, 0)
         Icons.drawSuccess()
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         LocalCache.image = image
         return image
     }
-    
+
     class func imageOfError() -> UIImage {
         struct LocalCache {
             static var image: UIImage!
@@ -358,16 +356,16 @@ class Icons: NSObject {
             return LocalCache.image
         }
         var image: UIImage
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 302, height: 302), false, 0)
         Icons.drawError()
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         LocalCache.image = image
         return image
     }
-    
+
     class func imageOfWarning() -> UIImage {
         struct LocalCache {
             static var image: UIImage!
@@ -376,34 +374,33 @@ class Icons: NSObject {
             return LocalCache.image
         }
         var image: UIImage
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 327, height: 302), false, 0)
         Icons.drawWarning()
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         LocalCache.image = image
         return image
     }
-    
-    
-    //MARK: - Resizing Behavior
-    
+
+    // MARK: - Resizing Behavior
+
     enum ResizingBehavior {
         case aspectFit /// The content is proportionally resized to fit into the target rectangle.
         case aspectFill /// The content is proportionally resized to completely fill the target rectangle.
         case stretch /// The content is stretched to match the entire target rectangle.
         case center /// The content is centered in the target rectangle, but it is NOT resized.
-        
+
         func apply(rect: CGRect, target: CGRect) -> CGRect {
             if rect == target || target == CGRect.zero {
                 return rect
             }
-            
+
             var scales = CGSize.zero
             scales.width = abs(target.width / rect.width)
             scales.height = abs(target.height / rect.height)
-            
+
             switch self {
                 case .aspectFit:
                     scales.width = min(scales.width, scales.height)
@@ -417,7 +414,7 @@ class Icons: NSObject {
                     scales.width = 1
                     scales.height = 1
             }
-            
+
             var result = rect.standardized
             result.size.width *= scales.width
             result.size.height *= scales.height
@@ -426,6 +423,5 @@ class Icons: NSObject {
             return result
         }
     }
-    
-    
+
 }

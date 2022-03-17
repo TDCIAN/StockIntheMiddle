@@ -9,13 +9,13 @@ import UIKit
 import SnapKit
 
 class DateSelectionTableViewController: UITableViewController {
-    
+
     var timeSeriesMonthlyAdjusted: TimeSeriesMonthlyAdjusted?
     var selectedIndex: Int?
     private var monthInfos: [MonthInfo] = []
-    
+
     var didSelectDate: ((Int) -> Void)?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
@@ -24,11 +24,11 @@ class DateSelectionTableViewController: UITableViewController {
         setupMonthInfos()
         setupNavigation()
     }
-    
+
     private func setupNavigation() {
         title = "Select date"
     }
-     
+
     private func setupMonthInfos() {
         self.monthInfos = timeSeriesMonthlyAdjusted?.getMonthInfos() ?? []
     }
@@ -38,15 +38,15 @@ extension DateSelectionTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return monthInfos.count
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return DateSelectionTableViewCell.preferredHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectionTableViewCell.identifier, for: indexPath) as! DateSelectionTableViewCell
         let index = indexPath.item
@@ -55,7 +55,7 @@ extension DateSelectionTableViewController {
         cell.configure(with: monthInfo, index: index, isSelected: isSelected)
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         didSelectDate?(indexPath.item)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -65,7 +65,7 @@ extension DateSelectionTableViewController {
 class DateSelectionTableViewCell: UITableViewCell {
     static let identifier = "DateSelectionTableViewCell"
     static let preferredHeight: CGFloat = 64
-    
+
     private let monthLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
@@ -79,16 +79,16 @@ class DateSelectionTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 14, weight: .regular)
         return label
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setLayout() {
         self.contentView.addSubviews(monthLabel, monthsAgoLabel)
         monthLabel.snp.makeConstraints {
@@ -100,7 +100,7 @@ class DateSelectionTableViewCell: UITableViewCell {
             $0.top.equalTo(contentView.snp.centerY).offset(5)
         }
     }
-    
+
     func configure(with monthInfo: MonthInfo, index: Int, isSelected: Bool) {
         monthLabel.text = monthInfo.date.MMYYFormat
         accessoryType = isSelected ? .checkmark : .none
@@ -113,4 +113,3 @@ class DateSelectionTableViewCell: UITableViewCell {
         }
     }
 }
-

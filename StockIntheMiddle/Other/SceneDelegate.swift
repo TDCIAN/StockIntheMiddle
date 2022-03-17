@@ -12,19 +12,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// Our main app window
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
+
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
+
         let window = UIWindow(windowScene: windowScene)
-        
+
         let vc = MainTabBarViewController()
         let navVC = UINavigationController(rootViewController: vc)
 //        window.backgroundColor = .systemBackground
         window.rootViewController = navVC
         window.makeKeyAndVisible()
-        
+
         self.window = window
     }
 
@@ -44,4 +43,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) { }
 }
-

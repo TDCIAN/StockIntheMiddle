@@ -15,18 +15,17 @@ struct MonthInfo {
 struct TimeSeriesMonthlyAdjusted: Decodable {
     let meta: Meta
     let timeSeries: [String: OHLC]
-    
+
     enum CodingKeys: String, CodingKey {
         case meta = "Meta Data"
         case timeSeries = "Monthly Adjusted Time Series"
     }
-    
-    
+
     func getMonthInfos() -> [MonthInfo] {
         var monthInfos: [MonthInfo] = []
-        
+
         let sortedTimeSeries = timeSeries.sorted(by: { $0.key > $1.key })
-        
+
         for (dateString, ohlc) in sortedTimeSeries {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -39,7 +38,7 @@ struct TimeSeriesMonthlyAdjusted: Decodable {
 
         return monthInfos
     }
-    
+
     private func getAdjustedOpen(ohlc: OHLC) -> Double? {
         // adjusted open = open * (adjusted close / close)
         guard let open = ohlc.open.toDouble(),
@@ -51,7 +50,7 @@ struct TimeSeriesMonthlyAdjusted: Decodable {
 
 struct Meta: Decodable {
     let symbol: String
-    
+
     enum CodingKeys: String, CodingKey {
         case symbol = "2. Symbol"
     }
@@ -62,7 +61,7 @@ struct OHLC: Decodable {
     let open: String
     let close: String
     let adjustedClose: String
-    
+
     enum CodingKeys: String, CodingKey {
         case open = "1. open"
         case close = "4. close"

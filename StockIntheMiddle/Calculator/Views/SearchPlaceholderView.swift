@@ -14,7 +14,7 @@ class SearchPlaceholderView: UIView {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Search for companies to calculate potential returns via dollar cost averaging"
@@ -23,7 +23,7 @@ class SearchPlaceholderView: UIView {
         label.textAlignment = .center
         return label
     }()
-    
+
     private lazy var stackView: UIStackView = {
        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel])
         stackView.axis = .vertical
@@ -31,16 +31,16 @@ class SearchPlaceholderView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupViews() {
         addSubview(stackView)
         NSLayoutConstraint.activate([

@@ -10,7 +10,7 @@ import MBProgressHUD
 
 /// Delegate for search results
 protocol SearchResultsViewControllerDelegate: AnyObject {
-    
+
     /// Notify delegate of selection
     /// - Parameter searchResult: Result that was picked
     func searchResultsViewControllerDidSelect(searchResult: SearchResult)
@@ -18,10 +18,10 @@ protocol SearchResultsViewControllerDelegate: AnyObject {
 
 /// VC to show search results
 class SearchResultsViewController: UIViewController, UIAnimatable {
-    
+
     /// Delegate to get events
     weak var delegate: SearchResultsViewControllerDelegate?
-    
+
     /// Collection of results
     private var results: [SearchResult] = []
     let noResultsLabel: UILabel = {
@@ -32,7 +32,7 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         label.isHidden = true
         return label
     }()
-    
+
     /// Primary view
     private let tableView: UITableView = {
        let table = UITableView()
@@ -41,7 +41,7 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         table.isHidden = true
         return table
     }()
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +65,7 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         }
     }
     // MARK: - Public
-        
+
     /// Update results on VC
     /// - Parameter results: Collection of new results
     public func update(with results: [SearchResult]) {
@@ -84,7 +84,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.results.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.identifier, for: indexPath)
         let model = results[indexPath.row]
@@ -92,7 +92,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         cell.detailTextLabel?.text = model.description
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = results[indexPath.row]

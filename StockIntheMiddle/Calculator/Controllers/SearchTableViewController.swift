@@ -11,12 +11,12 @@ import MBProgressHUD
 import SnapKit
 
 class SearchTableViewController: UITableViewController, UIAnimatable {
-    
+
     private enum Mode {
         case onboarding
         case search
     }
-    
+
     private lazy var searchController: UISearchController = {
         let sc = UISearchController(searchResultsController: nil)
         sc.searchResultsUpdater = self
@@ -32,7 +32,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     private var searchResults: CalcSearchResults?
     @Published private var mode: Mode = .onboarding
     @Published private var searchQuery = String()
-    
+
     let noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
@@ -41,7 +41,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         label.isHidden = true
         return label
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTitleView()
@@ -50,7 +50,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         setupTableView()
         observeForm()
     }
-    
+
     private func setUpTitleView() {
         let titleView = UIView()
         let label = UILabel()
@@ -62,11 +62,11 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         }
         navigationItem.titleView = titleView
     }
-    
+
     private func setupNavigationBar() {
         navigationItem.searchController = searchController
     }
-    
+
     private func setupTableView() {
         tableView.isScrollEnabled = false
         tableView.tableFooterView = UIView()
@@ -77,7 +77,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
             $0.centerY.equalToSuperview().offset(-100)
         }
     }
-    
+
     private func observeForm() {
         $searchQuery
             .debounce(for: .milliseconds(750), scheduler: RunLoop.main)
@@ -114,7 +114,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
                     }.store(in: &self.subscribers)
                 }
             }.store(in: &subscribers)
-        
+
         $mode.sink { mode in
             switch mode {
             case .onboarding:
@@ -128,11 +128,11 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return SearchTableViewCell.preferredHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults?.items.count ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         if let searchResults = self.searchResults {
@@ -141,7 +141,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         }
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let searchResults = self.searchResults {
             let searchResult = searchResults.items[indexPath.item]
@@ -150,7 +150,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     private func handleSelection(for symbol: String, searchResult: CalcSearchResult) {
         showLoadingAnimation()
         apiService.fetchTimeSeriesMonthlyAdjustedPublisher(keywords: symbol).sink { [weak self] (completionResult) in
@@ -170,7 +170,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
             self?.searchController.searchBar.text = nil
         }.store(in: &subscribers)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCalculator",
            let destination = segue.destination as? CalculatorTableViewController,
@@ -191,22 +191,22 @@ extension SearchTableViewController: UISearchResultsUpdating, UISearchController
             self.searchQuery = searchQuery
             self.mode = .search
         }
-        
+
     }
-    
+
     func willPresentSearchController(_ searchController: UISearchController) {
         mode = .search
     }
-    
+
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         self.searchQuery = ""
         self.mode = .onboarding
     }
-    
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchQuery = searchText
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.searchQuery = ""
         self.mode = .onboarding

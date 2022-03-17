@@ -10,15 +10,15 @@ import UIKit
 
 /// Object to manage haptics
 final class HapticsManager {
-    
+
     /// Singleton
     static let shared = HapticsManager()
-    
+
     /// Private constructor
     private init() {}
-    
+
     // MARK: - Public
-    
+
     /// Vibrate lightly for a selection tap interaction
     public func vibrateForSelection() {
         let generator = UISelectionFeedbackGenerator()

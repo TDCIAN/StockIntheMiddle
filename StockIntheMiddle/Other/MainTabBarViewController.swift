@@ -11,21 +11,21 @@ class MainTabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        
+
         let watchListVC = WatchListViewController()
         let calculatorVC = SearchTableViewController()
         let newsVC = NewsViewController(type: .topStories)
         let settingsVC = SettingsViewController()
-        
+
         watchListVC.title = "Watchlist"
         watchListVC.tabBarItem.image = UIImage(systemName: "chart.line.uptrend.xyaxis")
-        
+
         calculatorVC.title = "Calculator"
         calculatorVC.tabBarItem.image = UIImage(systemName: "chart.bar.fill")
-        
+
         newsVC.title = "News"
         newsVC.tabBarItem.image = UIImage(systemName: "newspaper.fill")
-        
+
         settingsVC.title = "Settings"
         settingsVC.tabBarItem.image = UIImage(systemName: "gearshape.fill")
 
@@ -36,7 +36,7 @@ class MainTabBarViewController: UITabBarController {
 
         setViewControllers([watchNav, calcNav, newsNav, settingsNav], animated: true)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
