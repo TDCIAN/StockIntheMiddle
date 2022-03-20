@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E048FAE27E76CC3007633E0 /* NewsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E048FAD27E76CC3007633E0 /* NewsWebViewController.swift */; };
 		1E335EE527BD339800C4BC2F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */; };
 		1E335EE727BD33DA00C4BC2F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */; };
 		1E75BCC127B08015009CC6D4 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75BCC027B08015009CC6D4 /* NewsViewController.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E048FAD27E76CC3007633E0 /* NewsWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsWebViewController.swift; sourceTree = "<group>"; };
 		1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		1E335EE627BD33DA00C4BC2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1E3682C827E2C11C0059E6DD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				1E75BCC027B08015009CC6D4 /* NewsViewController.swift */,
+				1E048FAD27E76CC3007633E0 /* NewsWebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 				1E9CF93D27C7782F00898828 /* UIAnimatable.swift in Sources */,
 				1E9CF95127C77CD900898828 /* SearchTableViewCell.swift in Sources */,
 				1E8AD7FE27B1C9F90041BBE5 /* NewsHeaderView.swift in Sources */,
+				1E048FAE27E76CC3007633E0 /* NewsWebViewController.swift in Sources */,
 				1E7A215827AEBB56008D1C05 /* AppDelegate.swift in Sources */,
 				1E7A215A27AEBB56008D1C05 /* SceneDelegate.swift in Sources */,
 				1EC6585927B5DC5000B1C09F /* StockDetailHeaderView.swift in Sources */,

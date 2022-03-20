@@ -149,6 +149,8 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.presentFailedToOpenAlert()
                 return
             }
+//            let newsWebViewController = NewsWebViewController(url: url)
+//            self?.navigationController?.pushViewController(newsWebViewController, animated: true)
             self?.open(url: url)
         }
         .disposed(by: disposeBag)
