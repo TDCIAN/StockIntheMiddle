@@ -132,7 +132,9 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.noResultsLabel.isHidden = !newsResult.isEmpty
             })
             .asDriver(onErrorJustReturn: [])
-            .drive(newsTableView.rx.items(cellIdentifier: NewsStoryTableViewCell.identifier, cellType: NewsStoryTableViewCell.self)) { _, data, cell in
+            .drive(newsTableView.rx.items(
+                cellIdentifier: NewsStoryTableViewCell.identifier,
+                cellType: NewsStoryTableViewCell.self)) { _, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
             }
