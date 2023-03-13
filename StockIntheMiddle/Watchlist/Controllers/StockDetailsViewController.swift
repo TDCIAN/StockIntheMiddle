@@ -8,21 +8,13 @@
 import UIKit
 import SafariServices
 
-/// VC to show stock details
 final class StockDetailsViewController: UIViewController {
 
     // MARK: - Properties
-
-    /// Stock symbol
     private let symbol: String
-
-    /// Company name
     private let companyName: String
-
-    /// Collection of data
     private var candleStickData: [CandleStick]
 
-    /// Primary view
     private let tableView: UITableView = {
        let table = UITableView()
         table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
@@ -30,10 +22,8 @@ final class StockDetailsViewController: UIViewController {
         return table
     }()
 
-    /// Collection of news stories
     private var stories: [NewsStory] = []
 
-    /// Company metrics
     private var metrics: Metrics?
 
     // MARK: - Init
@@ -49,7 +39,6 @@ final class StockDetailsViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -65,8 +54,6 @@ final class StockDetailsViewController: UIViewController {
         tableView.frame = view.bounds
     }
     // MARK: - Private
-
-    /// Sets up close button
     private func setUpCloseButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .close,
@@ -75,12 +62,10 @@ final class StockDetailsViewController: UIViewController {
         )
     }
 
-    /// Handle close button tap
     @objc private func didTapClose() {
         dismiss(animated: true, completion: nil)
     }
 
-    /// Sets up tableView
     private func setUpTable() {
         view.addSubviews(tableView)
         tableView.delegate = self
@@ -90,11 +75,8 @@ final class StockDetailsViewController: UIViewController {
         )
     }
 
-    /// Fetch financial metrics
     private func fetchFinancialData() {
         let group = DispatchGroup()
-
-        // Fetch candle sticks if needed
         if candleStickData.isEmpty {
             group.enter()
             APICaller.shared.marketData(for: symbol) { [weak self] result in
@@ -110,7 +92,6 @@ final class StockDetailsViewController: UIViewController {
             }
         }
 
-        // Fetch financial metrics
         group.enter()
         APICaller.shared.financialMetrics(for: symbol) { [weak self] result in
             defer {
@@ -130,7 +111,6 @@ final class StockDetailsViewController: UIViewController {
         }
     }
 
-    /// Fetch news for given type
     private func fetchNews() {
         APICaller.shared.news(for: .company(symbol: symbol)) { [weak self] result in
             switch result {
@@ -145,9 +125,7 @@ final class StockDetailsViewController: UIViewController {
         }
     }
 
-    /// Render chart and metrics
     private func renderChart() {
-        // Chart VM | FinancialMetricViewModel(s)
         let headerView = StockDetailHeaderView(
             frame: CGRect(
                 x: 0,
@@ -166,7 +144,6 @@ final class StockDetailsViewController: UIViewController {
             viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
         }
 
-        // Configure
         let change = candleStickData.getPercentage()
         headerView.configure(
             chartViewModel: .init(
@@ -183,7 +160,6 @@ final class StockDetailsViewController: UIViewController {
 }
 
 // MARK: - TableView
-
 extension StockDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stories.count

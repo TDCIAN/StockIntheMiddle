@@ -7,10 +7,8 @@
 
 import UIKit
 
-/// Tableview cell for search result
 final class SearchResultTableViewCell: UITableViewCell {
 
-    /// Identifier for cell
     static let identifier = "SearchResultTableViewCell"
 
     // MARK: - Init    

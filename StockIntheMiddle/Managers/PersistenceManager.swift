@@ -7,13 +7,10 @@
 
 import Foundation
 
-/// Object to manage saved caches
 final class PersistenceManager {
 
-    /// Singleton
     static let shared = PersistenceManager()
 
-    /// Reference to user defaults
     private let userDefaults: UserDefaults = .standard
 
     private struct Constants {
@@ -21,7 +18,6 @@ final class PersistenceManager {
         static let watchListKey = "watchlist"
     }
 
-    /// Privatized constructor
     private init() {}
 
     // MARK: - Public
@@ -33,17 +29,10 @@ final class PersistenceManager {
         return userDefaults.stringArray(forKey: Constants.watchListKey) ?? []
     }
 
-    /// Check if watch list contains item
-    /// - Parameter symbol: Symbol to check
-    /// - Returns: Boolean
     public func watchlistContains(symbol: String) -> Bool {
         return watchlist.contains(symbol)
     }
 
-    /// Add a symbol to watch list
-    /// - Parameters:
-    ///   - symbol: Symbol to add
-    ///   - companyName: Company name for symbol being added
     public func addToWatchList(symbol: String, companyName: String) {
         var current = watchlist
         current.append(symbol)
@@ -63,13 +52,10 @@ final class PersistenceManager {
     }
 
     // MARK: - Private
-
-    /// Check if user has been onboarded
     private var hasOnboarded: Bool {
         return userDefaults.bool(forKey: Constants.onboardedKey)
     }
 
-    /// Set up default watch list items
     private func setUpDefaults() {
         let map: [String: String] = [
             "SPY": "SPDR S&P 500 ETF TRUST",

@@ -7,16 +7,12 @@
 
 import UIKit
 
-/// Header for stock details
 final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    /// Metrics viewModels
     private var metricViewModels: [MetricCollectionViewCell.ViewModel] = []
 
-    // ChartView
     private let chartView = StockChartView()
 
-    // CollectionView
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -47,12 +43,7 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
         self.frame = CGRect(x: 0, y: 0, width: self.width, height: self.metricViewModels.isEmpty ? (self.width * 0.7) : (self.width * 0.7) + 100)
     }
 
-    /// Configure view
-    /// - Parameters:
-    ///   - chartViewModel: Chart View Model
-    ///   - metricViewModels: Collection of metric viewModels
     func configure(chartViewModel: StockChartView.ViewModel, metricViewModels: [MetricCollectionViewCell.ViewModel]) {
-        // Update chart
         chartView.configure(with: chartViewModel)
         self.metricViewModels = metricViewModels
         collectionView.frame = CGRect(x: 0, y: height - 100, width: width, height: self.metricViewModels.isEmpty ? 0 : 100)

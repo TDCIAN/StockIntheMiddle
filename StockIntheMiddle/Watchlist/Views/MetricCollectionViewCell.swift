@@ -7,13 +7,10 @@
 
 import UIKit
 
-/// Metric table cell
 final class MetricCollectionViewCell: UICollectionViewCell {
 
-    /// Cell id
     static let identifier = "MetricCollectionViewCell"
 
-    /// Metric table cell viewModel
     struct ViewModel {
         let name: String
         let value: String
@@ -54,8 +51,6 @@ final class MetricCollectionViewCell: UICollectionViewCell {
         valueLabel.text = nil
     }
 
-    /// Configure view
-    /// - Parameter viewModel: View ViewModel
     func configure(with viewModel: ViewModel) {
         nameLabel.text = viewModel.name + " : "
         valueLabel.text = viewModel.value

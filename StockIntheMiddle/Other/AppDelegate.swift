@@ -10,11 +10,6 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    /// Gets called when app launches
-    /// - Parameters:
-    ///   - application: App instance
-    ///   - launchOptions: Launch properties
-    /// - Returns: Bool for success
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if #available(iOS 15, *) {
             let appearance = UITabBarAppearance()

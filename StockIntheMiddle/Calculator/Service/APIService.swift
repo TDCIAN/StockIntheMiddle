@@ -20,7 +20,6 @@ struct APIService {
         return keys.randomElement() ?? "PX40A1II4YND2OGE"
     }
 
-    // use combine
     func fetchSymbolsPublisher(keywords: String) -> AnyPublisher<CalcSearchResults, Error> {
 
         let result = parseQuery(text: keywords)

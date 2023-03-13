@@ -8,22 +8,16 @@
 import UIKit
 import MBProgressHUD
 
-/// Delegate for search results
 protocol SearchResultsViewControllerDelegate: AnyObject {
-
-    /// Notify delegate of selection
-    /// - Parameter searchResult: Result that was picked
     func searchResultsViewControllerDidSelect(searchResult: SearchResult)
 }
 
-/// VC to show search results
 class SearchResultsViewController: UIViewController, UIAnimatable {
 
-    /// Delegate to get events
     weak var delegate: SearchResultsViewControllerDelegate?
 
-    /// Collection of results
     private var results: [SearchResult] = []
+    
     let noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
@@ -33,7 +27,6 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         return label
     }()
 
-    /// Primary view
     private let tableView: UITableView = {
        let table = UITableView()
         // Register a cell
@@ -65,9 +58,6 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         }
     }
     // MARK: - Public
-
-    /// Update results on VC
-    /// - Parameter results: Collection of new results
     public func update(with results: [SearchResult]) {
         self.showLoadingAnimation()
         self.results = results

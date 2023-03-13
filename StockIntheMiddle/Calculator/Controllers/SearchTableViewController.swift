@@ -45,7 +45,6 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTitleView()
-        // Do any additional setup after loading the view.
         setupNavigationBar()
         setupTableView()
         observeForm()
