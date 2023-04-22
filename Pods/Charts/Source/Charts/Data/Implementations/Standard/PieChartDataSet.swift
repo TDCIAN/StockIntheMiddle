@@ -12,29 +12,35 @@
 import Foundation
 import CoreGraphics
 
-open class PieChartDataSet: ChartDataSet, IPieChartDataSet {
+open class PieChartDataSet: ChartDataSet, PieChartDataSetProtocol
+{
     @objc(PieChartValuePosition)
-    public enum ValuePosition: Int {
+    public enum ValuePosition: Int
+    {
         case insideSlice
         case outsideSlice
     }
 
-    private func initialize() {
+    private func initialize()
+    {
         self.valueTextColor = NSUIColor.white
         self.valueFont = NSUIFont.systemFont(ofSize: 13.0)
     }
 
-    public required init() {
+    public required init()
+    {
         super.init()
         initialize()
     }
 
-    public override init(entries: [ChartDataEntry]?, label: String?) {
+    public override init(entries: [ChartDataEntry], label: String)
+    {
         super.init(entries: entries, label: label)
         initialize()
     }
 
-    internal override func calcMinMax(entry e: ChartDataEntry) {
+    internal override func calcMinMax(entry e: ChartDataEntry)
+    {
         calcMinMaxY(entry: e)
     }
 
@@ -45,19 +51,19 @@ open class PieChartDataSet: ChartDataSet, IPieChartDataSet {
     /// the space in pixels between the pie-slices
     /// **default**: 0
     /// **maximum**: 20
-    open var sliceSpace: CGFloat {
-        get {
+    open var sliceSpace: CGFloat
+    {
+        get
+        {
             return _sliceSpace
         }
-        set {
-            var space = newValue
-            if space > 20.0 {
-                space = 20.0
+        set
+        {
+            switch newValue {
+            case ..<0.0: _sliceSpace = 0.0
+            case 20.0...: _sliceSpace = 20.0
+            default: _sliceSpace = newValue
             }
-            if space < 0.0 {
-                space = 0.0
-            }
-            _sliceSpace = space
         }
     }
 
@@ -92,17 +98,18 @@ open class PieChartDataSet: ChartDataSet, IPieChartDataSet {
     open var valueLineVariableLength: Bool = true
 
     /// the font for the slice-text labels
-    open var entryLabelFont: NSUIFont?
+    open var entryLabelFont: NSUIFont? = nil
 
     /// the color for the slice-text labels
-    open var entryLabelColor: NSUIColor?
+    open var entryLabelColor: NSUIColor? = nil
 
     /// the color for the highlighted sector
-    open var highlightColor: NSUIColor?
+    open var highlightColor: NSUIColor? = nil
 
     // MARK: - NSCopying
 
-    open override func copy(with zone: NSZone? = nil) -> Any {
+    open override func copy(with zone: NSZone? = nil) -> Any
+    {
         let copy = super.copy(with: zone) as! PieChartDataSet
         copy._sliceSpace = _sliceSpace
         copy.automaticallyDisableSliceSpacing = automaticallyDisableSliceSpacing

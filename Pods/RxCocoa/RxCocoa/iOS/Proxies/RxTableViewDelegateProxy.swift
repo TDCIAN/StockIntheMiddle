@@ -12,7 +12,8 @@ import UIKit
 import RxSwift
 
 /// For more information take a look at `DelegateProxyType`.
-open class RxTableViewDelegateProxy: RxScrollViewDelegateProxy {
+open class RxTableViewDelegateProxy
+    : RxScrollViewDelegateProxy {
 
     /// Typed parent object.
     public weak private(set) var tableView: UITableView?

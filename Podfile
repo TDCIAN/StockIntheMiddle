@@ -7,12 +7,12 @@ target 'StockIntheMiddle' do
 
   # Pods for StockIntheMiddle
   pod 'FloatingPanel'
-  pod 'SDWebImage', '~> 5.0'
+  pod 'SDWebImage' 
   pod 'Charts'
-  pod 'SnapKit', '~> 5.0.0'
+  pod 'SnapKit'
   pod 'MBProgressHUD'
   pod 'Loaf'
-  pod 'RxSwift', '6.5.0'
-  pod 'RxCocoa', '6.5.0'
+  pod 'RxSwift'
+  pod 'RxCocoa'
   
 end

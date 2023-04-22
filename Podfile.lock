@@ -1,8 +1,9 @@
 PODS:
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
-  - FloatingPanel (2.5.1)
+  - Charts (4.1.0):
+    - Charts/Core (= 4.1.0)
+  - Charts/Core (4.1.0):
+    - SwiftAlgorithms (~> 1.0)
+  - FloatingPanel (2.6.1)
   - Loaf (0.7.0)
   - MBProgressHUD (1.2.0)
   - RxCocoa (6.5.0):
@@ -11,20 +12,21 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
-  - SDWebImage (5.12.3):
-    - SDWebImage/Core (= 5.12.3)
-  - SDWebImage/Core (5.12.3)
-  - SnapKit (5.0.1)
+  - SDWebImage (5.15.5):
+    - SDWebImage/Core (= 5.15.5)
+  - SDWebImage/Core (5.15.5)
+  - SnapKit (5.6.0)
+  - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
   - Charts
   - FloatingPanel
   - Loaf
   - MBProgressHUD
-  - RxCocoa (= 6.5.0)
-  - RxSwift (= 6.5.0)
-  - SDWebImage (~> 5.0)
-  - SnapKit (~> 5.0.0)
+  - RxCocoa
+  - RxSwift
+  - SDWebImage
+  - SnapKit
 
 SPEC REPOS:
   trunk:
@@ -37,18 +39,20 @@ SPEC REPOS:
     - RxSwift
     - SDWebImage
     - SnapKit
+    - SwiftAlgorithms
 
 SPEC CHECKSUMS:
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
-  FloatingPanel: 523cb50f490f151fc03fabf24a8322e44d22f65f
+  Charts: 354f86803d11d9c35de280587fef50d1af063978
+  FloatingPanel: de6bb891912ede28da7b1140f7b583c474fec28a
   Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
-  SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SDWebImage: fd7e1a22f00303e058058278639bf6196ee431fe
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: 84ab2c399f9c3db8b7acc27f78adb6f67a69fe21
+PODFILE CHECKSUM: 4609ece8c1e0e861da9c8a3e4e7595281c77ed16
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

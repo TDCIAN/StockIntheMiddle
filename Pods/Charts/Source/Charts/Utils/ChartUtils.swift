@@ -12,51 +12,56 @@
 import Foundation
 import CoreGraphics
 
-#if canImport(UIKit)
-    import UIKit
-#endif
-
-#if canImport(Cocoa)
-import Cocoa
-#endif
-
 extension Comparable
 {
-    func clamped(to range: ClosedRange<Self>) -> Self {
-        if self > range.upperBound {
+    func clamped(to range: ClosedRange<Self>) -> Self
+    {
+        if self > range.upperBound
+        {
             return range.upperBound
-        } else if self < range.lowerBound {
+        }
+        else if self < range.lowerBound
+        {
             return range.lowerBound
-        } else {
+        }
+        else
+        {
             return self
         }
     }
 }
 
-extension FloatingPoint {
-    var DEG2RAD: Self {
+extension FloatingPoint
+{
+    var DEG2RAD: Self
+    {
         return self * .pi / 180
     }
 
-    var RAD2DEG: Self {
+    var RAD2DEG: Self
+    {
         return self * 180 / .pi
     }
 
     /// - Note: Value must be in degrees
     /// - Returns: An angle between 0.0 < 360.0 (not less than zero, less than 360)
-    var normalizedAngle: Self {
+    var normalizedAngle: Self
+    {
         let angle = truncatingRemainder(dividingBy: 360)
         return (sign == .minus) ? angle + 360 : angle
     }
 }
 
-extension CGSize {
-    func rotatedBy(degrees: CGFloat) -> CGSize {
+extension CGSize
+{
+    func rotatedBy(degrees: CGFloat) -> CGSize
+    {
         let radians = degrees.DEG2RAD
         return rotatedBy(radians: radians)
     }
 
-    func rotatedBy(radians: CGFloat) -> CGSize {
+    func rotatedBy(radians: CGFloat) -> CGSize
+    {
         return CGSize(
             width: abs(width * cos(radians)) + abs(height * sin(radians)),
             height: abs(width * sin(radians)) + abs(height * cos(radians))
@@ -64,9 +69,11 @@ extension CGSize {
     }
 }
 
-extension Double {
+extension Double
+{
     /// Rounds the number to the nearest multiple of it's order of magnitude, rounding away from zero if halfway.
-    func roundedToNextSignficant() -> Double {
+    func roundedToNextSignificant() -> Double
+    {
         guard
             !isInfinite,
             !isNaN,
@@ -80,14 +87,15 @@ extension Double {
         return shifted / magnitude
     }
 
-    var decimalPlaces: Int {
+    var decimalPlaces: Int
+    {
         guard
             !isNaN,
             !isInfinite,
             self != 0.0
             else { return 0 }
 
-        let i = self.roundedToNextSignficant()
+        let i = roundedToNextSignificant()
 
         guard
             !i.isInfinite,
@@ -98,39 +106,39 @@ extension Double {
     }
 }
 
-extension CGPoint {
+extension CGPoint
+{
     /// Calculates the position around a center point, depending on the distance from the center, and the angle of the position around the center.
-    func moving(distance: CGFloat, atAngle angle: CGFloat) -> CGPoint {
+    func moving(distance: CGFloat, atAngle angle: CGFloat) -> CGPoint
+    {
         return CGPoint(x: x + distance * cos(angle.DEG2RAD),
                        y: y + distance * sin(angle.DEG2RAD))
     }
 }
 
-open class ChartUtils {
-    private static var _defaultValueFormatter: IValueFormatter = ChartUtils.generateDefaultValueFormatter()
+extension CGContext
+{
 
-    open class func drawImage(
-        context: CGContext,
-        image: NSUIImage,
-        x: CGFloat,
-        y: CGFloat,
-        size: CGSize) {
+    public func drawImage(_ image: NSUIImage, atCenter center: CGPoint, size: CGSize)
+    {
         var drawOffset = CGPoint()
-        drawOffset.x = x - (size.width / 2)
-        drawOffset.y = y - (size.height / 2)
+        drawOffset.x = center.x - (size.width / 2)
+        drawOffset.y = center.y - (size.height / 2)
 
-        NSUIGraphicsPushContext(context)
+        NSUIGraphicsPushContext(self)
 
-        if image.size.width != size.width && image.size.height != size.height {
+        if image.size.width != size.width && image.size.height != size.height
+        {
             let key = "resized_\(size.width)_\(size.height)"
 
             // Try to take scaled image from cache of this image
             var scaledImage = objc_getAssociatedObject(image, key) as? NSUIImage
-            if scaledImage == nil {
+            if scaledImage == nil
+            {
                 // Scale the image
                 NSUIGraphicsBeginImageContextWithOptions(size, false, 0.0)
 
-                image.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
+                image.draw(in: CGRect(origin: .zero, size: size))
 
                 scaledImage = NSUIGraphicsGetImageFromCurrentImageContext()
                 NSUIGraphicsEndImageContext()
@@ -140,35 +148,41 @@ open class ChartUtils {
             }
 
             scaledImage?.draw(in: CGRect(origin: drawOffset, size: size))
-        } else {
+        }
+        else
+        {
             image.draw(in: CGRect(origin: drawOffset, size: size))
         }
 
         NSUIGraphicsPopContext()
     }
 
-    open class func drawText(context: CGContext, text: String, point: CGPoint, align: NSTextAlignment, attributes: [NSAttributedString.Key: Any]?) {
-        var point = point
-
-        if align == .center {
-            point.x -= text.size(withAttributes: attributes).width / 2.0
-        } else if align == .right {
-            point.x -= text.size(withAttributes: attributes).width
+    public func drawText(_ text: String, at point: CGPoint, align: TextAlignment, anchor: CGPoint = CGPoint(x: 0.5, y: 0.5), angleRadians: CGFloat = 0.0, attributes: [NSAttributedString.Key : Any]?)
+    {
+        let drawPoint = getDrawPoint(text: text, point: point, align: align, attributes: attributes)
+        
+        if (angleRadians == 0.0)
+        {
+            NSUIGraphicsPushContext(self)
+            
+            (text as NSString).draw(at: drawPoint, withAttributes: attributes)
+            
+            NSUIGraphicsPopContext()
         }
-
-        NSUIGraphicsPushContext(context)
-
-        (text as NSString).draw(at: point, withAttributes: attributes)
-
-        NSUIGraphicsPopContext()
+        else
+        {
+            drawText(text, at: drawPoint, anchor: anchor, angleRadians: angleRadians, attributes: attributes)
+        }
     }
-
-    open class func drawText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedString.Key: Any]?, anchor: CGPoint, angleRadians: CGFloat) {
+    
+    public func drawText(_ text: String, at point: CGPoint, anchor: CGPoint = CGPoint(x: 0.5, y: 0.5), angleRadians: CGFloat, attributes: [NSAttributedString.Key : Any]?)
+    {
         var drawOffset = CGPoint()
 
-        NSUIGraphicsPushContext(context)
+        NSUIGraphicsPushContext(self)
 
-        if angleRadians != 0.0 {
+        if angleRadians != 0.0
+        {
             let size = text.size(withAttributes: attributes)
 
             // Move the text drawing rect in a way that it always rotates around its center
@@ -178,22 +192,26 @@ open class ChartUtils {
             var translate = point
 
             // Move the "outer" rect relative to the anchor, assuming its centered
-            if anchor.x != 0.5 || anchor.y != 0.5 {
+            if anchor.x != 0.5 || anchor.y != 0.5
+            {
                 let rotatedSize = size.rotatedBy(radians: angleRadians)
 
                 translate.x -= rotatedSize.width * (anchor.x - 0.5)
                 translate.y -= rotatedSize.height * (anchor.y - 0.5)
             }
 
-            context.saveGState()
-            context.translateBy(x: translate.x, y: translate.y)
-            context.rotate(by: angleRadians)
+            saveGState()
+            translateBy(x: translate.x, y: translate.y)
+            rotate(by: angleRadians)
 
             (text as NSString).draw(at: drawOffset, withAttributes: attributes)
 
-            context.restoreGState()
-        } else {
-            if anchor.x != 0.0 || anchor.y != 0.0 {
+            restoreGState()
+        }
+        else
+        {
+            if anchor.x != 0.0 || anchor.y != 0.0
+            {
                 let size = text.size(withAttributes: attributes)
 
                 drawOffset.x = -size.width * anchor.x
@@ -209,12 +227,29 @@ open class ChartUtils {
         NSUIGraphicsPopContext()
     }
 
-    internal class func drawMultilineText(context: CGContext, text: String, knownTextSize: CGSize, point: CGPoint, attributes: [NSAttributedString.Key: Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat) {
-        var rect = CGRect(origin: CGPoint(), size: knownTextSize)
+    private func getDrawPoint(text: String, point: CGPoint, align: TextAlignment, attributes: [NSAttributedString.Key : Any]?) -> CGPoint
+    {
+        var point = point
+        
+        if align == .center
+        {
+            point.x -= text.size(withAttributes: attributes).width / 2.0
+        }
+        else if align == .right
+        {
+            point.x -= text.size(withAttributes: attributes).width
+        }
+        return point
+    }
+    
+    func drawMultilineText(_ text: String, at point: CGPoint, constrainedTo size: CGSize, anchor: CGPoint, knownTextSize: CGSize, angleRadians: CGFloat, attributes: [NSAttributedString.Key : Any]?)
+    {
+        var rect = CGRect(origin: .zero, size: knownTextSize)
 
-        NSUIGraphicsPushContext(context)
+        NSUIGraphicsPushContext(self)
 
-        if angleRadians != 0.0 {
+        if angleRadians != 0.0
+        {
             // Move the text drawing rect in a way that it always rotates around its center
             rect.origin.x = -knownTextSize.width * 0.5
             rect.origin.y = -knownTextSize.height * 0.5
@@ -222,22 +257,26 @@ open class ChartUtils {
             var translate = point
 
             // Move the "outer" rect relative to the anchor, assuming its centered
-            if anchor.x != 0.5 || anchor.y != 0.5 {
+            if anchor.x != 0.5 || anchor.y != 0.5
+            {
                 let rotatedSize = knownTextSize.rotatedBy(radians: angleRadians)
 
                 translate.x -= rotatedSize.width * (anchor.x - 0.5)
                 translate.y -= rotatedSize.height * (anchor.y - 0.5)
             }
 
-            context.saveGState()
-            context.translateBy(x: translate.x, y: translate.y)
-            context.rotate(by: angleRadians)
+            saveGState()
+            translateBy(x: translate.x, y: translate.y)
+            rotate(by: angleRadians)
 
             (text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
 
-            context.restoreGState()
-        } else {
-            if anchor.x != 0.0 || anchor.y != 0.0 {
+            restoreGState()
+        }
+        else
+        {
+            if anchor.x != 0.0 || anchor.y != 0.0
+            {
                 rect.origin.x = -knownTextSize.width * anchor.x
                 rect.origin.y = -knownTextSize.height * anchor.y
             }
@@ -251,18 +290,9 @@ open class ChartUtils {
         NSUIGraphicsPopContext()
     }
 
-    internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedString.Key: Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat) {
-        let rect = text.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        drawMultilineText(context: context, text: text, knownTextSize: rect.size, point: point, attributes: attributes, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
-    }
-
-    private class func generateDefaultValueFormatter() -> IValueFormatter {
-        let formatter = DefaultValueFormatter(decimals: 1)
-        return formatter
-    }
-
-    /// - Returns: The default value formatter used for all chart components that needs a default
-    open class func defaultValueFormatter() -> IValueFormatter {
-        return _defaultValueFormatter
+    func drawMultilineText(_ text: String, at point: CGPoint, constrainedTo size: CGSize, anchor: CGPoint, angleRadians: CGFloat, attributes: [NSAttributedString.Key : Any]?)
+    {
+        let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+        drawMultilineText(text, at: point, constrainedTo: size, anchor: anchor, knownTextSize: rect.size, angleRadians: angleRadians, attributes: attributes)
     }
 }

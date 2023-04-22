@@ -402,6 +402,8 @@
 			dependencies = (
 			);
 			name = StockIntheMiddle;
+			packageProductDependencies = (
+			);
 			productName = StockIntheMiddle;
 			productReference = 1E7A215427AEBB56008D1C05 /* StockIntheMiddle.app */;
 			productType = "com.apple.product-type.application";
@@ -452,6 +454,8 @@
 				Base,
 			);
 			mainGroup = 1E7A214B27AEBB56008D1C05;
+			packageReferences = (
+			);
 			productRefGroup = 1E7A215527AEBB56008D1C05 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

@@ -13,14 +13,16 @@ import Foundation
 import CoreGraphics
 
 /// Chart that draws lines, surfaces, circles, ...
-open class LineChartView: BarLineChartViewBase, LineChartDataProvider {
-    internal override func initialize() {
+open class LineChartView: BarLineChartViewBase, LineChartDataProvider
+{
+    internal override func initialize()
+    {
         super.initialize()
-
-        renderer = LineChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler)
+        
+        renderer = LineChartRenderer(dataProvider: self, animator: chartAnimator, viewPortHandler: viewPortHandler)
     }
-
+    
     // MARK: - LineChartDataProvider
-
-    open var lineData: LineChartData? { return _data as? LineChartData }
+    
+    open var lineData: LineChartData? { return data as? LineChartData }
 }
