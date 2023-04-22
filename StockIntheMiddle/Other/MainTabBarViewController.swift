@@ -74,5 +74,6 @@ class MainTabBarViewController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        print("변경사항 함 넣어보자")
     }
 }
