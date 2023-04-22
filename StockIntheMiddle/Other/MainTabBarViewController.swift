@@ -71,6 +71,7 @@ class MainTabBarViewController: UITabBarController {
         self.viewControllers = tabBarViewControllers
         
         print(#fileID, #function, #line, "- main 브랜치에서 MainTabBar의 변경사항")
+        print(#fileID, #function, #line, "- main 브랜치에서 MainTabBar의 또다른 변경사항")
     }
 
     override func viewWillAppear(_ animated: Bool) {
