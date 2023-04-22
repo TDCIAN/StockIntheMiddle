@@ -1,18 +1,25 @@
 name: iOS starter workflow
 
 on:
+  # develop 브랜치에 push나 pull request 이벤트가 일어났을때 해당 workflow를 trigger
   push:
-    branches: [ "main" ]
+    branches: [ "development" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "development" ]
 
+# workflow의 실행은 하나 이상의 job으로 구성
 jobs:
+  # 이 workflow는 "build"라는 single job으로 구성
   build:
     name: Build and Test default scheme using any available iPhone simulator
+    # job이 실행될 환경 - 최신 mac os
     runs-on: macos-latest
 
+    # Step은 job의 일부로 실행될 일련의 task들을 나타냄
     steps:
+      # 체크아웃
       - name: Checkout
+        # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository에 체크아웃하는 것
         uses: actions/checkout@v3
       - name: Set Default Scheme
         run: |
@@ -20,17 +27,21 @@ jobs:
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
+      # 빌드  
       - name: Build
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
+          # cocoapods로 라이브러리를 관리하는 경우 아래 코드 추가
+          pod install --repo-update --clean-install --project
           # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
           device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
           if [ $scheme = default ]; then scheme=$(cat default); fi
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+      # 테스트
       - name: Test
         env:
           scheme: ${{ 'default' }}
