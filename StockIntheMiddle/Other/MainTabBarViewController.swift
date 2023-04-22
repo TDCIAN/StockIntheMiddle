@@ -69,6 +69,8 @@ class MainTabBarViewController: UITabBarController {
         }
         
         self.viewControllers = tabBarViewControllers
+        
+        print(#fileID, #function, #line, "- MainTabBar의 변경사항")
     }
 
     override func viewWillAppear(_ animated: Bool) {
