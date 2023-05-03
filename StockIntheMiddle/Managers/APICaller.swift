@@ -32,7 +32,7 @@ final class APICaller {
         )
     }
 
-    public func news(for type: NewsViewController.`Type`, completion: @escaping (Result<[NewsStory], Error>) -> Void) {
+    public func news(for type: NewsViewController.NewsType, completion: @escaping (Result<[NewsStory], Error>) -> Void) {
         switch type {
         case .topStories:
             request(

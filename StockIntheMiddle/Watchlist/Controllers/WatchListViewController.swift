@@ -39,7 +39,7 @@ final class WatchListViewController: UIViewController, UIAnimatable {
         setUpSearchController()
         setUpTableView()
         fetchWatchlistData()
-//        setUpFloatingPanel()
+        setUpFloatingPanel()
         setUpTitleView()
         setUpObserver()
     }
@@ -174,13 +174,13 @@ final class WatchListViewController: UIViewController, UIAnimatable {
     }
 
     private func setUpFloatingPanel() {
-//        let vc = NewsViewController(type: .topStories)
-//        let panel = FloatingPanelController(delegate: self)
-//        panel.surfaceView.backgroundColor = .secondarySystemBackground
-//        panel.set(contentViewController: vc)
-//        panel.addPanel(toParent: self)
-//        panel.track(scrollView: vc.tableView)
-//        panel.delegate = self
+        let vc = NewsViewController(type: .topStories)
+        let panel = FloatingPanelController(delegate: self)
+        panel.surfaceView.backgroundColor = .secondarySystemBackground
+        panel.set(contentViewController: vc)
+        panel.addPanel(toParent: self)
+        panel.track(scrollView: vc.newsTableView)
+        panel.delegate = self
     }
 
     private func setUpTitleView() {

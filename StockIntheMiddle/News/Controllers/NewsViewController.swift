@@ -11,12 +11,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-/// Controller to show news
 final class NewsViewController: UIViewController, UIAnimatable {
     let disposeBag = DisposeBag()
 
-    /// Type of news
-    enum `Type` {
+    enum NewsType {
         case topStories
         case company(symbol: String)
 
@@ -35,7 +33,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
     private let searchButtonTapped = PublishRelay<Void>()
     var newsData = PublishSubject<[NewsStory]>()
 
-    private let type: Type
+    private let newsType: NewsType
 
     let newsTableView: UITableView = {
        let table = UITableView()
@@ -54,8 +52,8 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }()
 
     // MARK: - Init
-    init(type: Type) {
-        self.type = type
+    init(type: NewsType) {
+        self.newsType = type
         super.init(nibName: nil, bundle: nil)
     }
 
