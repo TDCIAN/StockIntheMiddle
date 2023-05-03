@@ -17,7 +17,7 @@ final class WatchListTableViewCell: UITableViewCell {
 
     weak var delegate: WatchListTableViewCellDelegate?
 
-    static let preferredHeight: CGFloat = 60
+    static let preferredHeight: CGFloat = 75
 
     struct ViewModel {
         let symbol: String
@@ -30,30 +30,30 @@ final class WatchListTableViewCell: UITableViewCell {
 
     private let symbolLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
         return label
     }()
 
     private let nameLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
 
     private let priceLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.textAlignment = .right
         return label
     }()
 
     private let changeLabel: UILabel = {
        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 6
+        label.textAlignment = .right
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         return label
     }()
 
@@ -61,6 +61,7 @@ final class WatchListTableViewCell: UITableViewCell {
        let chart = StockChartView()
         chart.isUserInteractionEnabled = false
         chart.clipsToBounds = true
+        chart.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return chart
     }()
 
@@ -85,30 +86,32 @@ final class WatchListTableViewCell: UITableViewCell {
 
         symbolLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
-            $0.top.equalToSuperview().inset(10)
+            $0.centerY.equalToSuperview().offset(-12.5)
         }
 
         nameLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
-            $0.top.equalTo(symbolLabel.snp.bottom)
+            $0.centerY.equalToSuperview().offset(12.5)
             $0.width.lessThanOrEqualTo(contentView.width * 0.4)
         }
 
         priceLabel.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
-            $0.top.equalToSuperview().inset(10)
+            $0.centerY.equalToSuperview().offset(-12.5)
+            $0.width.lessThanOrEqualTo(contentView.width * 0.2)
         }
 
         changeLabel.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
-            $0.top.equalTo(priceLabel.snp.bottom)
+            $0.centerY.equalToSuperview().offset(12.5)
+            $0.width.lessThanOrEqualTo(contentView.width * 0.2)
         }
 
         miniChartView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.33)
-            $0.height.equalTo(contentView.height - 12)
-            $0.trailing.equalToSuperview().inset(80)
+            $0.width.equalToSuperview().multipliedBy(0.30)
+            $0.height.equalTo(contentView.height - 15)
+            $0.trailing.equalToSuperview().inset(90)
         }
     }
 
@@ -125,8 +128,9 @@ final class WatchListTableViewCell: UITableViewCell {
         symbolLabel.text = viewModel.symbol
         nameLabel.text = viewModel.companyName
         priceLabel.text = viewModel.price
+        priceLabel.textColor = viewModel.changeColor
         changeLabel.text = viewModel.changePercentage
-        changeLabel.backgroundColor = viewModel.changeColor
+        changeLabel.textColor = viewModel.changeColor
         // Configure chart
         miniChartView.configure(with: viewModel.chartViewModel)
     }
