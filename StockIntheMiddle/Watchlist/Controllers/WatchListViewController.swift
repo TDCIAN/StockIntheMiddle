@@ -23,9 +23,12 @@ final class WatchListViewController: UIViewController, UIAnimatable {
 
     private var viewModels: [WatchListTableViewCell.ViewModel] = []
 
-    private var tableView: UITableView = {
+    private var watchListTableView: UITableView = {
        let table = UITableView()
-        table.register(WatchListTableViewCell.self, forCellReuseIdentifier: WatchListTableViewCell.identifier)
+        table.register(
+            WatchListTableViewCell.self,
+            forCellReuseIdentifier: WatchListTableViewCell.identifier
+        )
         return table
     }()
 
@@ -36,17 +39,17 @@ final class WatchListViewController: UIViewController, UIAnimatable {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         requestTrackingAuth()
+        setUpTitleView()
         setUpSearchController()
         setUpTableView()
-        fetchWatchlistData()
         setUpFloatingPanel()
-        setUpTitleView()
         setUpObserver()
+        fetchWatchlistData()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+        watchListTableView.frame = view.bounds
     }
 
     // MARK: - Private
@@ -68,7 +71,28 @@ final class WatchListViewController: UIViewController, UIAnimatable {
             }
         }
     }
+    
+    private func setUpTitleView() {
+        navigationItem.titleView = configNavTitleView(title: "Watchlist")
+    }
 
+    private func setUpSearchController() {
+        let resultVC = SearchResultsViewController()
+        resultVC.delegate = self
+        let searchVC = UISearchController(searchResultsController: resultVC)
+        searchVC.searchResultsUpdater = self
+        searchVC.searchBar.placeholder = "Search stocks and add to watchlist"
+        navigationItem.searchController = searchVC
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setUpTableView() {
+        view.addSubview(watchListTableView)
+        watchListTableView.delegate = self
+        watchListTableView.dataSource = self
+        watchListTableView.isHidden = true
+    }
+    
     private func setUpObserver() {
         observer = NotificationCenter.default.addObserver(
             forName: .didAddToWatchList,
@@ -105,8 +129,8 @@ final class WatchListViewController: UIViewController, UIAnimatable {
         }
         group.notify(queue: .main) { [weak self] in
             self?.createViewModels()
-            self?.tableView.reloadData()
-            self?.tableView.isHidden = false
+            self?.watchListTableView.reloadData()
+            self?.watchListTableView.isHidden = false
             self?.hideLoadingAnimation()
         }
     }
@@ -132,7 +156,7 @@ final class WatchListViewController: UIViewController, UIAnimatable {
             )
         }
         self.viewModels = viewModels.sorted(by: { $0.symbol < $1.symbol })
-        tableView.reloadData()
+        watchListTableView.reloadData()
     }
 
     private func createViewModels() {
@@ -165,49 +189,7 @@ final class WatchListViewController: UIViewController, UIAnimatable {
         }
         return String.formatted(number: closingPrice)
     }
-
-    private func setUpTableView() {
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isHidden = true
-    }
-
-    private func setUpFloatingPanel() {
-        let vc = NewsViewController(type: .topStories)
-        let panel = FloatingPanelController(delegate: self)
-        panel.surfaceView.backgroundColor = .secondarySystemBackground
-        panel.set(contentViewController: vc)
-        panel.addPanel(toParent: self)
-        panel.track(scrollView: vc.newsTableView)
-        panel.delegate = self
-    }
-
-    private func setUpTitleView() {
-        let titleView = UIView(
-            frame: CGRect(
-                x: 0,
-                y: 0,
-                width: view.width,
-                height: navigationController?.navigationBar.height ?? 100
-            )
-        )
-        let label = UILabel(frame: CGRect(x: 10, y: 0, width: titleView.width - 20, height: titleView.height))
-        label.text = "Watchlist"
-        label.font = .systemFont(ofSize: 40, weight: .medium)
-        titleView.addSubview(label)
-        navigationItem.titleView = titleView
-    }
-
-    private func setUpSearchController() {
-        let resultVC = SearchResultsViewController()
-        resultVC.delegate = self
-        let searchVC = UISearchController(searchResultsController: resultVC)
-        searchVC.searchResultsUpdater = self
-        searchVC.searchBar.placeholder = "Search stocks and add to watchlist"
-        navigationItem.searchController = searchVC
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
+    
 }
 
 // MARK: - UISearchResultsUpdating
@@ -265,8 +247,39 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
     }
 }
 
-// MARK: - FloatingPanelControllerDelegate
+// MARK: - FloatingPanelController
 extension WatchListViewController: FloatingPanelControllerDelegate {
+    class CustomFloatingPanelLayout: FloatingPanelLayout {
+        let position: FloatingPanelPosition = .bottom
+        let initialState: FloatingPanelState = .tip
+        let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
+            .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .safeArea),
+            .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea),
+            .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea),
+        ]
+    }
+    
+    private func setUpFloatingPanel() {
+        let vc = NewsViewController(type: .topStories)
+        let panel = FloatingPanelController(delegate: self)
+        panel.layout = CustomFloatingPanelLayout()
+        panel.surfaceView.backgroundColor = .secondarySystemBackground
+        panel.set(contentViewController: vc)
+        panel.addPanel(toParent: self)
+        panel.track(scrollView: vc.newsTableView)
+        panel.delegate = self
+        
+        let appearance = SurfaceAppearance()
+        let shadow = SurfaceAppearance.Shadow()
+        shadow.color = UIColor.black
+        shadow.offset = CGSize(width: 0, height: -8)
+        shadow.radius = 8
+        appearance.shadows = [shadow]
+        appearance.cornerRadius = 16
+        panel.surfaceView.grabberHandle.isHidden = false
+        panel.surfaceView.appearance = appearance
+    }
+    
     func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
         navigationItem.titleView?.isHidden = fpc.state == .full
     }
@@ -336,6 +349,6 @@ extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
 extension WatchListViewController: WatchListTableViewCellDelegate {
 
     func didUpdateMaxWidth() {
-        tableView.reloadData()
+        watchListTableView.reloadData()
     }
 }

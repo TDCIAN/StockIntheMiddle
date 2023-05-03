@@ -8,15 +8,7 @@
 import UIKit
 
 extension UIView {
-    func addSubviews(_ views: UIView...) {
-        views.forEach {
-            addSubview($0)
-        }
-    }
-}
-
-// MARK: - Framing
-extension UIView {
+    // MARK: - Framing
     var width: CGFloat {
         frame.size.width
     }
@@ -39,5 +31,11 @@ extension UIView {
 
     var bottom: CGFloat {
         top + height
+    }
+    
+    func addSubviews(_ views: UIView...) {
+        views.forEach {
+            addSubview($0)
+        }
     }
 }

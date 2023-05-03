@@ -61,6 +61,7 @@
 		1EFF839E2A01F88500EC60C8 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF839D2A01F88500EC60C8 /* Int+.swift */; };
 		1EFF83A02A01F89400EC60C8 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF839F2A01F89400EC60C8 /* Date+.swift */; };
 		1EFF83A22A01F8AB00EC60C8 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF83A12A01F8AB00EC60C8 /* UITextField+.swift */; };
+		1EFF83A42A0227F700EC60C8 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF83A32A0227F700EC60C8 /* UIViewController+.swift */; };
 		C329CA883EA94C2D3F3B3BE1 /* Pods_StockIntheMiddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E5D3C5BBFC10EB666A2BE29 /* Pods_StockIntheMiddle.framework */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +135,7 @@
 		1EFF839D2A01F88500EC60C8 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		1EFF839F2A01F89400EC60C8 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		1EFF83A12A01F8AB00EC60C8 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		1EFF83A32A0227F700EC60C8 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		271F404987710F760AB39E47 /* Pods-StockIntheMiddle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockIntheMiddle.release.xcconfig"; path = "Target Support Files/Pods-StockIntheMiddle/Pods-StockIntheMiddle.release.xcconfig"; sourceTree = "<group>"; };
 		512AE250B396CFCF156B90D6 /* Pods-StockIntheMiddle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockIntheMiddle.debug.xcconfig"; path = "Target Support Files/Pods-StockIntheMiddle/Pods-StockIntheMiddle.debug.xcconfig"; sourceTree = "<group>"; };
 		6E5D3C5BBFC10EB666A2BE29 /* Pods_StockIntheMiddle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockIntheMiddle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,7 +189,7 @@
 				1E9CF91627C762C200898828 /* Calculator */,
 				1E9CF91827C762D800898828 /* Settings */,
 				1E7A216E27AEBC0A008D1C05 /* Managers */,
-				1E7A216F27AEBC11008D1C05 /* Resources */,
+				1E7A216F27AEBC11008D1C05 /* Application */,
 				1EFF837A2A01E9C400EC60C8 /* Extensions */,
 				1EFF838A2A01F5AF00EC60C8 /* Secrets.xcconfig */,
 			);
@@ -206,7 +208,7 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		1E7A216F27AEBC11008D1C05 /* Resources */ = {
+		1E7A216F27AEBC11008D1C05 /* Application */ = {
 			isa = PBXGroup;
 			children = (
 				1E7A216027AEBB58008D1C05 /* Assets.xcassets */,
@@ -215,7 +217,7 @@
 				1E335EE427BD339800C4BC2F /* MainTabBarViewController.swift */,
 				1E7A216527AEBB58008D1C05 /* Info.plist */,
 			);
-			path = Resources;
+			path = Application;
 			sourceTree = "<group>";
 		};
 		1E9CF91527C762B500898828 /* Watchlist */ = {
@@ -397,6 +399,7 @@
 				1EFF839D2A01F88500EC60C8 /* Int+.swift */,
 				1EFF839F2A01F89400EC60C8 /* Date+.swift */,
 				1EFF83A12A01F8AB00EC60C8 /* UITextField+.swift */,
+				1EFF83A32A0227F700EC60C8 /* UIViewController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -611,6 +614,7 @@
 				1EFF839A2A01F85A00EC60C8 /* UIColor+.swift in Sources */,
 				1E75BCC927B081C3009CC6D4 /* PersistenceManager.swift in Sources */,
 				1E9CF94D27C77C9900898828 /* CalculatorTableViewController.swift in Sources */,
+				1EFF83A42A0227F700EC60C8 /* UIViewController+.swift in Sources */,
 				1EFF83922A01F7D200EC60C8 /* String+.swift in Sources */,
 				1ECCAC6127C232FF007A8ED2 /* ConfigManager.swift in Sources */,
 				1E8AD80027B1D2320041BBE5 /* NewsStory.swift in Sources */,
@@ -804,7 +808,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = StockIntheMiddle/Resources/Info.plist;
+				INFOPLIST_FILE = StockIntheMiddle/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Stock in the Middle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -843,7 +847,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4FTFKXF8N5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = StockIntheMiddle/Resources/Info.plist;
+				INFOPLIST_FILE = StockIntheMiddle/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Stock in the Middle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
