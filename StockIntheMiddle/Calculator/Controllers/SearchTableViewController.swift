@@ -89,7 +89,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
                     showLoadingAnimation()
                     self.apiService.fetchSymbolsPublisher(keywords: searchQuery).sink {
                         (completion) in
-                        hideLoadingAnimation()
+                        self.hideLoadingAnimation()
                         switch completion {
                         case .failure(let error):
                             print("performSearch - error: \(error.localizedDescription)")

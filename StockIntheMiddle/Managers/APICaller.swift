@@ -13,8 +13,9 @@ final class APICaller {
     static let shared = APICaller()
 
     private struct Constants {
-        static let apiKey = "c805soiad3i8n3bhbcmg"
-        static let sandbaxApiKey = "sandbox_c805soiad3i8n3bhbcn0"
+        static var apiKey: String {
+            return Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String ?? "NO_KEY"
+        }
         static let baseURL = "https://finnhub.io/api/v1/"
         static let day: TimeInterval = 3600 * 24
     }
@@ -84,7 +85,7 @@ final class APICaller {
         ) else {
             return .just(.failure(APIError.networkError))
         }
-        print("APICaller - fetchNews \n (1) safeQuery: \(safeQuery) \n (2) endPoint: \(endPoint), \n (3) queryParams: \(queryParams), \n (4) url: \(url)")
+        
         let request = URLRequest(url: url)
         return URLSession.shared.rx.data(request: request)
             .map { data in
@@ -155,7 +156,7 @@ final class APICaller {
         queryItems.append(.init(name: "token", value: Constants.apiKey))
 
         urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
-        print("APICaller - url: \(urlString)")
+
         return URL(string: urlString)
     }
 
