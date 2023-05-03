@@ -109,7 +109,6 @@
 		1ED5E24127B3641500413F51 /* MarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataResponse.swift; sourceTree = "<group>"; };
 		1ED5E24327B36AE500413F51 /* WatchListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListTableViewCell.swift; sourceTree = "<group>"; };
 		1ED5E24527B36C6A00413F51 /* StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
-		1EFF83792A01E79C00EC60C8 /* Confidentials.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Confidentials.xcconfig; sourceTree = "<group>"; };
 		1EFF83812A01ED2200EC60C8 /* StockIntheMiddleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockIntheMiddleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFF83832A01ED2200EC60C8 /* StockIntheMiddleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockIntheMiddleTests.swift; sourceTree = "<group>"; };
 		271F404987710F760AB39E47 /* Pods-StockIntheMiddle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockIntheMiddle.release.xcconfig"; path = "Target Support Files/Pods-StockIntheMiddle/Pods-StockIntheMiddle.release.xcconfig"; sourceTree = "<group>"; };
@@ -160,7 +159,6 @@
 		1E7A215627AEBB56008D1C05 /* StockIntheMiddle */ = {
 			isa = PBXGroup;
 			children = (
-				1EFF83792A01E79C00EC60C8 /* Confidentials.xcconfig */,
 				1EFF837A2A01E9C400EC60C8 /* Extensions */,
 				1E7A216E27AEBC0A008D1C05 /* Managers */,
 				1E7A216F27AEBC11008D1C05 /* Resources */,
@@ -631,7 +629,6 @@
 /* Begin XCBuildConfiguration section */
 		1E7A216627AEBB58008D1C05 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EFF83792A01E79C00EC60C8 /* Confidentials.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -693,7 +690,6 @@
 		};
 		1E7A216727AEBB58008D1C05 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EFF83792A01E79C00EC60C8 /* Confidentials.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
