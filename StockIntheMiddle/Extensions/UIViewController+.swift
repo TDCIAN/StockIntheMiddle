@@ -13,7 +13,7 @@ extension UIViewController {
         let titleLabel: UILabel = {
             let label = UILabel()
             label.text = title
-            label.font = .systemFont(ofSize: 28, weight: .semibold)
+            label.font = .systemFont(ofSize: 26, weight: .semibold)
             return label
         }()
         titleView.addSubview(titleLabel)

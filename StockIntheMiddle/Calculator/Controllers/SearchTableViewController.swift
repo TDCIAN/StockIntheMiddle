@@ -51,7 +51,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     }
 
     private func setUpTitleView() {
-        navigationItem.titleView = configNavTitleView(title: "Yield Calculator")
+        navigationItem.titleView = configNavTitleView(title: "CALCULATOR")
     }
 
     private func setupNavigationBar() {

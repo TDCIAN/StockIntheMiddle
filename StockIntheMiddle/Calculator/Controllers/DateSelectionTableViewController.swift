@@ -20,7 +20,10 @@ class DateSelectionTableViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.tableView.register(DateSelectionTableViewCell.self, forCellReuseIdentifier: DateSelectionTableViewCell.identifier)
+        self.tableView.register(
+            DateSelectionTableViewCell.self,
+            forCellReuseIdentifier: DateSelectionTableViewCell.identifier
+        )
         setupMonthInfos()
         setupNavigation()
     }

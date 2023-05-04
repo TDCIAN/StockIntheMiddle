@@ -73,7 +73,7 @@ final class WatchListViewController: UIViewController, UIAnimatable {
     }
     
     private func setUpTitleView() {
-        navigationItem.titleView = configNavTitleView(title: "Watchlist")
+        navigationItem.titleView = configNavTitleView(title: "WATCHLIST")
     }
 
     private func setUpSearchController() {
@@ -278,10 +278,6 @@ extension WatchListViewController: FloatingPanelControllerDelegate {
         appearance.cornerRadius = 16
         panel.surfaceView.grabberHandle.isHidden = false
         panel.surfaceView.appearance = appearance
-    }
-    
-    func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
-        navigationItem.titleView?.isHidden = fpc.state == .full
     }
 }
 

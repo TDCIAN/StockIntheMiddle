@@ -71,7 +71,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
     }
 
     private func setUpTitleView() {
-        navigationItem.titleView = configNavTitleView(title: "News")
+        navigationItem.titleView = configNavTitleView(title: "NEWS")
     }
 
     private func setNavigationItems() {

@@ -28,7 +28,10 @@ class OpenSourceViewController: UIViewController {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(OpenSourceLicenseTableViewCell.self, forCellReuseIdentifier: OpenSourceLicenseTableViewCell.reusableIdentifier)
+        tableView.register(
+            OpenSourceLicenseTableViewCell.self,
+            forCellReuseIdentifier: OpenSourceLicenseTableViewCell.reusableIdentifier
+        )
         tableView.separatorStyle = .none
         tableView.backgroundColor = .tertiarySystemBackground
         return tableView
@@ -90,7 +93,12 @@ extension OpenSourceViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "OpenSourceLicenseTableViewCell", for: indexPath) as? OpenSourceLicenseTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: OpenSourceLicenseTableViewCell.reusableIdentifier,
+            for: indexPath
+        ) as? OpenSourceLicenseTableViewCell else {
+            return UITableViewCell()
+        }
         let openSourceInfo = openSourceLicenseDataArray[indexPath.row]
         cell.configCell(openSourceInfo: openSourceInfo)
         return cell

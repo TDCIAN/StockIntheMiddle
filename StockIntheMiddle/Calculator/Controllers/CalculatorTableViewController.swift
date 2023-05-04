@@ -153,7 +153,7 @@ class CalculatorTableViewController: UITableViewController {
         slider.minimumValue = 0
         slider.maximumValue = 1
         slider.value = 0.5
-        slider.addTarget(CalculatorTableViewController.self, action: #selector(dateSliderDidChange(_:)), for: .valueChanged)
+        slider.addTarget(self, action: #selector(dateSliderDidChange(_:)), for: .valueChanged)
         return slider
     }()
 

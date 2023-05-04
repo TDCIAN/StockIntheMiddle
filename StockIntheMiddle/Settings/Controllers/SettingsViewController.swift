@@ -36,8 +36,14 @@ final class SettingsViewController: UIViewController {
 
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
-        table.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
-        table.register(SwitchTableViewCell.self, forCellReuseIdentifier: SwitchTableViewCell.identifier)
+        table.register(
+            SettingTableViewCell.self,
+            forCellReuseIdentifier: SettingTableViewCell.identifier
+        )
+        table.register(
+            SwitchTableViewCell.self,
+            forCellReuseIdentifier: SwitchTableViewCell.identifier
+        )
         return table
     }()
 
@@ -59,7 +65,7 @@ final class SettingsViewController: UIViewController {
     }
 
     private func setUpTitleView() {
-        navigationItem.titleView = configNavTitleView(title: "Settings")
+        navigationItem.titleView = configNavTitleView(title: "SETTINGS")
     }
 
     private func setTableView() {
