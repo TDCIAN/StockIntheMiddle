@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol NewsHeaderViewDelegate: AnyObject {
     func newsHeaderViewDidTapAddButton(_ headerView: NewsHeaderView)
@@ -35,8 +36,10 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         button.setTitle("+ Watchlist", for: .normal)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.textAlignment = .center
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         return button
     }()
 
@@ -54,12 +57,16 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        label.frame = CGRect(x: 14, y: 0, width: contentView.width - 28, height: contentView.height)
-        button.sizeToFit()
-        button.frame = CGRect(x: contentView.width - button.width - 16,
-                              y: (contentView.height - button.height) / 2,
-                              width: button.width + 8,
-                              height: button.height)
+        label.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+        }
+        button.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(120)
+            $0.height.equalTo(45)
+        }
     }
 
     override func prepareForReuse() {
