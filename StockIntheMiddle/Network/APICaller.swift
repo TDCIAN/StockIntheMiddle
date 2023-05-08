@@ -80,17 +80,40 @@ final class APICaller {
         task.resume()
     }
     
-    // MARK: Watchlist
-    public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> Void) {
-        guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        request(
-            url: url(for: .search, queryParams: ["q": safeQuery]),
-            expecting: SearchResponse.self,
-            completion: completion
-        )
+    private func requestSingle<T: Codable>(url: URL?, expecting: T.Type) -> Single<T> {
+        guard let url = url else {
+            return Single.error(APIError.invalidURL)
+        }
+
+        let request = URLRequest(url: url)
+        
+        return RxAlamofire.requestData(request)
+            .map { response, jsonData in
+                if !(200..<300 ~= response.statusCode) {
+                    throw APIError.badStatus
+                }
+                do {
+                    let decodedData = try JSONDecoder().decode(T.self, from: jsonData)
+                    return decodedData
+                } catch {
+                    throw APIError.decodingError
+                }
+            }
+            .asSingle()
     }
     
-    public func marketData(for symbol: String, numberOfDays: TimeInterval = 7, completion: @escaping (Result<MarketDataResponse, Error>) -> Void) {
+    // MARK: Watchlist
+    public func searchStock(query: String) -> Single<SearchResponse> {
+        guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return Single.error(APIError.invalidURL)
+        }
+        return requestSingle(
+            url: url(for: .search, queryParams: ["q": safeQuery]),
+            expecting: SearchResponse.self
+        )
+    }
+
+    public func marketData(for symbol: String, numberOfDays: TimeInterval = 7) -> Single<MarketDataResponse> {
         let today = Date().addingTimeInterval(-(Constants.day))
         let prior = today.addingTimeInterval(-(Constants.day * numberOfDays))
         let url = url(
@@ -102,53 +125,19 @@ final class APICaller {
                     "to": "\(Int(today.timeIntervalSince1970))"
                ]
         )
-        request(url: url, expecting: MarketDataResponse.self, completion: completion)
+        return requestSingle(url: url, expecting: MarketDataResponse.self)
     }
 
-    public func financialMetrics(for symbol: String, completion: @escaping (Result<FinancialMetricsResponse, Error>) -> Void) {
+    public func financialMetrics(for symbol: String) -> Single<FinancialMetricsResponse> {
         let url = url(
             for: .financials,
-               queryParams: ["symbol": symbol, "metric": "all"]
+            queryParams: ["symbol": symbol, "metric": "all"]
         )
-        request(
-            url: url,
-            expecting: FinancialMetricsResponse.self,
-            completion: completion
-        )
+        return requestSingle(url: url, expecting: FinancialMetricsResponse.self)
     }
-    
 
     // MARK: News
-
-    public func news(for type: NewsViewController.NewsType, completion: @escaping (Result<[NewsStory], Error>) -> Void) {
-        print("뉴스 - 타입: \(type)")
-        switch type {
-        case .topStories:
-            request(
-                url: url(for: .topStories, queryParams: ["category": "general"]),
-                expecting: [NewsStory].self,
-                completion: completion
-            )
-        case .company(let symbol):
-            let today = Date()
-            let oneMonthBack = today.addingTimeInterval(-(Constants.day * 7))
-            request(
-                url: url(
-                    for: .companyNews,
-                    queryParams: [
-                        "symbol": symbol,
-                        "from": DateFormatter.newsDateFormatter.string(from: oneMonthBack),
-                        "to": DateFormatter.newsDateFormatter.string(from: today)
-                    ]
-                ),
-                expecting: [NewsStory].self,
-                completion: completion
-            )
-        }
-    }
-
     func fetchNews(query: String) -> Single<[NewsStory]> {
-        print("펫치뉴스 - 쿼리: \(query)")
         guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return Single.error(APIError.invalidURL)
         }
@@ -176,19 +165,6 @@ final class APICaller {
             return Single.error(APIError.networkError)
         }
         
-        let request = URLRequest(url: url)
-        return RxAlamofire.requestData(request)
-            .map { response, jsonData in
-                if !(200..<300 ~= response.statusCode) {
-                    throw APIError.badStatus
-                }
-                do {
-                    let newsData = try JSONDecoder().decode([NewsStory].self, from: jsonData)
-                    return newsData
-                } catch {
-                    throw APIError.decodingError
-                }
-            }
-            .asSingle()
+        return requestSingle(url: url, expecting: [NewsStory].self)
     }
 }

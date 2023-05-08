@@ -7,19 +7,29 @@
 
 import UIKit
 import SafariServices
+import RxSwift
+import RxCocoa
+import SnapKit
 
 final class StockDetailsViewController: UIViewController {
 
     // MARK: - Properties
+    private let disposeBag = DisposeBag()
+    
     private let symbol: String
     private let companyName: String
     private var candleStickData: [CandleStick]
 
-    private let tableView: UITableView = {
-       let table = UITableView()
-        table.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
-        table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
-        return table
+    private lazy var newsTableView: UITableView = {
+       let tableView = UITableView()
+        tableView.register(NewsHeaderView.self, forHeaderFooterViewReuseIdentifier: NewsHeaderView.identifier)
+        tableView.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableHeaderView = UIView(
+            frame: CGRect(x: 0, y: 0, width: view.width, height: (view.width * 0.7) + 100)
+        )
+        return tableView
     }()
 
     private var stories: [NewsStory] = []
@@ -43,17 +53,19 @@ final class StockDetailsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = companyName
+        setLayout()
         setUpCloseButton()
-        setUpTable()
-        fetchFinancialData()
-        fetchNews()
+        bindFinancialData()
+        bindNews()
+    }
+    
+    private func setLayout() {
+        view.addSubview(newsTableView)
+        newsTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-    }
-    // MARK: - Private
     private func setUpCloseButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .close,
@@ -66,63 +78,54 @@ final class StockDetailsViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    private func setUpTable() {
-        view.addSubviews(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableHeaderView = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.width, height: (view.width * 0.7) + 100)
-        )
-    }
-
-    private func fetchFinancialData() {
+    private func bindFinancialData() {
         let group = DispatchGroup()
         if candleStickData.isEmpty {
             group.enter()
-            APICaller.shared.marketData(for: symbol) { [weak self] result in
-                defer {
-                    group.leave()
-                }
-                switch result {
-                case .success(let response):
-                    self?.candleStickData = response.candleSticks
-                case .failure(let error):
-                    print("StockDetailVC - fetchFinancialData - error: \(error)")
-                }
-            }
+            APICaller.shared.marketData(for: symbol)
+                .subscribe(on: MainScheduler.instance)
+                .subscribe { [weak self] data in
+                    defer {
+                        group.leave()
+                    }
+                    self?.candleStickData = data.candleSticks
+                } onFailure: { error in
+                    print(#fileID, #function, #line, "- bindFinancialData error: \(error)")
+                }.disposed(by: disposeBag)
         }
 
         group.enter()
-        APICaller.shared.financialMetrics(for: symbol) { [weak self] result in
-            defer {
-                group.leave()
-            }
-
-            switch result {
-            case .success(let response):
+        APICaller.shared.financialMetrics(for: symbol)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe { [weak self] response in
+                defer {
+                    group.leave()
+                }
                 let metrics = response.metric
                 self?.metrics = metrics
-            case .failure(let error):
+            } onFailure: { error in
                 print("StockDetailVC - fetchFinancialData - error: \(error)")
-            }
-        }
+            }.disposed(by: disposeBag)
+        
         group.notify(queue: .main) { [weak self] in
             self?.renderChart()
         }
     }
 
-    private func fetchNews() {
-        APICaller.shared.news(for: .company(symbol: symbol)) { [weak self] result in
-            switch result {
-            case .success(let stories):
-                DispatchQueue.main.async {
-                    self?.stories = stories
-                    self?.tableView.reloadData()
+    private func bindNews() {
+        APICaller.shared.fetchNews(query: symbol)
+            .observe(on: MainScheduler.instance)
+            .compactMap({ news in
+                return news
+            })
+            .subscribe(
+                onSuccess: { [weak self] news in
+                    self?.stories = news
+                    self?.newsTableView.reloadData()
+                }, onError: { error in
+                    print(#fileID, #function, #line, "- bindNews error: \(error)")
                 }
-            case .failure(let error):
-                print("StockDetailVC - fetchNews - error: \(error.localizedDescription)")
-            }
-        }
+            ).disposed(by: disposeBag)
     }
 
     private func renderChart() {
@@ -137,10 +140,10 @@ final class StockDetailsViewController: UIViewController {
 
         var viewModels = [MetricCollectionViewCell.ViewModel]()
         if let metrics = self.metrics {
-            viewModels.append(.init(name: "52W High", value: "\(metrics.AnnualWeekHigh)"))
-            viewModels.append(.init(name: "52W Low", value: "\(metrics.AnnualWeekLow)"))
-            viewModels.append(.init(name: "52W Return", value: "\(metrics.AnnualWeekPriceReturnDaily)"))
-            viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
+            viewModels.append(.init(name: "52W High", value: String(format: "%.2f", metrics.AnnualWeekHigh)))
+            viewModels.append(.init(name: "52W Low", value: String(format: "%.2f", metrics.AnnualWeekLow)))
+            viewModels.append(.init(name: "52W Return", value: String(format: "%.2f", metrics.AnnualWeekPriceReturnDaily)))
+            viewModels.append(.init(name: "10D Volume", value: String(format: "%.2f", metrics.TenDayAverageTradingVolume)))
         }
 
         let change = candleStickData.getPercentage()
@@ -153,7 +156,7 @@ final class StockDetailsViewController: UIViewController {
             ),
             metricViewModels: viewModels
         )
-        tableView.tableHeaderView = headerView
+        newsTableView.tableHeaderView = headerView
     }
 
 }

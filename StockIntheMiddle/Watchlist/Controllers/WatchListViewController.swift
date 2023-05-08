@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import AppTrackingTransparency
 import FloatingPanel
 import SnapKit
-import AppTrackingTransparency
 import MBProgressHUD
+import RxSwift
+import RxCocoa
 
 final class WatchListViewController: UIViewController, UIAnimatable {
+    
+    private let disposeBag = DisposeBag()
 
     private var searchTimer: Timer?
 
@@ -114,19 +118,19 @@ final class WatchListViewController: UIViewController, UIAnimatable {
 
         for symbol in symbols where watchlistMap[symbol] == nil {
             group.enter()
-            APICaller.shared.marketData(for: symbol) { [weak self] result in
-                defer {
-                    group.leave()
-                }
-                switch result {
-                case .success(let data):
+            APICaller.shared.marketData(for: symbol)
+                .subscribe(on: MainScheduler.instance)
+                .subscribe { [weak self] data in
+                    defer {
+                        group.leave()
+                    }
                     let candleSticks = data.candleSticks
                     self?.watchlistMap[symbol] = candleSticks
-                case .failure(let error):
-                    print(error)
-                }
-            }
+                } onFailure: { error in
+                    print(#fileID, #function, #line, "- marketData error: \(error)")
+                }.disposed(by: disposeBag)
         }
+        
         group.notify(queue: .main) { [weak self] in
             self?.createViewModels()
             self?.watchListTableView.reloadData()
@@ -206,25 +210,20 @@ extension WatchListViewController: UISearchResultsUpdating {
         searchTimer?.invalidate()
 
         searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
-            APICaller.shared.search(query: query) { result in
-                switch result {
-                case .success(let response):
-                    DispatchQueue.main.async {
-                        var result: [SearchResult] = []
-                        response.result.forEach { searchResult in
-                            if !searchResult.displaySymbol.contains(".") {
-                                result.append(searchResult)
-                            }
+            APICaller.shared.searchStock(query: query)
+                .subscribe(on: MainScheduler.instance)
+                .subscribe { response in
+                    var result: [SearchResult] = []
+                    response.result.forEach { searchResult in
+                        if !searchResult.displaySymbol.contains(".") {
+                            result.append(searchResult)
                         }
-                        resultsVC.update(with: result)
                     }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        resultsVC.update(with: [])
-                    }
+                    resultsVC.update(with: result)
+                } onFailure: { error in
+                    resultsVC.update(with: [])
                     print("WatchListVC - updateSearchResults - error: \(error)")
-                }
-            }
+                }.disposed(by: self.disposeBag)
         })
     }
 }
@@ -282,7 +281,6 @@ extension WatchListViewController: FloatingPanelControllerDelegate {
 }
 
 // MARK: - TableView
-
 extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModels.count

@@ -6,51 +6,57 @@
 //
 
 import UIKit
+import SnapKit
 
 final class MetricCollectionViewCell: UICollectionViewCell {
-
+    
     static let identifier = "MetricCollectionViewCell"
-
+    
     struct ViewModel {
         let name: String
         let value: String
     }
-
+    
     private let nameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
+        label.textColor = .label
         return label
     }()
-
+    
     private let valueLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.textColor = .secondaryLabel
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.clipsToBounds = true
-        contentView.addSubviews(nameLabel, valueLabel)
+        setLayout()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        valueLabel.sizeToFit()
-        nameLabel.sizeToFit()
-        nameLabel.frame = CGRect(x: 15, y: 0, width: nameLabel.width, height: contentView.height)
-        valueLabel.frame = CGRect(x: nameLabel.right + 3, y: 0, width: valueLabel.width, height: contentView.height)
+    
+    private func setLayout() {
+        contentView.addSubviews(nameLabel, valueLabel)
+        nameLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(15)
+        }
+        valueLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(nameLabel.snp.trailing).offset(5)
+        }
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         nameLabel.text = nil
         valueLabel.text = nil
     }
-
+    
     func configure(with viewModel: ViewModel) {
         nameLabel.text = viewModel.name + " : "
         valueLabel.text = viewModel.value
