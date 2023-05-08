@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.6.4)
   - Charts (4.1.0):
     - Charts/Core (= 4.1.0)
   - Charts/Core (4.1.0):
@@ -6,6 +7,11 @@ PODS:
   - FloatingPanel (2.6.1)
   - Loaf (0.7.0)
   - MBProgressHUD (1.2.0)
+  - RxAlamofire (6.1.1):
+    - RxAlamofire/Core (= 6.1.1)
+  - RxAlamofire/Core (6.1.1):
+    - Alamofire (~> 5.4)
+    - RxSwift (~> 6.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -19,10 +25,12 @@ PODS:
   - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
+  - Alamofire
   - Charts
   - FloatingPanel
   - Loaf
   - MBProgressHUD
+  - RxAlamofire
   - RxCocoa
   - RxSwift
   - SDWebImage
@@ -30,10 +38,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - Charts
     - FloatingPanel
     - Loaf
     - MBProgressHUD
+    - RxAlamofire
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -42,10 +52,12 @@ SPEC REPOS:
     - SwiftAlgorithms
 
 SPEC CHECKSUMS:
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   Charts: 354f86803d11d9c35de280587fef50d1af063978
   FloatingPanel: de6bb891912ede28da7b1140f7b583c474fec28a
   Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
@@ -53,6 +65,6 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: 4609ece8c1e0e861da9c8a3e4e7595281c77ed16
+PODFILE CHECKSUM: a4f4d72b536a6b608a694268e2fc27c40b525a0e
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

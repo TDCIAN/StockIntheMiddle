@@ -14,5 +14,7 @@ target 'StockIntheMiddle' do
   pod 'Loaf'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'Alamofire'
+  pod 'RxAlamofire'
   
 end
