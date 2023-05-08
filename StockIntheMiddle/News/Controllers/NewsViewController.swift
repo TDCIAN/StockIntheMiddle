@@ -47,6 +47,7 @@ final class NewsViewController: UIViewController, UIAnimatable {
         label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textColor = .systemGray
         label.isHidden = true
+        label.textAlignment = .center
         return label
     }()
 
@@ -101,29 +102,29 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.showLoadingAnimation()
             })
             .observe(on: ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
-            .flatMapLatest { query -> Single<Result<[NewsStory], Error>> in
+            .flatMapLatest { query -> Single<[NewsStory]> in
                 return APICaller.shared.fetchNews(query: query)
             }
             .observe(on: MainScheduler.instance)
-            .compactMap { data -> [NewsStory] in
-                var newsResult: [NewsStory] = []
-                switch data {
-                case .success(let value):
-                    newsResult = value
-                case .failure(let error):
-                    print("NewsVC - fetchNews - error: \(error)")
-                }
-                return newsResult
-            }
+            .compactMap({ news in
+                return news
+            })            
             .do(onNext: { [weak self] newsResult in
                 self?.hideLoadingAnimation()
                 self?.newsTableView.isHidden = newsResult.isEmpty
                 self?.noResultsLabel.isHidden = !newsResult.isEmpty
+            }, onError: { [weak self] error in
+                self?.hideLoadingAnimation()
+                self?.newsTableView.isHidden = true
+                self?.noResultsLabel.isHidden = false
+                self?.noResultsLabel.text = "An error has occurred\nERROR: \(error)"
             })
             .asDriver(onErrorJustReturn: [])
-            .drive(newsTableView.rx.items(
-                cellIdentifier: NewsStoryTableViewCell.identifier,
-                cellType: NewsStoryTableViewCell.self)) { _, data, cell in
+            .drive(
+                newsTableView.rx.items(
+                    cellIdentifier: NewsStoryTableViewCell.identifier,
+                    cellType: NewsStoryTableViewCell.self
+                )) { _, data, cell in
                 let viewModel = NewsStoryTableViewCell.ViewModel(model: data)
                 cell.configure(with: viewModel)
             }
@@ -140,8 +141,6 @@ final class NewsViewController: UIViewController, UIAnimatable {
                 self?.presentFailedToOpenAlert()
                 return
             }
-//            let newsWebViewController = NewsWebViewController(url: url)
-//            self?.navigationController?.pushViewController(newsWebViewController, animated: true)
             self?.open(url: url)
         }
         .disposed(by: disposeBag)

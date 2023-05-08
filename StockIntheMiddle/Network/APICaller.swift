@@ -7,10 +7,78 @@
 
 import Foundation
 import RxSwift
+import Alamofire
+import RxAlamofire
+
+enum APIError: Error {
+    case invalidURL
+    case badStatus
+    case decodingError
+    case networkError
+}
 
 final class APICaller {
-
+    
     static let shared = APICaller()
+    
+    private enum Endpoint: String {
+        case search = "search"
+        case topStories = "news"
+        case companyNews = "company-news"
+        case marketData = "stock/candle"
+        case financials = "stock/metric"
+    }
+    
+    private struct Constants {
+        static var apiKey: String {
+            return Bundle.main.object(forInfoDictionaryKey: "NEWS_KEY") as? String ?? "NO_KEY"
+        }
+        static let baseURL = "https://finnhub.io/api/v1/"
+        static let day: TimeInterval = 3600 * 24
+    }
+    
+    private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
+        var urlString = Constants.baseURL + endpoint.rawValue
+
+        var queryItems = [URLQueryItem]()
+
+        for (name, value) in queryParams {
+            queryItems.append(.init(name: name, value: value))
+        }
+
+        queryItems.append(.init(name: "token", value: Constants.apiKey))
+
+        urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
+
+        return URL(string: urlString)
+    }
+    
+    private func request<T: Codable>(url: URL?, expecting: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+        guard let url = url else {
+            // Invalid url
+            completion(.failure(APIError.invalidURL))
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else {
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.failure(APIError.decodingError))
+                }
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode(expecting, from: data)
+                completion(.success(result))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
     
     // MARK: Watchlist
     public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> Void) {
@@ -42,85 +110,18 @@ final class APICaller {
             for: .financials,
                queryParams: ["symbol": symbol, "metric": "all"]
         )
-        
-        print(#fileID, #function, #line, "- url: \(url)")
         request(
             url: url,
             expecting: FinancialMetricsResponse.self,
             completion: completion
         )
     }
-
-    // MARK: - Private
-    private enum Endpoint: String {
-        case search = "search"
-        case topStories = "news"
-        case companyNews = "company-news"
-        case marketData = "stock/candle"
-        case financials = "stock/metric"
-    }
-
-    private enum APIError: Error {
-        case invalidURL
-        case noDataReturned
-        case networkError
-    }
-
-    private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
-        var urlString = Constants.baseURL + endpoint.rawValue
-
-        var queryItems = [URLQueryItem]()
-
-        for (name, value) in queryParams {
-            queryItems.append(.init(name: name, value: value))
-        }
-
-        queryItems.append(.init(name: "token", value: Constants.apiKey))
-
-        urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")"}.joined(separator: "&")
-
-        return URL(string: urlString)
-    }
-
-    private func request<T: Codable>(url: URL?, expecting: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let url = url else {
-            // Invalid url
-            completion(.failure(APIError.invalidURL))
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            guard let data = data, error == nil else {
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    completion(.failure(APIError.noDataReturned))
-                }
-                return
-            }
-            do {
-                let result = try JSONDecoder().decode(expecting, from: data)
-                completion(.success(result))
-            } catch {
-                completion(.failure(error))
-            }
-        }
-
-        task.resume()
-    }
     
-    // MARK: Calculator
-    
+
     // MARK: News
-    private struct Constants {
-        static var apiKey: String {
-            return Bundle.main.object(forInfoDictionaryKey: "NEWS_KEY") as? String ?? "NO_KEY"
-        }
-        static let baseURL = "https://finnhub.io/api/v1/"
-        static let day: TimeInterval = 3600 * 24
-    }
 
     public func news(for type: NewsViewController.NewsType, completion: @escaping (Result<[NewsStory], Error>) -> Void) {
+        print("뉴스 - 타입: \(type)")
         switch type {
         case .topStories:
             request(
@@ -146,9 +147,10 @@ final class APICaller {
         }
     }
 
-    func fetchNews(query: String) -> Single<Result<[NewsStory], Error>> {
+    func fetchNews(query: String) -> Single<[NewsStory]> {
+        print("펫치뉴스 - 쿼리: \(query)")
         guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            return .just(.failure(APIError.invalidURL))
+            return Single.error(APIError.invalidURL)
         }
         var endPoint: Endpoint = .topStories
         var queryParams: [String: String] = [:]
@@ -171,21 +173,21 @@ final class APICaller {
             for: endPoint,
             queryParams: queryParams
         ) else {
-            return .just(.failure(APIError.networkError))
+            return Single.error(APIError.networkError)
         }
         
         let request = URLRequest(url: url)
-        return URLSession.shared.rx.data(request: request)
-            .map { data in
-                do {
-                    let newsData = try JSONDecoder().decode([NewsStory].self, from: data)
-                    return .success(newsData)
-                } catch {
-                    return .failure(APIError.noDataReturned)
+        return RxAlamofire.requestData(request)
+            .map { response, jsonData in
+                if !(200..<300 ~= response.statusCode) {
+                    throw APIError.badStatus
                 }
-            }
-            .catch { _ in
-                .just(.failure(APIError.networkError))
+                do {
+                    let newsData = try JSONDecoder().decode([NewsStory].self, from: jsonData)
+                    return newsData
+                } catch {
+                    throw APIError.decodingError
+                }
             }
             .asSingle()
     }

@@ -138,9 +138,8 @@ final class StockDetailsViewController: UIViewController {
         var viewModels = [MetricCollectionViewCell.ViewModel]()
         if let metrics = self.metrics {
             viewModels.append(.init(name: "52W High", value: "\(metrics.AnnualWeekHigh)"))
-            viewModels.append(.init(name: "52L High", value: "\(metrics.AnnualWeekLow)"))
+            viewModels.append(.init(name: "52W Low", value: "\(metrics.AnnualWeekLow)"))
             viewModels.append(.init(name: "52W Return", value: "\(metrics.AnnualWeekPriceReturnDaily)"))
-            viewModels.append(.init(name: "Beta", value: "\(metrics.beta)"))
             viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
         }
 
