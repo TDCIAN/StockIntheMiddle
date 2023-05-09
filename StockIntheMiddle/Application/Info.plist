@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CALC_KEY</key>
+	<string>$(CALC_KEY)</string>
 	<key>NEWS_KEY</key>
 	<string>$(NEWS_KEY)</string>
 	<key>UIApplicationSceneManifest</key>

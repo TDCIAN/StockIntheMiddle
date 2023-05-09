@@ -8,6 +8,8 @@
 import UIKit
 import Combine
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class CalculatorTableViewController: UITableViewController {
 
@@ -29,16 +31,13 @@ class CalculatorTableViewController: UITableViewController {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 14, weight: .regular)
-
         return label
     }()
 
     private let currentValueLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.text = "$2000.22"
         label.font = .systemFont(ofSize: 28, weight: .bold)
-
         return label
     }()
 
@@ -47,7 +46,6 @@ class CalculatorTableViewController: UITableViewController {
         label.text = "Investment amount : "
         label.textColor = .label
         label.font = .systemFont(ofSize: 15, weight: .regular)
-
         return label
     }()
 
@@ -55,7 +53,6 @@ class CalculatorTableViewController: UITableViewController {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 15, weight: .semibold)
-
         return label
     }()
 
@@ -64,7 +61,6 @@ class CalculatorTableViewController: UITableViewController {
         label.text = "Gain : "
         label.textColor = .label
         label.font = .systemFont(ofSize: 15, weight: .regular)
-
         return label
     }()
 

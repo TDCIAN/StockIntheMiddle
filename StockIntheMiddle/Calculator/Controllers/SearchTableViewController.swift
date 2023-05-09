@@ -6,9 +6,10 @@
 //
 
 import UIKit
-import Combine
 import MBProgressHUD
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class SearchTableViewController: UITableViewController, UIAnimatable {
 
@@ -27,11 +28,11 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
         return sc
     }()
 
-    private let apiService = APIService()
-    private var subscribers = Set<AnyCancellable>()
     private var searchResults: CalcSearchResults?
-    @Published private var mode: Mode = .onboarding
-    @Published private var searchQuery = String()
+
+    private let disposeBag = DisposeBag()
+    private let mode = BehaviorRelay<Mode>(value: .onboarding)
+    private let searchQuery = PublishRelay<String>()
 
     let noResultsLabel: UILabel = {
         let label = UILabel()
@@ -70,50 +71,43 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     }
 
     private func observeForm() {
-        $searchQuery
-            .debounce(for: .milliseconds(750), scheduler: RunLoop.main)
-            .sink { [unowned self] (searchQuery) in
+        searchQuery
+            .debounce(RxTimeInterval.milliseconds(750), scheduler: MainScheduler.instance)
+            .bind { [unowned self] searchQuery in
                 if searchQuery.isEmpty {
                     self.searchResults = nil
                     self.tableView.reloadData()
                     self.tableView.isScrollEnabled = false
                 } else {
-                    showLoadingAnimation()
-                    self.apiService.fetchSymbolsPublisher(keywords: searchQuery).sink {
-                        (completion) in
-                        self.hideLoadingAnimation()
-                        switch completion {
-                        case .failure(let error):
-                            print("performSearch - error: \(error.localizedDescription)")
-                        case .finished:
-                            break
-                        }
-                    } receiveValue: { (searchResults) in
-                        self.searchResults = searchResults
-                        if let items = self.searchResults?.items {
-                            if items.isEmpty {
-                                self.tableView.reloadData()
-                                self.tableView.isScrollEnabled = false
-                                self.noResultsLabel.isHidden = false
-                            } else {
-                                self.noResultsLabel.isHidden = true
-                                self.tableView.reloadData()
-                                self.tableView.isScrollEnabled = true
+                    self.showLoadingAnimation()
+                    APICaller.shared.fetchStockSymbols(keywords: searchQuery)
+                        .subscribe { calcSearchResults in
+                            self.hideLoadingAnimation()
+                            self.searchResults = calcSearchResults
+                            if let items = self.searchResults?.items {
+                                if items.isEmpty {
+                                    self.tableView.reloadData()
+                                    self.tableView.isScrollEnabled = false
+                                    self.noResultsLabel.isHidden = false
+                                } else {
+                                    self.noResultsLabel.isHidden = true
+                                    self.tableView.reloadData()
+                                    self.tableView.isScrollEnabled = true
+                                }
                             }
-                        }
-
-                    }.store(in: &self.subscribers)
+                        }.disposed(by: disposeBag)
                 }
-            }.store(in: &subscribers)
-
-        $mode.sink { mode in
+            }.disposed(by: disposeBag)
+        
+        
+        mode.bind { mode in
             switch mode {
             case .onboarding:
                 self.tableView.backgroundView = SearchPlaceholderView()
             case .search:
                 self.tableView.backgroundView = nil
             }
-        }.store(in: &subscribers)
+        }.disposed(by: disposeBag)
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -144,22 +138,15 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
 
     private func handleSelection(for symbol: String, searchResult: CalcSearchResult) {
         showLoadingAnimation()
-        apiService.fetchTimeSeriesMonthlyAdjustedPublisher(keywords: symbol).sink { [weak self] (completionResult) in
-            self?.hideLoadingAnimation()
-            switch completionResult {
-            case .failure(let error):
-                print("handleSelection - error: \(error.localizedDescription)")
-            case .finished:
-                break
-            }
-        } receiveValue: { [weak self] (timeSeriesMonthlyAdjusted) in
-            self?.hideLoadingAnimation()
-            let asset = Asset(searchResult: searchResult, timeSeriesMonthlyAdjusted: timeSeriesMonthlyAdjusted)
-            let calculatorVc = CalculatorTableViewController()
-            calculatorVc.asset = asset
-            self?.navigationController?.pushViewController(calculatorVc, animated: true)
-            self?.searchController.searchBar.text = nil
-        }.store(in: &subscribers)
+        APICaller.shared.fetchTimeSeriesMonthlyAdjusted(keywords: symbol)
+            .subscribe { [weak self] timeSeriesMonthlyAdjusted in
+                self?.hideLoadingAnimation()
+                let asset = Asset(searchResult: searchResult, timeSeriesMonthlyAdjusted: timeSeriesMonthlyAdjusted)
+                let calculatorVc = CalculatorTableViewController()
+                calculatorVc.asset = asset
+                self?.navigationController?.pushViewController(calculatorVc, animated: true)
+                self?.searchController.searchBar.text = nil
+            }.disposed(by: disposeBag)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -175,31 +162,30 @@ extension SearchTableViewController: UISearchResultsUpdating, UISearchController
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchQuery = searchController.searchBar.text else { return }
         if searchQuery.isEmpty {
-            self.searchQuery = ""
-            self.mode = .onboarding
-            self.noResultsLabel.isHidden = true
+            self.searchQuery.accept("")
+            mode.accept(.onboarding)
+            noResultsLabel.isHidden = true
         } else {
-            self.searchQuery = searchQuery
-            self.mode = .search
+            self.searchQuery.accept(searchQuery)
+            mode.accept(.search)
         }
-
     }
 
     func willPresentSearchController(_ searchController: UISearchController) {
-        mode = .search
+        mode.accept(.search)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.searchQuery = ""
-        self.mode = .onboarding
+        searchQuery.accept("")
+        mode.accept(.onboarding)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.searchQuery = searchText
+        searchQuery.accept(searchText)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchQuery = ""
-        self.mode = .onboarding
+        searchQuery.accept("")
+        mode.accept(.onboarding)
     }
 }

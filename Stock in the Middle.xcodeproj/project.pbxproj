@@ -169,13 +169,6 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		1E6107722A08877A003E3060 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
 		1E7A214B27AEBB56008D1C05 = {
 			isa = PBXGroup;
 			children = (
@@ -239,7 +232,6 @@
 		1E9CF91527C762B500898828 /* Watchlist */ = {
 			isa = PBXGroup;
 			children = (
-				1E6107722A08877A003E3060 /* Network */,
 				1E9CF91D27C7635A00898828 /* Controllers */,
 				1E9CF91C27C7635000898828 /* Views */,
 				1E9CF92227C7654900898828 /* Models */,
