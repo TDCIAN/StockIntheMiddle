@@ -155,11 +155,15 @@ class CalculatorTableViewController: UITableViewController {
 
     var asset: Asset?
 
-    @Published private var initialDateOfInvestmentIndex: Int?
-    @Published private var initialInvestmentAmount: Int?
-    @Published private var monthlyDollarCostAveragingAmount: Int?
-
+//    @Published private var initialDateOfInvestmentIndex: Int?
+    private let initialDateOfInvestmentIndex = PublishRelay<Int?>()
+//    @Published private var initialInvestmentAmount: Int?
+    private let initialInvestmentAmount = PublishRelay<Int?>()
+//    @Published private var monthlyDollarCostAveragingAmount: Int?
+    private let monthlyDollarCostAveragingAmount = PublishRelay<Int?>()
+    
     private var subscribers = Set<AnyCancellable>()
+    private let disposeBag = DisposeBag()
     private let dcaService = DCAService()
     private let calculatorPresenter = CalculatorPresenter()
 
@@ -304,15 +308,26 @@ class CalculatorTableViewController: UITableViewController {
     }
 
     private func observeForm() {
-        $initialDateOfInvestmentIndex.sink { [weak self] (index) in
-            guard let index = index else { return }
-            self?.dateSlider.value = index.floatValue
+//        $initialDateOfInvestmentIndex.sink { [weak self] (index) in
+//            guard let index = index else { return }
+//            self?.dateSlider.value = index.floatValue
+//
+//            if let dateString = self?.asset?.timeSeriesMonthlyAdjusted.getMonthInfos()[index].date.MMYYFormat {
+//                self?.initialDateOfInvestmentTextField.text = dateString
+//            }
+//        }
+//        .store(in: &subscribers)
+        initialDateOfInvestmentIndex
+            .bind(onNext: { [weak self] (index) in
+                guard let index = index else { return }
+                self?.dateSlider.value = index.floatValue
 
-            if let dateString = self?.asset?.timeSeriesMonthlyAdjusted.getMonthInfos()[index].date.MMYYFormat {
-                self?.initialDateOfInvestmentTextField.text = dateString
-            }
-        }
-        .store(in: &subscribers)
+                if let dateString = self?.asset?.timeSeriesMonthlyAdjusted.getMonthInfos()[index].date.MMYYFormat {
+                    self?.initialDateOfInvestmentTextField.text = dateString
+                }
+                
+            }).disposed(by: disposeBag)
+
 
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: initialInvestmentAmountTextField).compactMap { notification -> String? in
             var text: String?
@@ -321,7 +336,8 @@ class CalculatorTableViewController: UITableViewController {
             }
             return text
         }.sink { [weak self] (text) in
-            self?.initialInvestmentAmount = Int(text) ?? 0
+//            self?.initialInvestmentAmount = Int(text) ?? 0
+            self?.initialInvestmentAmount.accept(Int(text) ?? 0)
         }.store(in: &subscribers)
 
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: monthlyDollarCostAveragingTextField).compactMap { notification -> String? in
@@ -331,10 +347,47 @@ class CalculatorTableViewController: UITableViewController {
             }
             return text
         }.sink { [weak self] (text) in
-            self?.monthlyDollarCostAveragingAmount = Int(text) ?? 0
+//            self?.monthlyDollarCostAveragingAmount = Int(text) ?? 0
+            self?.monthlyDollarCostAveragingAmount.accept(Int(text) ?? 0)
         }.store(in: &subscribers)
 
-        Publishers.CombineLatest3($initialInvestmentAmount, $monthlyDollarCostAveragingAmount, $initialDateOfInvestmentIndex).sink { [weak self] (initialInvestmentAmount, monthlyDollarCostAveragingAmount, initialDateOfInvestmentIndex) in
+//        Publishers.CombineLatest3(
+//            $initialInvestmentAmount,
+//            $monthlyDollarCostAveragingAmount,
+//            $initialDateOfInvestmentIndex
+//        ).sink { [weak self] (initialInvestmentAmount, monthlyDollarCostAveragingAmount, initialDateOfInvestmentIndex) in
+//
+//            guard let initialInvestmentAmount = initialInvestmentAmount,
+//                  let monthlyDollarCostAveragingAmount = monthlyDollarCostAveragingAmount,
+//                  let initialDateOfInvestmentIndex = initialDateOfInvestmentIndex,
+//                  let asset = self?.asset else { return }
+//
+//            guard let this = self else { return }
+//            let result = this.dcaService.calculate(
+//                asset: asset,
+//                initialInvestmentAmount: initialInvestmentAmount.doubleValue,
+//                monthlyDollorCostAverageAmount: monthlyDollarCostAveragingAmount.doubleValue,
+//                initialDateOfInvestmentIndex: initialDateOfInvestmentIndex)
+//
+//            let presentation = this.calculatorPresenter.getPresentation(result: result)
+//
+//            this.currentValueLabel.backgroundColor = presentation.currentValueLabelBackgroundColor
+//            this.currentValueLabel.text = presentation.currentValue
+//
+//            this.investmentAmountLabel.text = asset.searchResult.currency + " " + presentation.investmentAmount
+//            this.gainLabel.text = presentation.gain
+//            this.yieldLabel.text = presentation.yield
+//            this.yieldLabel.textColor = presentation.yieldLabelTextColor
+//            this.annualReturnLabel.text = presentation.annualReturn
+//            this.annualReturnLabel.textColor = presentation.annualReturnLabelTextColor
+//
+//        }.store(in: &subscribers)
+        
+        Observable.combineLatest(
+            initialInvestmentAmount,
+            monthlyDollarCostAveragingAmount,
+            initialDateOfInvestmentIndex
+        ).subscribe { [weak self] (initialInvestmentAmount, monthlyDollarCostAveragingAmount, initialDateOfInvestmentIndex) in
 
             guard let initialInvestmentAmount = initialInvestmentAmount,
                   let monthlyDollarCostAveragingAmount = monthlyDollarCostAveragingAmount,
@@ -360,7 +413,7 @@ class CalculatorTableViewController: UITableViewController {
             this.annualReturnLabel.text = presentation.annualReturn
             this.annualReturnLabel.textColor = presentation.annualReturnLabelTextColor
 
-        }.store(in: &subscribers)
+        }.disposed(by: disposeBag)
 
     }
 
@@ -376,7 +429,8 @@ class CalculatorTableViewController: UITableViewController {
         guard navigationController?.visibleViewController is DateSelectionTableViewController else { return }
         navigationController?.popViewController(animated: true)
         if let monthInfos = asset?.timeSeriesMonthlyAdjusted.getMonthInfos() {
-            initialDateOfInvestmentIndex = index
+//            initialDateOfInvestmentIndex = index
+            initialDateOfInvestmentIndex.accept(index)
             let monthInfo = monthInfos[index]
             let dateString = monthInfo.date.MMYYFormat
             initialDateOfInvestmentTextField.text = dateString
@@ -384,7 +438,8 @@ class CalculatorTableViewController: UITableViewController {
     }
 
     @objc func dateSliderDidChange(_ sender: UISlider) {
-        initialDateOfInvestmentIndex = Int(sender.value)
+//        initialDateOfInvestmentIndex = Int(sender.value)
+        initialDateOfInvestmentIndex.accept(Int(sender.value))
     }
 }
 
@@ -393,7 +448,11 @@ extension CalculatorTableViewController: UITextFieldDelegate {
         if textField == initialDateOfInvestmentTextField {
             let dateSelectionVC = DateSelectionTableViewController()
             dateSelectionVC.timeSeriesMonthlyAdjusted = asset?.timeSeriesMonthlyAdjusted
-            dateSelectionVC.selectedIndex = initialDateOfInvestmentIndex
+//            dateSelectionVC.selectedIndex = initialDateOfInvestmentIndex
+            initialDateOfInvestmentIndex
+                .subscribe(onNext: { investmentIndex in
+                    dateSelectionVC.selectedIndex = investmentIndex
+                }).disposed(by: disposeBag)
             dateSelectionVC.didSelectDate = { [weak self] index in
                 self?.handleDateSelection(at: index)
             }
