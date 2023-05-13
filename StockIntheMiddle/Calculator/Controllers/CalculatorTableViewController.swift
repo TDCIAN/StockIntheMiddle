@@ -12,35 +12,35 @@ import RxCocoa
 
 class CalculatorTableViewController: UITableViewController {
 
-    private let symbolLabel: UILabel = {
+    private lazy var symbolLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
 
-    private let nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .tertiaryLabel
         label.font = .systemFont(ofSize: 18, weight: .medium)
         return label
     }()
 
-    private let currentValueTitleLabel: UILabel = {
+    private lazy var currentValueTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 14, weight: .regular)
         return label
     }()
 
-    private let currentValueLabel: UILabel = {
+    private lazy var currentValueLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 28, weight: .bold)
         return label
     }()
 
-    private let investmentAmountTitleLabel: UILabel = {
+    private lazy var investmentAmountTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Investment amount : "
         label.textColor = .label
@@ -48,14 +48,14 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let investmentAmountLabel: UILabel = {
+    private lazy var investmentAmountLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 15, weight: .semibold)
         return label
     }()
 
-    private let gainTitleLabel: UILabel = {
+    private lazy var gainTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Gain : "
         label.textColor = .label
@@ -63,7 +63,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let gainLabel: UILabel = {
+    private lazy var gainLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -71,7 +71,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let yieldLabel: UILabel = {
+    private lazy var yieldLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGreen
         label.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -79,7 +79,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let annualReturnTitleLabel: UILabel = {
+    private lazy var annualReturnTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Annual return : "
         label.textColor = .label
@@ -87,7 +87,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let annualReturnLabel: UILabel = {
+    private lazy var annualReturnLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGreen
         label.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -95,7 +95,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let initialInvestmentAmountTextField: UITextField = {
+    private lazy var initialInvestmentAmountTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter your initial investment amount"
         textField.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -103,7 +103,7 @@ class CalculatorTableViewController: UITableViewController {
         return textField
     }()
 
-    private let initialInvestmentAmountTitleLabel: UILabel = {
+    private lazy var initialInvestmentAmountTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Initial investment amount"
         label.textColor = .label
@@ -111,7 +111,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let monthlyDollarCostAveragingTextField: UITextField = {
+    private lazy var monthlyDollarCostAveragingTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Monthly dollar cost averaging amount"
         textField.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -119,7 +119,7 @@ class CalculatorTableViewController: UITableViewController {
         return textField
     }()
 
-    private let monthlyDollarCostAveragingTitleLabel: UILabel = {
+    private lazy var monthlyDollarCostAveragingTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Monthly dollar cost averaging amount"
         label.textColor = .label
@@ -127,7 +127,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let initialDateOfInvestmentTextField: UITextField = {
+    private lazy var initialDateOfInvestmentTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter the initial date of investment"
         textField.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -135,7 +135,7 @@ class CalculatorTableViewController: UITableViewController {
         return textField
     }()
 
-    private let initialDateOfInvestmentTitleLabel: UILabel = {
+    private lazy var initialDateOfInvestmentTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "initial date of investment"
         label.textColor = .label
@@ -143,7 +143,7 @@ class CalculatorTableViewController: UITableViewController {
         return label
     }()
 
-    private let dateSlider: UISlider = {
+    private lazy var dateSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = 0
         slider.maximumValue = 1

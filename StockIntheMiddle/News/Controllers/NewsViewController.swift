@@ -34,14 +34,14 @@ final class NewsViewController: UIViewController, UIAnimatable {
 
     private let newsType: NewsType
 
-    let newsTableView: UITableView = {
+    lazy var newsTableView: UITableView = {
        let table = UITableView()
         table.register(NewsStoryTableViewCell.self, forCellReuseIdentifier: NewsStoryTableViewCell.identifier)
         table.rowHeight = NewsStoryTableViewCell.preferredHeight
         return table
     }()
 
-    let noResultsLabel: UILabel = {
+    private lazy var noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
         label.font = .systemFont(ofSize: 18, weight: .medium)

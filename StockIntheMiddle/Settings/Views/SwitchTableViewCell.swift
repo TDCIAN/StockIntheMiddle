@@ -10,7 +10,7 @@ import UIKit
 class SwitchTableViewCell: UITableViewCell {
     static let identifier = "SwitchTableViewCell"
 
-    private let iconContainer: UIView = {
+    private lazy var iconContainer: UIView = {
        let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 8
@@ -18,20 +18,20 @@ class SwitchTableViewCell: UITableViewCell {
         return view
     }()
 
-    private let iconImageView: UIImageView = {
+    private lazy var iconImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
-    private let label: UILabel = {
+    private lazy var label: UILabel = {
        let label = UILabel()
         label.numberOfLines = 1
         return label
     }()
 
-    private let settingSwitch: UISwitch = {
+    private lazy var settingSwitch: UISwitch = {
        let mySwitch = UISwitch()
         mySwitch.onTintColor = .systemBlue
         mySwitch.addTarget(self, action: #selector(handleSwitch(sender:)), for: .touchUpInside)

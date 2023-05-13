@@ -28,27 +28,27 @@ final class NewsStoryTableViewCell: UITableViewCell {
         }
     }
 
-    private let sourceLabel: UILabel = {
+    private lazy var sourceLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .medium)
         return label
     }()
 
-    private let headlineLabel: UILabel = {
+    private lazy var headlineLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
 
-    private let dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
        let label = UILabel()
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 14, weight: .light)
         return label
     }()
 
-    private let storyImageView: UIImageView = {
+    private lazy var storyImageView: UIImageView = {
       let imageView = UIImageView()
         imageView.backgroundColor = .tertiarySystemBackground
         imageView.clipsToBounds = true

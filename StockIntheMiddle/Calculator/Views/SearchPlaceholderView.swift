@@ -8,14 +8,14 @@
 import UIKit
 
 class SearchPlaceholderView: UIView {
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "imLaunch")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Search for companies to calculate potential returns via dollar cost averaging"
         label.font = UIFont(name: "AvenirNext-Medium", size: 14)!

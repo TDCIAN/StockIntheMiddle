@@ -91,6 +91,7 @@ final class StockDetailsViewController: UIViewController {
                     self?.candleStickData = data.candleSticks
                 } onFailure: { error in
                     print(#fileID, #function, #line, "- bindFinancialData error: \(error)")
+                    self.showErrorAlert()
                 }.disposed(by: disposeBag)
         }
 

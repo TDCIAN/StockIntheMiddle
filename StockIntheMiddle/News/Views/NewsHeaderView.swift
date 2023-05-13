@@ -25,13 +25,13 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         let shouldShowAddButton: Bool
     }
 
-    private let label: UILabel = {
+    private lazy var label: UILabel = {
        let label = UILabel()
         label.font = .boldSystemFont(ofSize: 32)
         return label
     }()
 
-    let button: UIButton = {
+    lazy var button: UIButton = {
        let button = UIButton()
         button.setTitle("+ Watchlist", for: .normal)
         button.backgroundColor = .systemBlue

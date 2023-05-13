@@ -22,4 +22,13 @@ extension UIViewController {
         }
         return titleView
     }
+    
+    func showErrorAlert(title: String = "ERROR", message: String = "No data") {
+        let alertController = UIAlertController(title: "ERROR", message: "No data", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default) { _ in
+            self.dismiss(animated: true)
+        }
+        alertController.addAction(action)
+        self.present(alertController, animated: true)
+    }
 }

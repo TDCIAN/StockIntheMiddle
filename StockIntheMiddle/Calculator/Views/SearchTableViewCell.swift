@@ -13,19 +13,19 @@ final class SearchTableViewCell: UITableViewCell {
     static let identifier = "SearchTableViewCell"
     static let preferredHeight: CGFloat = 88
 
-    private let assetSymbolLabel: UILabel = {
+    private lazy var assetSymbolLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.textColor = .label
         return label
     }()
-    private let assetTypeLabel: UILabel = {
+    private lazy var assetTypeLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .systemGray
         return label
     }()
-    private let assetNameLabel: UILabel = {
+    private lazy var assetNameLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .label

@@ -34,7 +34,7 @@ class SearchTableViewController: UITableViewController, UIAnimatable {
     private let mode = BehaviorRelay<Mode>(value: .onboarding)
     private let searchQuery = PublishRelay<String>()
 
-    let noResultsLabel: UILabel = {
+    private lazy var noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
         label.font = .systemFont(ofSize: 18, weight: .medium)

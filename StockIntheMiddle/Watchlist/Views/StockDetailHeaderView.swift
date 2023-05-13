@@ -13,7 +13,7 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
 
     private let chartView = StockChartView()
 
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0

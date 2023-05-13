@@ -16,7 +16,7 @@ struct OpenSourceLicenseData {
 
 class OpenSourceViewController: UIViewController {
 
-    let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
        let label = UILabel()
         label.text = "Opensource License"
         label.font = .systemFont(ofSize: 20, weight: .medium)
@@ -24,7 +24,7 @@ class OpenSourceViewController: UIViewController {
         return label
     }()
 
-    lazy var openSourceTableView: UITableView = {
+    private lazy var openSourceTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self

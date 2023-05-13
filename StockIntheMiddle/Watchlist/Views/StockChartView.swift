@@ -17,7 +17,7 @@ final class StockChartView: UIView {
         let fillColor: UIColor
     }
 
-    private let chartView: LineChartView = {
+    private lazy var chartView: LineChartView = {
        let chartView = LineChartView()
         chartView.pinchZoomEnabled = false
         chartView.setScaleEnabled(true)

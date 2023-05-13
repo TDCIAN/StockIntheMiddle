@@ -34,17 +34,17 @@ struct SettingsOption {
 
 final class SettingsViewController: UIViewController {
 
-    private let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
-        table.register(
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.register(
             SettingTableViewCell.self,
             forCellReuseIdentifier: SettingTableViewCell.identifier
         )
-        table.register(
+        tableView.register(
             SwitchTableViewCell.self,
             forCellReuseIdentifier: SwitchTableViewCell.identifier
         )
-        return table
+        return tableView
     }()
 
     private var appVersion: String {

@@ -21,13 +21,11 @@ final class WatchListViewController: UIViewController, UIAnimatable {
 
     private var panel: FloatingPanelController?
 
-    static var maxChangeWidth: CGFloat = 0
-
     private var watchlistMap: [String: [CandleStick]] = [:]
 
     private var viewModels: [WatchListTableViewCell.ViewModel] = []
 
-    private var watchListTableView: UITableView = {
+    private lazy var watchListTableView: UITableView = {
        let table = UITableView()
         table.register(
             WatchListTableViewCell.self,

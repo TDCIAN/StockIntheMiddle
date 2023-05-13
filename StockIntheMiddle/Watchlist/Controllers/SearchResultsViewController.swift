@@ -18,7 +18,7 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
 
     private var results: [SearchResult] = []
     
-    let noResultsLabel: UILabel = {
+    private lazy var noResultsLabel: UILabel = {
         let label = UILabel()
         label.text = "No results found"
         label.font = .systemFont(ofSize: 18, weight: .medium)
@@ -27,49 +27,50 @@ class SearchResultsViewController: UIViewController, UIAnimatable {
         return label
     }()
 
-    private let tableView: UITableView = {
-       let table = UITableView()
-        // Register a cell
-        table.register(SearchResultTableViewCell.self, forCellReuseIdentifier: SearchResultTableViewCell.identifier)
-        table.isHidden = true
-        return table
+    private lazy var searchResultTableView: UITableView = {
+       let tableView = UITableView()
+        tableView.register(
+            SearchResultTableViewCell.self,
+            forCellReuseIdentifier: SearchResultTableViewCell.identifier
+        )
+        tableView.isHidden = true
+        tableView.delegate = self
+        tableView.dataSource = self
+        return tableView
     }()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setUpTable()
+        setLayout()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-    }
-
-    private func setUpTable() {
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
+    private func setLayout() {
+        view.addSubview(searchResultTableView)
         view.addSubview(noResultsLabel)
+        
+        searchResultTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         noResultsLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(-100)
         }
     }
-    // MARK: - Public
-    public func update(with results: [SearchResult]) {
+        
+    func update(with results: [SearchResult]) {
         self.showLoadingAnimation()
         self.results = results
-        tableView.isHidden = results.isEmpty
+        searchResultTableView.isHidden = results.isEmpty
         noResultsLabel.isHidden = !results.isEmpty
-        tableView.reloadData()
+        searchResultTableView.reloadData()
         self.hideLoadingAnimation()
     }
 }
 
 // MARK: - TableView
-
 extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.results.count
