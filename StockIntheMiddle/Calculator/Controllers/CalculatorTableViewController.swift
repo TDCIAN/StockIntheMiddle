@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -149,20 +148,15 @@ class CalculatorTableViewController: UITableViewController {
         slider.minimumValue = 0
         slider.maximumValue = 1
         slider.value = 0.5
-        slider.addTarget(self, action: #selector(dateSliderDidChange(_:)), for: .valueChanged)
         return slider
     }()
 
     var asset: Asset?
 
-//    @Published private var initialDateOfInvestmentIndex: Int?
     private let initialDateOfInvestmentIndex = PublishRelay<Int?>()
-//    @Published private var initialInvestmentAmount: Int?
     private let initialInvestmentAmount = PublishRelay<Int?>()
-//    @Published private var monthlyDollarCostAveragingAmount: Int?
     private let monthlyDollarCostAveragingAmount = PublishRelay<Int?>()
-    
-    private var subscribers = Set<AnyCancellable>()
+
     private let disposeBag = DisposeBag()
     private let dcaService = DCAService()
     private let calculatorPresenter = CalculatorPresenter()
@@ -308,15 +302,6 @@ class CalculatorTableViewController: UITableViewController {
     }
 
     private func observeForm() {
-//        $initialDateOfInvestmentIndex.sink { [weak self] (index) in
-//            guard let index = index else { return }
-//            self?.dateSlider.value = index.floatValue
-//
-//            if let dateString = self?.asset?.timeSeriesMonthlyAdjusted.getMonthInfos()[index].date.MMYYFormat {
-//                self?.initialDateOfInvestmentTextField.text = dateString
-//            }
-//        }
-//        .store(in: &subscribers)
         initialDateOfInvestmentIndex
             .bind(onNext: { [weak self] (index) in
                 guard let index = index else { return }
@@ -328,60 +313,17 @@ class CalculatorTableViewController: UITableViewController {
                 
             }).disposed(by: disposeBag)
 
+        initialInvestmentAmountTextField.rx.text.orEmpty
+            .compactMap { Int($0) ?? 0 }
+            .bind { [weak self] intValue in
+                self?.initialInvestmentAmount.accept(intValue)
+            }.disposed(by: disposeBag)
 
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: initialInvestmentAmountTextField).compactMap { notification -> String? in
-            var text: String?
-            if let textField = notification.object as? UITextField {
-                text = textField.text
-            }
-            return text
-        }.sink { [weak self] (text) in
-//            self?.initialInvestmentAmount = Int(text) ?? 0
-            self?.initialInvestmentAmount.accept(Int(text) ?? 0)
-        }.store(in: &subscribers)
-
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: monthlyDollarCostAveragingTextField).compactMap { notification -> String? in
-            var text: String?
-            if let textField = notification.object as? UITextField {
-                text = textField.text
-            }
-            return text
-        }.sink { [weak self] (text) in
-//            self?.monthlyDollarCostAveragingAmount = Int(text) ?? 0
-            self?.monthlyDollarCostAveragingAmount.accept(Int(text) ?? 0)
-        }.store(in: &subscribers)
-
-//        Publishers.CombineLatest3(
-//            $initialInvestmentAmount,
-//            $monthlyDollarCostAveragingAmount,
-//            $initialDateOfInvestmentIndex
-//        ).sink { [weak self] (initialInvestmentAmount, monthlyDollarCostAveragingAmount, initialDateOfInvestmentIndex) in
-//
-//            guard let initialInvestmentAmount = initialInvestmentAmount,
-//                  let monthlyDollarCostAveragingAmount = monthlyDollarCostAveragingAmount,
-//                  let initialDateOfInvestmentIndex = initialDateOfInvestmentIndex,
-//                  let asset = self?.asset else { return }
-//
-//            guard let this = self else { return }
-//            let result = this.dcaService.calculate(
-//                asset: asset,
-//                initialInvestmentAmount: initialInvestmentAmount.doubleValue,
-//                monthlyDollorCostAverageAmount: monthlyDollarCostAveragingAmount.doubleValue,
-//                initialDateOfInvestmentIndex: initialDateOfInvestmentIndex)
-//
-//            let presentation = this.calculatorPresenter.getPresentation(result: result)
-//
-//            this.currentValueLabel.backgroundColor = presentation.currentValueLabelBackgroundColor
-//            this.currentValueLabel.text = presentation.currentValue
-//
-//            this.investmentAmountLabel.text = asset.searchResult.currency + " " + presentation.investmentAmount
-//            this.gainLabel.text = presentation.gain
-//            this.yieldLabel.text = presentation.yield
-//            this.yieldLabel.textColor = presentation.yieldLabelTextColor
-//            this.annualReturnLabel.text = presentation.annualReturn
-//            this.annualReturnLabel.textColor = presentation.annualReturnLabelTextColor
-//
-//        }.store(in: &subscribers)
+        monthlyDollarCostAveragingTextField.rx.text.orEmpty
+            .compactMap { Int($0) ?? 0 }
+            .bind { [weak self] intValue in
+                self?.monthlyDollarCostAveragingAmount.accept(intValue)
+            }.disposed(by: disposeBag)
         
         Observable.combineLatest(
             initialInvestmentAmount,
@@ -415,6 +357,10 @@ class CalculatorTableViewController: UITableViewController {
 
         }.disposed(by: disposeBag)
 
+        dateSlider.rx.value
+            .bind { [weak self] floatValue in
+                self?.initialDateOfInvestmentIndex.accept(Int(floatValue))
+            }.disposed(by: disposeBag)
     }
 
     private func resetViews() {
@@ -429,7 +375,6 @@ class CalculatorTableViewController: UITableViewController {
         guard navigationController?.visibleViewController is DateSelectionTableViewController else { return }
         navigationController?.popViewController(animated: true)
         if let monthInfos = asset?.timeSeriesMonthlyAdjusted.getMonthInfos() {
-//            initialDateOfInvestmentIndex = index
             initialDateOfInvestmentIndex.accept(index)
             let monthInfo = monthInfos[index]
             let dateString = monthInfo.date.MMYYFormat
@@ -437,10 +382,6 @@ class CalculatorTableViewController: UITableViewController {
         }
     }
 
-    @objc func dateSliderDidChange(_ sender: UISlider) {
-//        initialDateOfInvestmentIndex = Int(sender.value)
-        initialDateOfInvestmentIndex.accept(Int(sender.value))
-    }
 }
 
 extension CalculatorTableViewController: UITextFieldDelegate {
@@ -448,7 +389,6 @@ extension CalculatorTableViewController: UITextFieldDelegate {
         if textField == initialDateOfInvestmentTextField {
             let dateSelectionVC = DateSelectionTableViewController()
             dateSelectionVC.timeSeriesMonthlyAdjusted = asset?.timeSeriesMonthlyAdjusted
-//            dateSelectionVC.selectedIndex = initialDateOfInvestmentIndex
             initialDateOfInvestmentIndex
                 .subscribe(onNext: { investmentIndex in
                     dateSelectionVC.selectedIndex = investmentIndex
