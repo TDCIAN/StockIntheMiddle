@@ -12,5 +12,11 @@ protocol NewsViewModelAction {
 }
 
 protocol NewsViewModelType: AnyObject, NewsViewModelAction {
-    var delegate:
+    
+}
+
+class NewsViewModel: NewsViewModelType {
+    func searchNews(query: String) {
+        <#code#>
+    }
 }
